@@ -2,4 +2,6 @@
 
 course link: https://fullstackopen.com/en/
 
-submission link(logged in with github): https://studies.cs.helsinki.fi/stats/courses/fullstackopen
+fullstackopen page link https://github.com/fullstack-hy2020/fullstack-hy2020.github.io
+
+submission link: https://studies.cs.helsinki.fi/stats/courses/fullstackopen
