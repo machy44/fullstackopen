@@ -1,12 +1,12 @@
-```
+```javascript
 const arto = {
-  name: 'Arto Hellas',
-  greet: function() {
-    console.log('hello, my name is ' + this.name)
+  name: "Arto Hellas",
+  greet: function () {
+    console.log("hello, my name is " + this.name);
   },
-}
+};
 
-setTimeout(arto.greet, 1000) // solution setTimeout(arto.greet.bind(arto))
+setTimeout(arto.greet, 1000); // solution setTimeout(arto.greet.bind(arto))
 ```
 
 The value of `this` in JavaScript is defined based on how the method is being called. When setTimeout is calling the method, it is the **JavaScript engine that actually calls the method** and, at that point, `this` refers to the global object.
@@ -31,3 +31,20 @@ to know things deeply `You-Dont-Know-JS`.
 another great resource: javascript.info.
 
 egghead -> some things are behind paywall
+
+# function that return function => nice pattern
+
+```javascript
+const App = () => {
+  const [value, setValue] = useState(10)
+
+  const hello = (who) => {    const handler = () => {      console.log('hello', who)    }    return handler  }
+  return (
+    <div>
+      {value}
+      <button onClick={hello('world')}>button</button>      <button onClick={hello('react')}>button</button>      <button onClick={hello('function')}>button</button>    </div>
+  )
+}
+```
+
+The hello function that creates the event handlers can be thought of as a factory that produces customized event handlers meant for greeting users
