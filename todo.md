@@ -1,0 +1,1 @@
+- [ ] sredi jos tablicu
