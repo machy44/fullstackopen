@@ -36,15 +36,25 @@ egghead -> some things are behind paywall
 
 ```javascript
 const App = () => {
-  const [value, setValue] = useState(10)
+  const [value, setValue] = useState(10);
 
-  const hello = (who) => {    const handler = () => {      console.log('hello', who)    }    return handler  }
+  const hello = (who) => {
+    const handler = () => {
+      console.log("hello", who);
+    };
+    return handler;
+  };
   return (
     <div>
       {value}
-      <button onClick={hello('world')}>button</button>      <button onClick={hello('react')}>button</button>      <button onClick={hello('function')}>button</button>    </div>
-  )
-}
+      <button onClick={hello("world")}>button</button> <button
+        onClick={hello("react")}
+      >
+        button
+      </button> <button onClick={hello("function")}>button</button>{" "}
+    </div>
+  );
+};
 ```
 
 The hello function that creates the event handlers can be thought of as a factory that produces customized event handlers meant for greeting users
