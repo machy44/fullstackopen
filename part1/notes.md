@@ -11,7 +11,118 @@ setTimeout(arto.greet, 1000); // solution setTimeout(arto.greet.bind(arto))
 
 The value of `this` in JavaScript is defined based on how the method is being called. When setTimeout is calling the method, it is the **JavaScript engine that actually calls the method** and, at that point, `this` refers to the global object.
 
-- [ ] better understanding of this -> https://egghead.io/lessons/javascript-this-in-constructor-calls
+better understanding of this -> https://egghead.io/lessons/javascript-this-in-constructor-calls - saw till the end
+
+```javascript
+const person = {
+  firstName: "John",
+  sayHi: function () {
+    console.log(`Hi, my name is ${this.firstName}`);
+  },
+};
+
+setTimeout(person.sayHi, 1000); // calls our function with this set to the global object
+// solution can be to wrap it in another function
+// setTimeout(() => person.sayHi(), 1000); || setTimeout(person.sayHi.bind(person), 1000);
+```
+
+## call
+
+```javascript
+function sayHi() {
+  console.log(`Hi, my name is ${this.name}`);
+}
+
+const person = {
+  name: "John ",
+};
+
+sayHi.call(person);
+```
+
+## bind
+
+own version
+
+```javascript
+const person = {
+  firstName: "John",
+  sayHi: function (...args) {
+    console.log(`Hi, my name is ${this.firstName} ${args}`);
+  },
+};
+
+Function.prototype.myBind = function (thisArg, ...fixedArgs) {
+  const that = this;
+  console.log(this);
+  return function (...args) {
+    console.log("return function this", this); // setup on window
+    return that.apply(thisArg, [...fixedArgs, ...args]);
+  };
+};
+
+const greet = person.sayHi.myBind(person);
+
+greet("dynamic arg");
+```
+
+## arrow function
+
+you cant call as constructor
+
+```javascript
+const counter = {
+  count: 0,
+  incrementPeriodically() {
+    // solution to make arrow function
+    setInterval(function () {
+      console.log(++this.count); //this is setup to window. I assume because setInterval works that way
+    }, 1000);
+  },
+};
+
+counter.incrementPeriodically();
+```
+
+## this in class
+
+```javascript
+class Person {
+  constructor(firstName, lastName) {
+    this.firstName = firstName;
+    this.lastName = lastName;
+    this.sayHi = this.sayHi.bind(this); // if sayHi is not bounded fistName would be undefined
+  }
+
+  sayHi() {
+    console.log(`Hi, my name is ${this.firstName}!`);
+  }
+}
+
+const person = new Person("John", "Doe");
+const greet = person.sayHi;
+greet();
+```
+
+another way is to use arrow function
+
+```javascript
+class Person {
+  constructor(firstName, lastName) {
+    this.firstName = firstName;
+    this.lastName = lastName;
+  }
+
+  // class field
+  sayHi = () => {
+    console.log(`Hi, my name is ${this.firstName}!`);
+  };
+}
+
+const person = new Person("John", "Doe");
+const greet = person.sayHi;
+greet();
+```
 
 JavaScript essentially only defines the types Boolean, Null, Undefined, Number, String, Symbol, BigInt, and Object.
 
