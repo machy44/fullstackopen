@@ -4,7 +4,14 @@ const getRandomInt = (max) => () => {
   return Math.floor(Math.random() * max);
 };
 
-const randomIntMax7 = getRandomInt(7);
+const Section = ({ title, children }) => {
+  return (
+    <section>
+      <h1>{title}</h1>
+      {children}
+    </section>
+  );
+};
 
 const App = () => {
   const anecdotes = [
@@ -17,14 +24,33 @@ const App = () => {
     "Programming without an extremely heavy use of console.log is same as if a doctor would refuse to use x-rays or blood tests when diagnosing patients",
   ];
 
+  const randomIntMax7 = getRandomInt(7);
+
   const [selected, setSelected] = useState(0);
+  const [points, setPoints] = useState(new Uint8Array(anecdotes.length));
 
   const getAnecdote = (anecdoteNumber) => () => setSelected(anecdoteNumber);
+  const handleVote = () => {
+    const copyOfPoints = [...points];
+    copyOfPoints[selected] += 1;
+    setPoints(copyOfPoints);
+  };
+
+  const mostVotesNumber = Math.max(...points);
+  const mostPointsIndex = points.indexOf(mostVotesNumber);
 
   return (
     <main>
-      <div>{anecdotes[selected]}</div>
-      <button onClick={getAnecdote(randomIntMax7)}>next anecdote</button>
+      <Section title="Anecdote of the day">
+        <div>{anecdotes[selected]}</div>
+        <button onClick={handleVote}>vote</button>
+        <button onClick={getAnecdote(randomIntMax7)}>next anecdote</button>
+        <p>has {points[selected]} votes</p>
+      </Section>
+      <Section title="Anecdote with most votes">
+        <p>{anecdotes[mostPointsIndex]}</p>
+        <p>has {mostVotesNumber} votes</p>
+      </Section>
     </main>
   );
 };
