@@ -1,9 +1,14 @@
-import { calculatePercentage, calculateAverage, getTotal } from "./utils";
+import {
+  calculatePercentage,
+  calculateAverage,
+  getTotal,
+  roundToOneDecimal,
+} from "./utils";
 
-const defineScore = (score) => (values) => {
+const definePoints = (points) => (values) => {
   let scoreSum = 0;
   for (const key in values) {
-    scoreSum += values[key] * score[key];
+    scoreSum += values[key] * points[key];
   }
   return scoreSum;
 };
@@ -20,7 +25,7 @@ const StatisticLine = ({ text, value }) => {
 export const Statistics = ({ good, neutral, bad }) => {
   const total = getTotal(good, neutral, bad);
 
-  const getScoreSum = defineScore({
+  const getScore = definePoints({
     good: 1,
     neutral: 0,
     bad: -1,
@@ -37,14 +42,13 @@ export const Statistics = ({ good, neutral, bad }) => {
           <StatisticLine text="all" value={total} />
           <StatisticLine
             text="average"
-            value={calculateAverage(
-              getScoreSum({ good, neutral, bad }),
-              total
-            ).toFixed(1)}
+            value={roundToOneDecimal(
+              calculateAverage(getScore({ good, neutral, bad }), total)
+            )}
           />
           <StatisticLine
             text="positive"
-            value={`${calculatePercentage(good, total).toFixed(1)} %`}
+            value={`${roundToOneDecimal(calculatePercentage(good, total))} %`}
           />
         </tbody>
       </table>

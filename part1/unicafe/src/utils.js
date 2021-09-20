@@ -6,3 +6,7 @@ export const calculateAverage = (totalSum, numberOfItems) =>
 export const getTotal = (...args) => {
   return args.reduce((sum, currentValue) => (sum += currentValue), 0);
 };
+
+const roundingNumber = (decimal) => (num) => num.toFixed(decimal);
+
+export const roundToOneDecimal = roundingNumber(1);
