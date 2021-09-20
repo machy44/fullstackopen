@@ -24,9 +24,10 @@ const App = () => {
     "Programming without an extremely heavy use of console.log is same as if a doctor would refuse to use x-rays or blood tests when diagnosing patients",
   ];
 
-  const randomIntMax7 = getRandomInt(7);
+  const randomIntMax6 = getRandomInt(7);
 
   const [selected, setSelected] = useState(0);
+  // https://stackoverflow.com/a/22209781
   const [points, setPoints] = useState(new Uint8Array(anecdotes.length));
 
   const getAnecdote = (anecdoteNumber) => () => setSelected(anecdoteNumber);
@@ -44,7 +45,7 @@ const App = () => {
       <Section title="Anecdote of the day">
         <div>{anecdotes[selected]}</div>
         <button onClick={handleVote}>vote</button>
-        <button onClick={getAnecdote(randomIntMax7)}>next anecdote</button>
+        <button onClick={getAnecdote(randomIntMax6)}>next anecdote</button>
         <p>has {points[selected]} votes</p>
       </Section>
       <Section title="Anecdote with most votes">
