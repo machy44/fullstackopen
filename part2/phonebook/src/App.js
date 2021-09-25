@@ -1,35 +1,5 @@
 import React, { useState } from "react";
-
-const Search = ({ value, onChange }) => {
-  return (
-    <div>
-      filter shown with <input value={value} onChange={onChange} />
-    </div>
-  );
-};
-
-const Form = ({ onSubmit, children }) => {
-  return (
-    <form onSubmit={onSubmit}>
-      {children}
-      <div>
-        <button type="submit">add</button>
-      </div>
-    </form>
-  );
-};
-
-const Persons = ({ persons }) => {
-  return persons.map((person) => (
-    <p key={person.name}>
-      <span>{person.name}</span> <span>{person.number}</span>
-    </p>
-  ));
-};
-
-const Title = ({ children }) => {
-  return <h2>{children}</h2>;
-};
+import { Title, Search, Form, Persons } from "./components";
 
 const App = () => {
   const [persons, setPersons] = useState([
@@ -52,11 +22,11 @@ const App = () => {
     e.preventDefault();
     if (persons.find((person) => person.name === newName)) {
       alert(`${newName} is already added to phonebook`);
-    } else {
-      setPersons([...persons, { name: newName, number: phoneNumber }]);
-      setNewName("");
-      setPhoneNumber("");
+      return;
     }
+    setPersons([...persons, { name: newName, number: phoneNumber }]);
+    setNewName("");
+    setPhoneNumber("");
   };
 
   const personsDisplay = searchTerm
@@ -69,12 +39,15 @@ const App = () => {
     <main>
       <Title>Phonebook</Title>
       <Search value={searchTerm} onChange={handleSearchTermChange} />
-      <Title>Add New</Title>
-      <Form onSubmit={handleAddPerson}>
-        <div>
-          name: <input value={newName} onChange={handleNameChange} />
-          phone: <input value={phoneNumber} onChange={handlePhoneChange} />
-        </div>
+      <Form onSubmit={handleAddPerson} title="Add New">
+        <>
+          <label for="name">name: </label>
+          <input id="name" value={newName} onChange={handleNameChange} />
+          <br />
+          <br />
+          <label for="phone">phone:</label>
+          <input id="phone" value={phoneNumber} onChange={handlePhoneChange} />
+        </>
       </Form>
       <Title>Numbers</Title>
       <Persons persons={personsDisplay} />
