@@ -1,7 +1,14 @@
 import React, { useState, useEffect } from "react";
 import axios from "axios";
 
-const API_DOMAIN = "http://api.weatherstack.com/";
+const API_BASE = "http://api.weatherstack.com/current";
+
+const fetchWeather = async (resolveFn, query) => {
+  const response = await axios.get(
+    `${API_BASE}?access_key=${process.env.REACT_APP_WEATHER_API_KEY}&query=${query}`
+  );
+  resolveFn(response.data);
+};
 
 const fetchCountries = async (resolveFn) => {
   const response = await axios.get("https://restcountries.com/v3/all");
@@ -11,6 +18,7 @@ const fetchCountries = async (resolveFn) => {
 function App() {
   const [countries, setCountries] = useState([]);
   const [searchTerm, setSearchTerm] = useState("");
+  const [weather, setWeather] = useState("");
 
   useEffect(() => {
     fetchCountries(setCountries);
@@ -24,7 +32,17 @@ function App() {
       })
     : countries;
 
-  console.log(searchedCountries);
+  useEffect(() => {
+    if (
+      searchedCountries.length === 1 &&
+      weather?.location?.country.toLowerCase() !==
+        searchedCountries[0].name.common.toLowerCase()
+    ) {
+      fetchWeather(setWeather, searchedCountries[0].name.common);
+    }
+  }, [searchedCountries, weather?.location?.country]);
+
+  console.log(weather);
 
   return (
     <div>
@@ -69,6 +87,22 @@ function App() {
             );
           })}
         </ul>
+      )}
+      {weather && (
+        <>
+          <h2>Weather in {weather.location.name}</h2>
+          <p>
+            <strong>temperature: </strong> {weather.current.temperature}
+          </p>
+          {weather.current.weather_icons.map((iconUrl) => {
+            return <img src={iconUrl} alt="weather icon" />;
+          })}
+          <p>
+            <strong>wind: </strong>
+            {weather.current.wind_speed} mph direction{" "}
+            {weather.current.wind_dir}
+          </p>
+        </>
       )}
     </div>
   );
