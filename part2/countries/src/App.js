@@ -21,9 +21,14 @@ const fetchCountries = async (resolveFn) => {
   resolveFn(response.data);
 };
 
-const RenderCountries = ({ countries, setSearchTerm }) => {
+const RenderCountries = ({ countries, setSearchTerm, countryWeather }) => {
   if (countries.length === 1) {
-    return <CountryDetails country={countries[0]} />;
+    return (
+      <>
+        <CountryDetails country={countries[0]} />
+        {countryWeather && <CountryWeather weather={countryWeather} />}
+      </>
+    );
   }
   if (countries.length > 10) {
     return <TooManyMatches />;
@@ -73,8 +78,8 @@ function App() {
           <RenderCountries
             countries={searchedCountries}
             setSearchTerm={setSearchTerm}
+            countryWeather={weather}
           />
-          {weather && <CountryWeather weather={weather} />}
         </>
       ) : null}
     </div>
