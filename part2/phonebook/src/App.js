@@ -1,6 +1,7 @@
 import React, { useState, useEffect } from "react";
 import axios from "axios";
 import { Title, Search, Form, Persons } from "./components";
+import personService from "./services/persons";
 
 const App = () => {
   const [persons, setPersons] = useState([]);
@@ -29,9 +30,16 @@ const App = () => {
       alert(`${newName} is already added to phonebook`);
       return;
     }
-    setPersons([...persons, { name: newName, number: phoneNumber }]);
-    setNewName("");
-    setPhoneNumber("");
+    personService
+      .create({
+        name: newName,
+        number: phoneNumber,
+      })
+      .then((returnedPerson) => {
+        setPersons([...persons, returnedPerson]);
+        setNewName("");
+        setPhoneNumber("");
+      });
   };
 
   const personsDisplay = searchTerm
@@ -46,11 +54,11 @@ const App = () => {
       <Search value={searchTerm} onChange={handleSearchTermChange} />
       <Form onSubmit={handleAddPerson} title="Add New">
         <>
-          <label for="name">name: </label>
+          <label htmlFor="name">name: </label>
           <input id="name" value={newName} onChange={handleNameChange} />
           <br />
           <br />
-          <label for="phone">phone:</label>
+          <label htmlFor="phone">phone:</label>
           <input id="phone" value={phoneNumber} onChange={handlePhoneChange} />
         </>
       </Form>
