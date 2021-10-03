@@ -17,9 +17,15 @@ const deletePerson = async (id) => {
   return response.data;
 };
 
+const update = async (id, data) => {
+  const response = await axios.put(`${BASE_URL}/${id}`, data);
+  return response.data;
+};
+
 // eslint-disable-next-line import/no-anonymous-default-export
 export default {
   create,
   getAll,
   delete: deletePerson,
+  update,
 };
