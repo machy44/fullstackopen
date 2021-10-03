@@ -31,13 +31,19 @@ const App = () => {
     const note = notes.find((n) => n.id === id);
     const changedNote = { ...note, important: !note.important };
 
-    noteService.update(id, changedNote).then((returnedNote) => {
-      setNotes(
-        notes.map((note) => {
-          return note.id !== id ? note : returnedNote;
-        })
-      );
-    });
+    noteService
+      .update(id, changedNote)
+      .then((returnedNote) => {
+        setNotes(
+          notes.map((note) => {
+            return note.id !== id ? note : returnedNote;
+          })
+        );
+      })
+      .catch(() => {
+        alert(`the note '${note.content}' was already deleted from server`);
+        setNotes(notes.filter((n) => n.id !== id));
+      });
   };
 
   const handleNoteChange = (event) => {
