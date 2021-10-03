@@ -1,5 +1,4 @@
 import React, { useState, useEffect } from "react";
-import axios from "axios";
 import { Title, Search, Form, Persons } from "./components";
 import personService from "./services/persons";
 
@@ -11,10 +10,8 @@ const App = () => {
 
   useEffect(() => {
     const fetchPersons = async () => {
-      const result = await axios.get("http://localhost:3001/persons");
-      setPersons(result.data);
+      setPersons(await personService.getAll());
     };
-
     fetchPersons();
   }, []);
 
@@ -42,6 +39,14 @@ const App = () => {
       });
   };
 
+  const handleDeletePerson = async (id) => {
+    const affectedPerson = persons.find((person) => person.id === id);
+    const result = window.confirm(`Delete ${affectedPerson.name} ?`);
+    if (result === false) return;
+    await personService.delete(id);
+    setPersons(persons.filter((person) => person.id !== id));
+  };
+
   const personsDisplay = searchTerm
     ? persons.filter((person) =>
         person.name.toLowerCase().includes(searchTerm.toLowerCase())
@@ -63,7 +68,7 @@ const App = () => {
         </>
       </Form>
       <Title>Numbers</Title>
-      <Persons persons={personsDisplay} />
+      <Persons persons={personsDisplay} handleDelete={handleDeletePerson} />
     </main>
   );
 };

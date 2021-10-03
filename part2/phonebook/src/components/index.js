@@ -1,3 +1,5 @@
+import { DeleteButton } from "./buttons";
+
 export const Search = ({ value, onChange }) => {
   return (
     <article>
@@ -29,12 +31,13 @@ const Person = ({ person }) => {
   );
 };
 
-export const Persons = ({ persons }) => {
+export const Persons = ({ persons, handleDelete }) => {
   return (
     <ol>
       {persons.map((person) => (
-        <li>
-          <Person key={person.name} person={person} />
+        <li key={person.name}>
+          <Person person={person} />
+          <DeleteButton handleClick={() => handleDelete(person.id)} />
         </li>
       ))}
     </ol>
