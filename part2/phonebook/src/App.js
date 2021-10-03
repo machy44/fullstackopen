@@ -21,7 +21,12 @@ const App = () => {
 
   const handlePhoneChange = (e) => setPhoneNumber(e.target.value);
 
-  const handleAddPerson = (e) => {
+  const resetPersonInputs = () => {
+    setNewName("");
+    setPhoneNumber("");
+  };
+
+  const handleAddPerson = async (e) => {
     e.preventDefault();
     const personExists = persons.find(
       (person) => person.name.toLowerCase() === newName.toLowerCase()
@@ -31,32 +36,27 @@ const App = () => {
         `${newName} is already added to phonebook, replace the old number with a new one?`
       );
       if (result === false) return;
-      return personService
-        .update(personExists.id, {
-          name: newName,
-          number: phoneNumber,
-        })
-        .then((returnedPerson) => {
-          const updatedPersons = persons.map((person) =>
-            person.id === returnedPerson.id
-              ? { ...person, number: returnedPerson.number }
-              : person
-          );
-          setPersons(updatedPersons);
-          setNewName("");
-          setPhoneNumber("");
-        });
-    }
-    personService
-      .create({
+      const returnedPerson = await personService.update(personExists.id, {
         name: newName,
         number: phoneNumber,
-      })
-      .then((returnedPerson) => {
-        setPersons([...persons, returnedPerson]);
-        setNewName("");
-        setPhoneNumber("");
       });
+
+      const updatedPersons = persons.map((person) =>
+        person.id === returnedPerson.id
+          ? { ...person, number: returnedPerson.number }
+          : person
+      );
+      setPersons(updatedPersons);
+      resetPersonInputs();
+
+      return;
+    }
+    const returnedPerson = await personService.create({
+      name: newName,
+      number: phoneNumber,
+    });
+    setPersons([...persons, returnedPerson]);
+    resetPersonInputs();
   };
 
   const handleDeletePerson = async (id) => {
