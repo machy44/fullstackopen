@@ -1,4 +1,5 @@
 import { DeleteButton } from "./buttons";
+export { Notification } from "./Notification";
 
 export const Search = ({ value, onChange }) => {
   return (

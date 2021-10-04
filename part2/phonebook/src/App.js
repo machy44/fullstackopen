@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from "react";
-import { Title, Search, Form, Persons } from "./components";
+import { Title, Search, Form, Persons, Notification } from "./components";
 import personService from "./services/persons";
 
 const App = () => {
@@ -7,6 +7,8 @@ const App = () => {
   const [newName, setNewName] = useState("");
   const [phoneNumber, setPhoneNumber] = useState("");
   const [searchTerm, setSearchTerm] = useState("");
+  const [successMessage, setSuccessMessage] = useState(null);
+  const [errorMessage, setErrorMessage] = useState(null);
 
   useEffect(() => {
     const fetchPersons = async () => {
@@ -26,37 +28,61 @@ const App = () => {
     setPhoneNumber("");
   };
 
+  const resetMessageTimeout = () => {
+    setTimeout(() => {
+      setSuccessMessage(null);
+    }, 5000);
+  };
+
   const handleAddPerson = async (e) => {
     e.preventDefault();
-    const personExists = persons.find(
-      (person) => person.name.toLowerCase() === newName.toLowerCase()
-    );
-    if (personExists) {
-      const result = window.confirm(
-        `${newName} is already added to phonebook, replace the old number with a new one?`
+    try {
+      const personExists = persons.find(
+        (person) => person.name.toLowerCase() === newName.toLowerCase()
       );
-      if (result === false) return;
-      const returnedPerson = await personService.update(personExists.id, {
+      if (personExists) {
+        const result = window.confirm(
+          `${newName} is already added to phonebook, replace the old number with a new one?`
+        );
+        if (result === false) return;
+        const returnedPerson = await personService.update(personExists.id, {
+          name: newName,
+          number: phoneNumber,
+        });
+
+        const updatedPersons = persons.map((person) =>
+          person.id === returnedPerson.id
+            ? { ...person, number: returnedPerson.number }
+            : person
+        );
+        setPersons(updatedPersons);
+        resetPersonInputs();
+
+        setSuccessMessage(
+          `Updated number of ${returnedPerson.name} to ${returnedPerson.number}`
+        );
+        resetMessageTimeout();
+
+        return;
+      }
+
+      const returnedPerson = await personService.create({
         name: newName,
         number: phoneNumber,
       });
 
-      const updatedPersons = persons.map((person) =>
-        person.id === returnedPerson.id
-          ? { ...person, number: returnedPerson.number }
-          : person
-      );
-      setPersons(updatedPersons);
+      setPersons([...persons, returnedPerson]);
       resetPersonInputs();
-
-      return;
+      setSuccessMessage(`Added ${newName}`);
+      resetMessageTimeout();
+    } catch (e) {
+      setErrorMessage(
+        `Information of ${newName} has already been removed from server`
+      );
+      setTimeout(() => {
+        setErrorMessage(null);
+      }, 5000);
     }
-    const returnedPerson = await personService.create({
-      name: newName,
-      number: phoneNumber,
-    });
-    setPersons([...persons, returnedPerson]);
-    resetPersonInputs();
   };
 
   const handleDeletePerson = async (id) => {
@@ -76,6 +102,8 @@ const App = () => {
   return (
     <main>
       <Title>Phonebook</Title>
+      <Notification message={successMessage} className="success" />
+      <Notification message={errorMessage} className="error" />
       <Search value={searchTerm} onChange={handleSearchTermChange} />
       <Form onSubmit={handleAddPerson} title="Add New">
         <>
