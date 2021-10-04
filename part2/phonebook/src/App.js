@@ -28,10 +28,25 @@ const App = () => {
     setPhoneNumber("");
   };
 
-  const resetMessageTimeout = () => {
+  const resetSuccessMessageTimeout = () => {
     setTimeout(() => {
       setSuccessMessage(null);
     }, 5000);
+  };
+
+  const setupError = (newName) => {
+    setErrorMessage(
+      `Information of ${newName} has already been removed from server`
+    );
+    setTimeout(() => {
+      setErrorMessage(null);
+    }, 5000);
+
+    setPersons(
+      persons.filter(
+        (person) => person.name.toLowerCase() !== newName.toLowerCase()
+      )
+    );
   };
 
   const handleAddPerson = async (e) => {
@@ -61,7 +76,7 @@ const App = () => {
         setSuccessMessage(
           `Updated number of ${returnedPerson.name} to ${returnedPerson.number}`
         );
-        resetMessageTimeout();
+        resetSuccessMessageTimeout();
 
         return;
       }
@@ -74,14 +89,9 @@ const App = () => {
       setPersons([...persons, returnedPerson]);
       resetPersonInputs();
       setSuccessMessage(`Added ${newName}`);
-      resetMessageTimeout();
+      resetSuccessMessageTimeout();
     } catch (e) {
-      setErrorMessage(
-        `Information of ${newName} has already been removed from server`
-      );
-      setTimeout(() => {
-        setErrorMessage(null);
-      }, 5000);
+      setupError(newName);
     }
   };
 
