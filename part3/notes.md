@@ -8,3 +8,7 @@
 - https://dev.to/jjokah/submodules-a-git-repo-inside-a-git-repo-36l9
 
 - https://stackoverflow.com/questions/12514197/convert-a-git-folder-to-a-submodule-retrospectively
+
+## git remove node_modules from cache
+
+https://stackoverflow.com/a/50675909
