@@ -1,7 +1,12 @@
 const express = require("express");
+const cors = require("cors");
+const middlewares = require("./middlewares");
 
 const app = express();
+app.use(cors());
 app.use(express.json());
+
+app.use(middlewares.requestLogger);
 
 let notes = [
   {
@@ -76,6 +81,8 @@ app.post("/api/notes", (request, response) => {
 
   response.json(note);
 });
+
+app.use(middlewares.unknownEndpoint);
 
 const PORT = 3001;
 app.listen(PORT, () => {
