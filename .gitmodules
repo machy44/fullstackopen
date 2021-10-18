@@ -1,6 +1,6 @@
 [submodule "part3/phonebook-backend"]
 	path = part3/phonebook-backend
 	url = git@github.com:machy44/phonebook-backend.git
-[submodule "part3/notes-backend"]
-	path = part3/notes-backend
+[submodule "notes-backend"]
+	path = notes-backend
 	url = git@github.com:machy44/notes-backend.git
