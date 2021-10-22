@@ -12,3 +12,39 @@
 ## git remove node_modules from cache
 
 https://stackoverflow.com/a/50675909
+
+## node debugging
+
+`node --inspect index.js
+
+## mongodb
+
+- links
+
+  - https://docs.mongodb.com/manual/core/databases-and-collections/
+  - https://docs.mongodb.com/manual/core/document/
+
+- mongodb stores documents in collections. Collections are analogous to tables in relational databases.
+
+- BSON is binary representation of JSON
+- Documents are composed of field-and-value pairs
+
+```javascript
+{
+  field: value1,
+  field2: value2,
+  ...
+  ...
+  fieldN: valueN
+}
+```
+
+- value of a field ca be any of BSON data types(https://docs.mongodb.com/manual/reference/bson-types/), **including other documents, arrays, and arrays of documents**
+
+- dot notation is used to access certain element in array
+- maximum BSON documentssize is 16 mb
+- unlike js objects, the fields in a BSON document are ordered
+
+## mongodb service
+
+https://cloud.mongodb.com
