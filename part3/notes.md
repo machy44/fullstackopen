@@ -48,3 +48,14 @@ https://stackoverflow.com/a/50675909
 ## mongodb service
 
 https://cloud.mongodb.com
+
+## mongoose
+
+### schema
+
+- each schema maps to a mongodb collection and defines the shape of the documents within that collection
+
+### model
+
+- fancy constructors compiled from Schema definitions. An instance of a model is called a **_document_**
+- models are responsible for creating and reading documents from the underlying mongodb database
