@@ -34,10 +34,8 @@ const App = () => {
     }, 5000);
   };
 
-  const setupError = (newName) => {
-    setErrorMessage(
-      `Information of ${newName} has already been removed from server`
-    );
+  const setupError = (errorMessage) => {
+    setErrorMessage(errorMessage);
     setTimeout(() => {
       setErrorMessage(null);
     }, 5000);
@@ -91,7 +89,8 @@ const App = () => {
       setSuccessMessage(`Added ${newName}`);
       resetSuccessMessageTimeout();
     } catch (e) {
-      setupError(newName);
+      console.log(e);
+      setupError(e.response.data.error);
     }
   };
 
