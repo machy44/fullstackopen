@@ -4,3 +4,6 @@
 [submodule "notes-backend"]
 	path = notes-backend
 	url = git@github.com:machy44/notes-backend.git
+[submodule "part4/blog-list"]
+	path = part4/blog-list
+	url = git@github.com:machy44/blog-list.git
