@@ -1,1 +1,3 @@
-- [ ] sredi jos tablicu
+## TODO
+
+-mostBlogs and mostLikes with lodash
