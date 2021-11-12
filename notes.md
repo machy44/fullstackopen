@@ -15,3 +15,5 @@ run tests only in that file
 `npm test -- tests/note_api.test.js`
 
 NB(nota bene): When running a single test, the mongoose connection might stay open if no tests using the connection are run. The problem might be due to the fact that supertest primes the connection, but Jest does not run the afterAll portion of the code.
+
+We also added the runInBand option to the npm script that executes the tests. This option will prevent Jest from running tests in parallel; we will discuss its significance once our tests start using the database. -> runInBand can be useful for debugging also
