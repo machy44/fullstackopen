@@ -51,6 +51,11 @@ https://cloud.mongodb.com
 
 ## mongoose
 
+Traditionally document databases like Mongo do not support join queries that are available in relational databases, used for aggregating data from multiple tables. However starting from version 3.2. Mongo has supported lookup aggregation queries. We will not be taking a look at this functionality in this course.
+
+If we need a functionality similar to join queries, we will implement it in our application code by making multiple queries.
+In certain situations Mongoose can take care of joining and aggregating data, which gives the appearance of a join query. However, even in these situations Mongoose makes multiple queries to the database in the background.
+
 ### schema
 
 - each schema maps to a mongodb collection and defines the shape of the documents within that collection
