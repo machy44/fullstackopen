@@ -56,6 +56,8 @@ Traditionally document databases like Mongo do not support join queries that are
 If we need a functionality similar to join queries, we will implement it in our application code by making multiple queries.
 In certain situations Mongoose can take care of joining and aggregating data, which gives the appearance of a join query. However, even in these situations Mongoose makes multiple queries to the database in the background.
 
+As previously mentioned, document databases do not properly support join queries between collections, but the Mongoose library can do some of these joins for us. Mongoose accomplishes the join by doing multiple queries, which is different from join queries in relational databases which are transactional, meaning that the state of the database does not change during the time that the query is made. With join queries in Mongoose, nothing can guarantee that the state between the collections being joined is consistent, meaning that if we make a query that joins the user and notes collections, the state of the collections may change during the query.
+
 ### schema
 
 - each schema maps to a mongodb collection and defines the shape of the documents within that collection
