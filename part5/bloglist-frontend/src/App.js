@@ -2,12 +2,17 @@ import React, { useState, useEffect } from 'react';
 import Blog from './components/Blog';
 import { LoginForm } from './components/LoginForm';
 import { CreateBlogForm } from './components/CreateBlogForm';
+import {
+  ErrorNotification,
+  SuccessNotification,
+} from './components/Notification';
 import blogService from './services/blogs';
 import loginService from './services/login';
 
 const App = () => {
   const [blogs, setBlogs] = useState([]);
   const [user, setUser] = useState(null);
+  const [notification, setNotification] = useState(null);
 
   useEffect(() => {
     blogService.getAll().then((blogs) => setBlogs(blogs));
@@ -29,7 +34,11 @@ const App = () => {
       window.localStorage.setItem('loggedInBlogListUser', JSON.stringify(user));
       setUser(user);
     } catch (error) {
-      console.error(error.message);
+      console.log(error);
+      setNotification('Wrong username or password');
+      setTimeout(() => {
+        setNotification(null);
+      }, 5000);
     }
   };
 
@@ -37,6 +46,12 @@ const App = () => {
     event.preventDefault();
     const returnedBlog = await blogService.create(blogData);
     setBlogs(blogs.concat(returnedBlog));
+    setNotification(
+      `a new blog ${returnedBlog.title} by ${returnedBlog.author}`
+    );
+    setTimeout(() => {
+      setNotification(null);
+    }, 5000);
   };
 
   const handleLogout = () => {
@@ -45,12 +60,18 @@ const App = () => {
   };
 
   if (user === null) {
-    return <LoginForm handleSubmit={handleLogin} />;
+    return (
+      <>
+        {notification && <ErrorNotification message={notification} />}
+        <LoginForm handleSubmit={handleLogin} />;
+      </>
+    );
   }
 
   return (
     <div>
       <h2>blogs</h2>
+      {notification && <SuccessNotification message={notification} />}
       <p>{user.name} is logged in</p>
       <button onClick={handleLogout}>logout</button>
       <CreateBlogForm handleSubmit={handleCreate} />
