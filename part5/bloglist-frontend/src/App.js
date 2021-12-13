@@ -35,6 +35,13 @@ const App = () => {
     }, 5000);
   };
 
+  const setupNotification = (message) => {
+    setNotification(message);
+    setTimeout(() => {
+      setNotification(null);
+    }, 5000);
+  };
+
   const handleLogin = async (event, username, password) => {
     event.preventDefault();
     try {
@@ -51,12 +58,9 @@ const App = () => {
     try {
       const returnedBlog = await blogService.create(blogData);
       setBlogs(blogs.concat(returnedBlog));
-      setNotification(
+      setupNotification(
         `a new blog ${returnedBlog.title} by ${returnedBlog.author}`
       );
-      setTimeout(() => {
-        setNotification(null);
-      }, 5000);
     } catch {
       setupError('Creation unsuccessful. Try again!');
     }
