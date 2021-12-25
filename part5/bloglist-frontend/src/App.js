@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, useRef } from 'react';
 import {
   LoginForm,
   Blog,
@@ -16,6 +16,7 @@ const App = () => {
   const [user, setUser] = useState(null);
   const [notification, setNotification] = useState(null);
   const [errorMessage, setErrorMessage] = useState(null);
+  const blogFormRef = useRef();
 
   useEffect(() => {
     blogService.getAll().then((blogs) => setBlogs(blogs));
@@ -59,6 +60,7 @@ const App = () => {
   const handleCreate = async (event, blogData) => {
     event.preventDefault();
     try {
+      blogFormRef.current.toggleVisibility();
       const returnedBlog = await blogService.create(blogData);
       setBlogs(blogs.concat(returnedBlog));
       setupNotification(
@@ -90,7 +92,7 @@ const App = () => {
       {errorMessage && <ErrorNotification message={errorMessage} />}
       <p>{user.name} is logged in</p>
       <button onClick={handleLogout}>logout</button>
-      <Togglable buttonLabel="create new blog">
+      <Togglable buttonLabel="create new blog" ref={blogFormRef}>
         <CreateBlogForm handleSubmit={handleCreate} />
       </Togglable>
       {blogs.map((blog) => (
