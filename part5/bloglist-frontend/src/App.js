@@ -1,11 +1,13 @@
 import React, { useState, useEffect } from 'react';
-import Blog from './components/Blog';
-import { LoginForm } from './components/LoginForm';
-import { CreateBlogForm } from './components/CreateBlogForm';
 import {
+  LoginForm,
+  Blog,
+  CreateBlogForm,
   ErrorNotification,
   SuccessNotification,
-} from './components/Notification';
+  Togglable,
+} from './components';
+
 import blogService from './services/blogs';
 import loginService from './services/login';
 
@@ -14,7 +16,6 @@ const App = () => {
   const [user, setUser] = useState(null);
   const [notification, setNotification] = useState(null);
   const [errorMessage, setErrorMessage] = useState(null);
-  
 
   useEffect(() => {
     blogService.getAll().then((blogs) => setBlogs(blogs));
@@ -48,6 +49,7 @@ const App = () => {
     try {
       const user = await loginService.login({ username, password });
       window.localStorage.setItem('loggedInBlogListUser', JSON.stringify(user));
+      loginService.setToken(user.token);
       setUser(user);
     } catch (error) {
       setupError('Wrong username or password');
@@ -76,7 +78,7 @@ const App = () => {
     return (
       <>
         {errorMessage && <ErrorNotification message={errorMessage} />}
-        <LoginForm handleSubmit={handleLogin} />;
+        <LoginForm handleSubmit={handleLogin} />
       </>
     );
   }
@@ -88,7 +90,9 @@ const App = () => {
       {errorMessage && <ErrorNotification message={errorMessage} />}
       <p>{user.name} is logged in</p>
       <button onClick={handleLogout}>logout</button>
-      <CreateBlogForm handleSubmit={handleCreate} />
+      <Togglable buttonLabel="create new blog">
+        <CreateBlogForm handleSubmit={handleCreate} />
+      </Togglable>
       {blogs.map((blog) => (
         <Blog key={blog.id} blog={blog} />
       ))}

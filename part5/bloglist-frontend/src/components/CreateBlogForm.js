@@ -1,6 +1,6 @@
 import React, { useState } from 'react';
 
-export const CreateBlogForm = ({ handleSubmit }) => {
+const CreateBlogForm = ({ handleSubmit }) => {
   const [title, setTitle] = useState('');
   const [author, setAuthor] = useState('');
   const [url, setUrl] = useState('');
@@ -48,3 +48,5 @@ export const CreateBlogForm = ({ handleSubmit }) => {
     </>
   );
 };
+
+export default CreateBlogForm;
