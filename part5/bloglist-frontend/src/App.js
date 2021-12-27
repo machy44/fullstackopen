@@ -50,7 +50,7 @@ const App = () => {
     try {
       const user = await loginService.login({ username, password });
       window.localStorage.setItem('loggedInBlogListUser', JSON.stringify(user));
-      loginService.setToken(user.token);
+      blogService.setToken(user.token);
       setUser(user);
     } catch (error) {
       setupError('Wrong username or password');
