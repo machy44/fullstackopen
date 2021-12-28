@@ -7,13 +7,13 @@ const BlogMainInfo = ({ blog }) => {
     </span>
   );
 };
-const BlogDetails = ({ blog }) => {
+const BlogDetails = ({ blog, handleLikeClick }) => {
   return (
     <>
       <div>{blog.url}</div>
       <div>
         likes {blog.likes}
-        <button onClick={() => console.log('like')}>like</button>
+        <button onClick={() => handleLikeClick(blog)}>like</button>
       </div>
       <div>{blog.user.username}</div>
     </>
@@ -28,7 +28,7 @@ const blogStyle = {
   marginBottom: 5,
 };
 
-const Blog = ({ blog }) => {
+const Blog = ({ blog, handleLikeClick }) => {
   const [visible, setVisible] = useState(false);
 
   const toggleVisibility = () => {
@@ -42,7 +42,7 @@ const Blog = ({ blog }) => {
       {visible && (
         <>
           <button onClick={toggleVisibility}>hide</button>
-          <BlogDetails blog={blog} />
+          <BlogDetails blog={blog} handleLikeClick={handleLikeClick} />
         </>
       )}
     </div>

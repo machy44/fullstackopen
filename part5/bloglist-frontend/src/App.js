@@ -7,6 +7,7 @@ import {
   SuccessNotification,
   Togglable,
 } from './components';
+import { replaceAt } from './utils';
 
 import blogService from './services/blogs';
 import loginService from './services/login';
@@ -76,6 +77,17 @@ const App = () => {
     window.localStorage.removeItem('loggedInBlogListUser');
   };
 
+  const handleLikeClick = async (blogData) => {
+    try {
+      const returnedBlog = await blogService.incrementLike(blogData);
+      const index = blogs.findIndex((blog) => blog.id === returnedBlog.id);
+      const returnedBlogWithUser = { ...returnedBlog, user: blogData.user };
+      setBlogs(replaceAt(blogs, index, returnedBlogWithUser));
+    } catch {
+      setupError('Update unsuccessful. Try again!');
+    }
+  };
+
   if (user === null) {
     return (
       <>
@@ -96,7 +108,7 @@ const App = () => {
         <CreateBlogForm handleSubmit={handleCreate} />
       </Togglable>
       {blogs.map((blog) => (
-        <Blog key={blog.id} blog={blog} />
+        <Blog key={blog.id} blog={blog} handleLikeClick={handleLikeClick} />
       ))}
     </div>
   );
