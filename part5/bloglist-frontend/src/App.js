@@ -63,7 +63,8 @@ const App = () => {
     try {
       blogFormRef.current.toggleVisibility();
       const returnedBlog = await blogService.create(blogData);
-      setBlogs(blogs.concat(returnedBlog));
+      const blogsWithUsers = await blogService.getAll();
+      setBlogs(blogsWithUsers);
       setupNotification(
         `a new blog ${returnedBlog.title} by ${returnedBlog.author}`
       );
