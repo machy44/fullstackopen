@@ -89,6 +89,15 @@ const App = () => {
     }
   };
 
+  const handleDelete = async (blog) => {
+    const result = window.confirm(
+      `Remove ${blog.title} by ${blog.user.username}`
+    );
+    if (result === false) return;
+    await blogService.removeBlog(blog.id);
+    setBlogs(blogs.filter((b) => b.id !== blog.id));
+  };
+
   if (user === null) {
     return (
       <>
@@ -112,7 +121,13 @@ const App = () => {
         blogs
           .sort((a, b) => b.likes - a.likes)
           .map((blog) => (
-            <Blog key={blog.id} blog={blog} handleLikeClick={handleLikeClick} />
+            <Blog
+              key={blog.id}
+              blog={blog}
+              handleLikeClick={handleLikeClick}
+              handleDelete={handleDelete}
+              user={user}
+            />
           ))}
     </div>
   );

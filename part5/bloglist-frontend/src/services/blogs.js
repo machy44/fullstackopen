@@ -32,10 +32,15 @@ const incrementLike = async (blog) => {
   return response.data;
 };
 
+const removeBlog = async (id) => {
+  const response = await axios.delete(`${baseUrl}/${id}`, setupConfig());
+  return response;
+};
+
 const create = async (newBlog) => {
   const response = await axios.post(baseUrl, newBlog, setupConfig());
   return response.data;
 };
 
 // eslint-disable-next-line import/no-anonymous-default-export
-export default { getAll, create, setToken, incrementLike };
+export default { getAll, create, setToken, incrementLike, removeBlog };
