@@ -126,7 +126,7 @@ const App = () => {
               blog={blog}
               handleLikeClick={handleLikeClick}
               handleDelete={handleDelete}
-              user={user}
+              userCreatedBlog={user.username === blog.user.username}
             />
           ))}
     </div>

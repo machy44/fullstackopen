@@ -28,7 +28,7 @@ const blogStyle = {
   marginBottom: 5,
 };
 
-const Blog = ({ blog, handleLikeClick, handleDelete, user }) => {
+const Blog = ({ blog, handleLikeClick, handleDelete, userCreatedBlog }) => {
   const [visible, setVisible] = useState(false);
 
   const toggleVisibility = () => {
@@ -43,7 +43,7 @@ const Blog = ({ blog, handleLikeClick, handleDelete, user }) => {
         <>
           <button onClick={toggleVisibility}>hide</button>
           <BlogDetails blog={blog} handleLikeClick={handleLikeClick} />
-          {user.username === blog.user.username && (
+          {userCreatedBlog && (
             <button onClick={() => handleDelete(blog)}>remove</button>
           )}
         </>
