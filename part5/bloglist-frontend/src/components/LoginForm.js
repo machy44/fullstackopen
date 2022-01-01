@@ -14,7 +14,7 @@ const LoginForm = ({ handleSubmit }) => {
       <h1>login to application</h1>
       <form onSubmit={onSubmit}>
         <div>
-          <label for="name">username: </label>
+          <label htmlFor="name">username: </label>
           <input
             id="name"
             name="name"
@@ -23,7 +23,7 @@ const LoginForm = ({ handleSubmit }) => {
           />
         </div>
         <div>
-          <label for="password">password: </label>
+          <label htmlFor="password">password: </label>
           <input
             id="password"
             name="password"

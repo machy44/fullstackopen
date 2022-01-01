@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import PropTypes, { string } from 'prop-types';
+import PropTypes from 'prop-types';
 
 
 const BlogMainInfo = ({ blog }) => {
@@ -37,7 +37,6 @@ const Blog = ({ blog, handleLikeClick, handleDelete, userCreatedBlog }) => {
     setVisible(!visible);
   };
 
-  console.log(blog)
 
   return (
     <div style={blogStyle}>

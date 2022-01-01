@@ -68,7 +68,7 @@ const App = () => {
       setupNotification(
         `a new blog ${returnedBlog.title} by ${returnedBlog.author}`
       );
-    } catch {
+    } catch(e) {
       setupError('Creation unsuccessful. Try again!');
     }
   };
@@ -84,7 +84,7 @@ const App = () => {
       const index = blogs.findIndex((blog) => blog.id === returnedBlog.id);
       const returnedBlogWithUser = { ...returnedBlog, user: blogData.user };
       setBlogs(replaceAt(blogs, index, returnedBlogWithUser));
-    } catch {
+    } catch(e) {
       setupError('Update unsuccessful. Try again!');
     }
   };
