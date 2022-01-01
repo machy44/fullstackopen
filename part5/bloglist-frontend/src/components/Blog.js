@@ -1,4 +1,6 @@
 import React, { useState } from 'react';
+import PropTypes, { string } from 'prop-types';
+
 
 const BlogMainInfo = ({ blog }) => {
   return (
@@ -35,6 +37,8 @@ const Blog = ({ blog, handleLikeClick, handleDelete, userCreatedBlog }) => {
     setVisible(!visible);
   };
 
+  console.log(blog)
+
   return (
     <div style={blogStyle}>
       <BlogMainInfo blog={blog} />
@@ -51,5 +55,23 @@ const Blog = ({ blog, handleLikeClick, handleDelete, userCreatedBlog }) => {
     </div>
   );
 };
+
+Blog.propTypes = {
+  blog: PropTypes.shape({
+    title: PropTypes.string,
+    likes: PropTypes.number,
+    id: PropTypes.string,
+    url: PropTypes.string,
+    author: PropTypes.string,
+    user: PropTypes.shape({
+      id: PropTypes.string,
+      username: PropTypes.string,
+      name: PropTypes.string
+    })
+  }).isRequired,
+  handleLikeClick: PropTypes.func.isRequired,
+  handleDelete: PropTypes.func.isRequired,
+  userCreatedBlog: PropTypes.bool.isRequired
+}
 
 export default Blog;
