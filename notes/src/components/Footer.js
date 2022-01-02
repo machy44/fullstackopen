@@ -1,4 +1,4 @@
-import React from 'react'
+import React from 'react';
 
 export const Footer = () => {
   const footerStyle = { color: 'green', fontStyle: 'italic', fontSize: 16 };
