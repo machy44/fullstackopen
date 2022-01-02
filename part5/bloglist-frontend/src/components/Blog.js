@@ -55,22 +55,26 @@ const Blog = ({ blog, handleLikeClick, handleDelete, userCreatedBlog }) => {
   );
 };
 
+const UserType = PropTypes.shape({
+  id: PropTypes.string,
+  username: PropTypes.string,
+  name: PropTypes.string
+});
+
+const BlogType = PropTypes.shape({
+  title: PropTypes.string,
+  likes: PropTypes.number,
+  id: PropTypes.string,
+  url: PropTypes.string,
+  author: PropTypes.string,
+  user: UserType
+});
+
 Blog.propTypes = {
-  blog: PropTypes.shape({
-    title: PropTypes.string,
-    likes: PropTypes.number,
-    id: PropTypes.string,
-    url: PropTypes.string,
-    author: PropTypes.string,
-    user: PropTypes.shape({
-      id: PropTypes.string,
-      username: PropTypes.string,
-      name: PropTypes.string
-    })
-  }).isRequired,
+  blog: BlogType.isRequired,
   handleLikeClick: PropTypes.func.isRequired,
   handleDelete: PropTypes.func.isRequired,
   userCreatedBlog: PropTypes.bool.isRequired
-}
+};
 
 export default Blog;
