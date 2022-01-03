@@ -1,6 +1,6 @@
 import React, { useState } from 'react';
 
-const CreateBlogForm = ({ handleSubmit }) => {
+export const CreateBlogForm = ({ handleSubmit }) => {
   const [title, setTitle] = useState('');
   const [author, setAuthor] = useState('');
   const [url, setUrl] = useState('');
@@ -15,7 +15,7 @@ const CreateBlogForm = ({ handleSubmit }) => {
   return (
     <>
       <h1>create New</h1>
-      <form onSubmit={onSubmit}>
+      <form onSubmit={onSubmit} data-testid="create-blog-form">
         <div>
           <label htmlFor="title">title: </label>
           <input
@@ -49,4 +49,3 @@ const CreateBlogForm = ({ handleSubmit }) => {
   );
 };
 
-export default CreateBlogForm;

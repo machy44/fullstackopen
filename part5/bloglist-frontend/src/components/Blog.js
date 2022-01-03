@@ -30,7 +30,7 @@ const blogStyle = {
   marginBottom: 5,
 };
 
-const Blog = ({ blog, handleLikeClick, handleDelete, userCreatedBlog }) => {
+export const Blog = ({ blog, handleLikeClick, handleDelete, userCreatedBlog }) => {
   const [visible, setVisible] = useState(false);
 
   const toggleVisibility = () => {
@@ -77,4 +77,4 @@ Blog.propTypes = {
   userCreatedBlog: PropTypes.bool.isRequired
 };
 
-export default Blog;
+

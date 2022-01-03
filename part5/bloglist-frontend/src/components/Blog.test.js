@@ -1,7 +1,7 @@
 import React from 'react';
 import '@testing-library/jest-dom/extend-expect';
 import { render, screen, fireEvent } from '@testing-library/react';
-import Blog from './Blog';
+import { Blog } from './Blog';
 
 const mockedBlog = {
   'title': 'myths-about-useeffect',
