@@ -4,21 +4,21 @@ import PropTypes from 'prop-types';
 
 const BlogMainInfo = ({ blog }) => {
   return (
-    <span>
+    <span data-testid="blog-main-info">
       {blog.title} {blog.author}
     </span>
   );
 };
 const BlogDetails = ({ blog, handleLikeClick }) => {
   return (
-    <>
+    <div data-testid="blog-details">
       <div>{blog.url}</div>
       <div>
         likes {blog.likes}
         <button onClick={() => handleLikeClick(blog)}>like</button>
       </div>
       <div>{blog.user.username}</div>
-    </>
+    </div>
   );
 };
 
@@ -41,7 +41,7 @@ const Blog = ({ blog, handleLikeClick, handleDelete, userCreatedBlog }) => {
   return (
     <div style={blogStyle}>
       <BlogMainInfo blog={blog} />
-      {!visible && <button onClick={toggleVisibility}>view</button>}
+      {!visible && <button data-testid="toggle-visibility-button" onClick={toggleVisibility}>view</button>}
       {visible && (
         <>
           <button onClick={toggleVisibility}>hide</button>
