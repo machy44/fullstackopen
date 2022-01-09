@@ -22,7 +22,8 @@
     "server": "json-server -p3001 --watch db.json",
     "eslint": "eslint .",
     "eslint:fix": "eslint --fix --ext .js,.jsx .",
-    "cypress:open": "cypress open"
+    "cypress:open": "cypress open",
+    "test:e2e": "cypress run"
   },
   "eslintConfig": {
     "extends": [
