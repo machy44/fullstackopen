@@ -19,6 +19,7 @@ export const CreateBlogForm = ({ handleSubmit }) => {
         <div>
           <label htmlFor="title">title: </label>
           <input
+            data-testid="title"
             id="title"
             name="title"
             value={title}
@@ -28,6 +29,7 @@ export const CreateBlogForm = ({ handleSubmit }) => {
         <div>
           <label htmlFor="author">author: </label>
           <input
+            data-testid="author"
             id="author"
             name="author"
             value={author}
@@ -37,13 +39,14 @@ export const CreateBlogForm = ({ handleSubmit }) => {
         <div>
           <label htmlFor="author">url: </label>
           <input
+            data-testid="url"
             id="url"
             name="url"
             value={url}
             onChange={({ target }) => setUrl(target.value)}
           />
         </div>
-        <button type="submit">create</button>
+        <button data-testid="new-blog-form-submit" type="submit">create</button>
       </form>
     </>
   );

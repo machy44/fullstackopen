@@ -16,6 +16,7 @@ const LoginForm = ({ handleSubmit }) => {
         <div>
           <label htmlFor="name">username: </label>
           <input
+            data-testid="username"
             id="name"
             name="name"
             value={username}
@@ -25,13 +26,14 @@ const LoginForm = ({ handleSubmit }) => {
         <div>
           <label htmlFor="password">password: </label>
           <input
+            data-testid="password"
             id="password"
             name="password"
             value={password}
             onChange={({ target }) => setPassword(target.value)}
           />
         </div>
-        <button type="submit">login</button>
+        <button data-testid="submit" type="submit">login</button>
       </form>
     </>
   );
