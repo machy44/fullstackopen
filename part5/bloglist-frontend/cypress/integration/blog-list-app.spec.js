@@ -32,7 +32,7 @@ describe('blog-list app', function() {
           username: 'mluukkai', password: 'salainen'
         });
       });
-      it.only('A blog can be created', function() {
+      it('A blog can be created', function() {
         cy.contains('create new blog').click();
         cy.get('[data-testid=title]').type('cypress');
         cy.get('[data-testid=author]').type('cypress');
@@ -40,7 +40,31 @@ describe('blog-list app', function() {
         cy.get('[data-testid=new-blog-form-submit]').click();
 
         cy.get('[data-testid=success]').should('contain', 'a new blog cypress by cypress').and('have.css', 'border-color', 'rgb(0, 128, 0)');
+      });
 
+      describe('several blogs exist', function() {
+        beforeEach(function() {
+          cy.createBlog({
+            title: 'cypress blog',
+            author: 'cypress created',
+            url:'cypress blog url'
+          });
+        });
+        it('should like a blog', function () {
+          cy.get('[data-testid=toggle-visibility-button]').click();
+          cy.contains('likes 0');
+          cy.get('[data-testid=blog-likes]').find('button').click();
+          cy.contains('likes 1');
+        });
+        it.only('should delete a blog', function () {
+          cy.get('[data-testid=toggle-visibility-button]').click();
+          cy.get('[data-testid=remove-button]').should('be.visible');
+          cy.get('[data-testid=remove-button]').click();
+          cy.get('[data-testid=blog-main-info]').should('not.exist');
+        });
+        it('other users cannot delete the blog', function() {});
+        it('should delete a blog', function () {});
+        it('blogs should be ordered by number of likes', function () {});
       });
     });
   });

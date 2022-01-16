@@ -13,7 +13,7 @@ const BlogDetails = ({ blog, handleLikeClick }) => {
   return (
     <div data-testid="blog-details">
       <div>{blog.url}</div>
-      <div>
+      <div data-testid="blog-likes">
         likes {blog.likes}
         <button onClick={() => handleLikeClick(blog)}>like</button>
       </div>
@@ -47,7 +47,7 @@ export const Blog = ({ blog, handleLikeClick, handleDelete, userCreatedBlog }) =
           <button onClick={toggleVisibility}>hide</button>
           <BlogDetails blog={blog} handleLikeClick={handleLikeClick} />
           {userCreatedBlog && (
-            <button onClick={() => handleDelete(blog)}>remove</button>
+            <button data-testid="remove-button" onClick={() => handleDelete(blog)}>remove</button>
           )}
         </>
       )}
