@@ -33,6 +33,31 @@ Cypress.Commands.add('login', ({ username, password }) => {
   });});
 
 
+Cypress.Commands.add('logout', () => {
+  localStorage.removeItem('loggedInBlogListUser');
+});
+
+Cypress.Commands.add('createUser', () => {
+  const user = {
+    name: 'Matti Luukkainen',
+    username: 'mluukkai',
+    password: 'salainen'
+  };
+
+  cy.request('POST', 'http://localhost:3001/api/users/', user);
+  cy.visit('http://localhost:3000');
+});
+
+Cypress.Commands.add('createSecondaryUser', () => {
+  const user = {
+    name: 'Test test',
+    username: 'test',
+    password: 'test'
+  };
+  cy.request('POST', 'http://localhost:3001/api/users/', user);
+});
+
+
 Cypress.Commands.add('createBlog', ({ title, author, url }) => {
   cy.request({
     url: 'http://localhost:3001/api/blogs',
@@ -42,6 +67,5 @@ Cypress.Commands.add('createBlog', ({ title, author, url }) => {
       'Authorization': `bearer ${JSON.parse(localStorage.getItem('loggedInBlogListUser')).token}`
     }
   });
-
   cy.visit('http://localhost:3000');
 });
