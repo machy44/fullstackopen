@@ -20,4 +20,10 @@ describe('anecdoteReducer', () => {
     deepFreeze(updatedState);
     expect(updatedState[1].votes).toBe(1);
   })
+  test('add new anecdote', () => {
+
+  });
+  test('anecdotes are ordered by number of votes', () => {
+
+  });
 })
