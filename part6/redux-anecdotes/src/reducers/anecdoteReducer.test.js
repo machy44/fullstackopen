@@ -1,4 +1,4 @@
-import anecdoteReducer, { incrementVote } from './anecdoteReducer'
+import anecdoteReducer, { incrementVote, addNewNote } from './anecdoteReducer'
 import deepFreeze from 'deep-freeze'
 
 
@@ -21,6 +21,9 @@ describe('anecdoteReducer', () => {
     expect(updatedState[1].votes).toBe(1);
   })
   test('add new anecdote', () => {
+    let updatedState = anecdoteReducer(undefined, addNewNote("test anecdote"));
+    deepFreeze(updatedState);
+    expect(updatedState[updatedState.length - 1].content).toBe("test anecdote")
 
   });
   test('anecdotes are ordered by number of votes', () => {
