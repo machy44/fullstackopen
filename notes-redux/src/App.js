@@ -1,10 +1,10 @@
-import { NewNote } from "./components/NewNote"
-import { Notes } from "./components/Notes"
+import { NewNote, VisibilityFilter, Notes } from "./components"
 
 const App = () => {
   return (
     <div>
       <NewNote />
+      <VisibilityFilter />
       <Notes />
     </div>
   )
