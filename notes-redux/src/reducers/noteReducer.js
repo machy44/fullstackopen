@@ -28,17 +28,12 @@ export const initializeNotes = (notes) => {
   };
 };
 
-const generateId = () =>
-  Math.floor(Math.random() * 1000000);
 
-export const createNote = (content) => {
+
+export const createNote = (data) => {
   return {
     type: 'NEW_NOTE',
-    data: {
-      content,
-      important: false,
-      id: generateId()
-    }
+    data,
   };
 };
 

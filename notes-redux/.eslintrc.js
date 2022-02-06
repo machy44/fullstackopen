@@ -17,9 +17,11 @@ module.exports = {
       'sourceType': 'module'
   },
   'plugins': [
-      'react', 'jest'
+      'react', 'jest', "react-hooks"
   ],
   'rules': {
+    "react-hooks/rules-of-hooks": "error", // Checks rules of Hooks
+    "react-hooks/exhaustive-deps": "warn", // Checks effect dependencies
       'indent': [
           'error',
           2  

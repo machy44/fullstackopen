@@ -10,7 +10,8 @@ const App = () => {
   useEffect(() => {
     noteService.getAll().then(notes =>
       dispatch(initializeNotes(notes)));
-  }, []);
+  }, [dispatch]);
+
   return (
     <div>
       <NewNote />

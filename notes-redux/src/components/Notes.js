@@ -19,7 +19,8 @@ export const Notes = () => {
     }
     return state.filter  === 'IMPORTANT'
       ? state.notes.filter(note => note.important)
-      : state.notes.filter(note => !note.important);  });
+      : state.notes.filter(note => !note.important);
+  });
 
 
   return (
