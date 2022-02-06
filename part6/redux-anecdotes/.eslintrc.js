@@ -17,7 +17,7 @@ module.exports = {
   rules: {
     // TODO: research this
     // 'prettier/prettier': 'error', // Error while loading rule 'prettier/prettier': context.getPhysicalFilename is not a function Occurred while linting /Users/five/Desktop/fullstackopen/part6/redux-anecdotes/src/components/AnecdoteList.test.js
-    indent: ['error', 2],
+    // indent: ['error', 2],
     'linebreak-style': ['error', 'unix'],
     quotes: ['error', 'single'],
     semi: ['error', 'always'],

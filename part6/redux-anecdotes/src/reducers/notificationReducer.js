@@ -3,12 +3,12 @@ const HIDE_NOTIFICATION = 'HIDE_NOTIFICATION';
 
 const notificationReducer = (state = '', action) => {
   switch (action.type) {
-  case SHOW_NOTIFICATION:
-    return action.data;
-  case HIDE_NOTIFICATION:
-    return '';
-  default:
-    return state;
+    case SHOW_NOTIFICATION:
+      return action.data;
+    case HIDE_NOTIFICATION:
+      return '';
+    default:
+      return state;
   }
 };
 
