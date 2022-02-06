@@ -8,18 +8,18 @@ const Note = ({ note, handleClick }) => {
       {note.content}
       <strong> {note.important ? 'important' : ''}</strong>
     </li>
-  )
-}
+  );
+};
 
 export const Notes = () => {
   const dispatch = useDispatch();
-  const notes = useSelector(state => {    
-    if ( state.filter === 'ALL' ) { 
-      return state.notes    
-    }    
-    return state.filter  === 'IMPORTANT'       
-    ? state.notes.filter(note => note.important)  
-    : state.notes.filter(note => !note.important)  })
+  const notes = useSelector(state => {
+    if ( state.filter === 'ALL' ) {
+      return state.notes;
+    }
+    return state.filter  === 'IMPORTANT'
+      ? state.notes.filter(note => note.important)
+      : state.notes.filter(note => !note.important);  });
 
 
   return (
@@ -34,5 +34,5 @@ export const Notes = () => {
         />
       )}
     </ul>
-  )
-}
+  );
+};
