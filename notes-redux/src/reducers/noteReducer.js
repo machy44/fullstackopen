@@ -1,4 +1,6 @@
 
+import noteService from '../services/notes';
+
 export const noteReducer = (state = [], action) => {
   console.log('ACTION: ', action);
   switch(action.type) {
@@ -21,12 +23,6 @@ export const noteReducer = (state = [], action) => {
   }
 };
 
-export const initializeNotes = (notes) => {
-  return {
-    type: 'INIT_NOTES',
-    data: notes,
-  };
-};
 
 
 
@@ -41,6 +37,16 @@ export  const toggleImportanceOf = (id) => {
   return {
     type: 'TOGGLE_IMPORTANCE',
     data: { id }
+  };
+};
+
+export const initializeNotes = () => {
+  return async dispatch => {
+    const notes = await noteService.getAll();
+    dispatch({
+      type: 'INIT_NOTES',
+      data: notes,
+    });
   };
 };
 
