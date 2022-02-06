@@ -18,7 +18,14 @@ function Anecdote({ anecdote, handleClick, dataTestId = '' }) {
 }
 
 export function AnecdoteList() {
-  const anecdotes = useSelector((state) => state.anecdotes);
+  const anecdotes = useSelector((state) => {
+    if (state.filter) {
+      return state.anecdotes.filter((anecdote) => {
+        return anecdote.content.includes(state.filter);
+      });
+    }
+    return state.anecdotes;
+  });
   const dispatch = useDispatch();
 
   const handleClick = (id, content) => {
