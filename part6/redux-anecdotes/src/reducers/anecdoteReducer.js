@@ -1,3 +1,5 @@
+import anecdoteService from '../services/anecdotes';
+
 const VOTE = 'VOTE';
 const ADD_NEW = 'ADD_NEW';
 const INIT_ANECDOTES = 'INIT_ANECDOTES';
@@ -30,15 +32,23 @@ export const incrementVote = (id) => ({
   },
 });
 
-export const addNewAnecdote = (data) => ({
-  type: ADD_NEW,
-  data,
-});
+export const addNewAnecdote = (content) => {
+  return async (dispatch) => {
+    const newAnecdote = await anecdoteService.createNew(content);
+    dispatch({
+      type: 'NEW_NOTE',
+      data: newAnecdote,
+    });
+  };
+};
 
-export const initializeAnecdotes = (notes) => {
-  return {
-    type: INIT_ANECDOTES,
-    data: notes,
+export const initializeAnecdotes = () => {
+  return async (dispatch) => {
+    const anecdotes = await anecdoteService.getAll();
+    dispatch({
+      type: INIT_ANECDOTES,
+      data: anecdotes,
+    });
   };
 };
 
