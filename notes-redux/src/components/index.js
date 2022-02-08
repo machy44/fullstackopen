@@ -1,3 +1,3 @@
-export { NewNote } from './NewNote';
-export { Notes } from './Notes';
+export { default as NewNote } from './NewNote';
+export { default as Notes } from './Notes';
 export { VisibilityFilter } from './VisibilityFilter';

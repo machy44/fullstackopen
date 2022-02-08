@@ -1,5 +1,5 @@
 import React from 'react';
-import { useDispatch, useSelector } from 'react-redux';
+import { connect } from 'react-redux';
 import { toggleImportanceOf } from '../reducers/noteReducer';
 
 const Note = ({ note, handleClick }) => {
@@ -11,16 +11,7 @@ const Note = ({ note, handleClick }) => {
   );
 };
 
-export const Notes = () => {
-  const dispatch = useDispatch();
-  const notes = useSelector(state => {
-    if ( state.filter === 'ALL' ) {
-      return state.notes;
-    }
-    return state.filter  === 'IMPORTANT'
-      ? state.notes.filter(note => note.important)
-      : state.notes.filter(note => !note.important);
-  });
+const Notes = ({ notes, toggleImportanceOf }) => {
 
 
   return (
@@ -30,10 +21,28 @@ export const Notes = () => {
           key={note.id}
           note={note}
           handleClick={() =>
-            dispatch(toggleImportanceOf(note.id))
+            toggleImportanceOf(note.id)
           }
         />
       )}
     </ul>
   );
 };
+
+
+const mapStateToProps = (state) => {
+  if ( state.filter === 'ALL' ) {
+    return {
+      notes: state.notes
+    };
+  }
+
+  return {
+    notes:  (state.filter  === 'IMPORTANT')
+      ? state.notes.filter(note => note.important)
+      : state.notes.filter(note => !note.important)
+  };
+};
+
+const mapDispatchToProps = {  toggleImportanceOf, };
+export default  connect(mapStateToProps, mapDispatchToProps)(Notes);
