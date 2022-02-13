@@ -3,13 +3,11 @@ import React, { useState } from 'react'
 import { CreateNew, About } from './pages';
 import {
   BrowserRouter as Router,
-  Switch,
   Route,
   Link,
-  Redirect,
   useRouteMatch,
-  useHistory,
-
+  Routes,
+  useMatch,
 } from "react-router-dom"
 
 const Menu = () => {
@@ -97,7 +95,7 @@ const App = () => {
     setAnecdotes(anecdotes.map(a => a.id === id ? voted : a))
   }
 
-  const match = useRouteMatch('/anecdotes/:id');
+  const match = useMatch('/anecdotes/:id');
   console.log({match});
     const anecdote = match     
     ? anecdotes.find(anecdote => Number(anecdote.id) === Number(match.params.id))
@@ -110,20 +108,12 @@ const App = () => {
       <h1>Software anecdotes</h1>
       
       <Menu />
-      <Switch>
-      <Route path="/anecdotes/:id" >
-      <Anecdote anecdote={anecdote}/>
-      </Route>
-      <Route path="/create">
-      <CreateNew addNew={addNew} />
-      </Route>
-      <Route path="/about">
-      <About />
-      </Route>
-      <Route path="/">
-       <AnecdoteList anecdotes={anecdotes} />
-      </Route>
-      </Switch>
+      <Routes>
+      <Route path="/anecdotes/:id" element={<Anecdote anecdote={anecdote}/>} />
+      <Route path="/create" element={<CreateNew addNew={addNew} />} />
+      <Route path="/about" element={<About />} />
+      <Route path="/" element={<AnecdoteList anecdotes={anecdotes} />} />
+      </Routes>
       
       <Footer />
     </div>
