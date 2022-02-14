@@ -1,11 +1,11 @@
 import React, { useState } from 'react'
 
 import { CreateNew, About } from './pages';
+import {Notification, Anecdote, AnecdoteList} from "./components";
 import {
   BrowserRouter as Router,
   Route,
   Link,
-  useRouteMatch,
   Routes,
   useMatch,
 } from "react-router-dom"
@@ -23,28 +23,6 @@ const Menu = () => {
   )
 }
 
-const Anecdote = ({anecdote}) => {
-  return <div>
-  <h1>{anecdote.content}</h1>
-  <h3>has {anecdote.votes}</h3>
-  </div>
-}
-
-const AnecdoteList = ({ anecdotes }) => (
-  <div>
-    <h2>Anecdotes</h2>
-    <ul>
-      {anecdotes.map(anecdote => (
-      <li key={anecdote.id} >
-        <Link to={`/anecdotes/${anecdote.id}`}>
-        {anecdote.content}
-        </Link>
-        </li>)
-      )}
-    </ul>
-  </div>
-)
-
 
 
 const Footer = () => (
@@ -55,6 +33,7 @@ const Footer = () => (
   </div>
 )
 
+let timerId;
 
 const App = () => {
   const [anecdotes, setAnecdotes] = useState([
@@ -74,11 +53,21 @@ const App = () => {
     }
   ])
 
-  const [notification, setNotification] = useState('')
+  const [notification, setNotification] = useState('');
+
+
+  const manageNotification = (content) => {
+    setNotification(`${content} created`);
+    if(timerId) clearTimeout(timerId);
+    timerId = setTimeout(() => {
+      setNotification("")
+    }, 5000)
+  }
 
   const addNew = (anecdote) => {
-    anecdote.id = (Math.random() * 10000).toFixed(0)
+    anecdote.id = (Math.random() * 10000).toFixed(0);
     setAnecdotes(anecdotes.concat(anecdote))
+    manageNotification(anecdote.content)
   }
 
   const anecdoteById = (id) =>
@@ -103,11 +92,13 @@ const App = () => {
 
   console.log({anecdote});
 
+
   return (
     <div>
       <h1>Software anecdotes</h1>
       
       <Menu />
+      <Notification content={notification}/>
       <Routes>
       <Route path="/anecdotes/:id" element={<Anecdote anecdote={anecdote}/>} />
       <Route path="/create" element={<CreateNew addNew={addNew} />} />

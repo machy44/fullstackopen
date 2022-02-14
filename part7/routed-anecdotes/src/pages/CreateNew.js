@@ -9,7 +9,7 @@ export const CreateNew = (props) => {
   const [content, setContent] = useState('')
   const [author, setAuthor] = useState('')
   const [info, setInfo] = useState('')
-  const navigate = useNavigate()
+  const navigate = useNavigate();
 
 
   const handleSubmit = (e) => {
