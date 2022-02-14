@@ -1,2 +1,2 @@
-export {About} from "./About"
-export {CreateNew} from "./CreateNew"
+export { About } from './About';
+export { CreateNew } from './CreateNew';
