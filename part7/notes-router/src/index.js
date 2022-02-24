@@ -1,5 +1,5 @@
 import ReactDOM from 'react-dom';
-import {App} from "./bootstrap"
+import {App} from "./material"
 import {
   BrowserRouter as Router,
 
