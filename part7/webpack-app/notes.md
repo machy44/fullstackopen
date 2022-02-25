@@ -30,6 +30,9 @@ If the configuration for development and production differs a lot, it may be a g
 
 We can inspect the bundled production version of the application locally by executing the following command in the build directory:
 
+```npx static-server```
+
+
 ## Diff between pollyfill and tranpsiler
 
 transpiler transpile new syntax to browser's understandable syntax.
