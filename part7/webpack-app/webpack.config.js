@@ -5,6 +5,30 @@ const config = {
   output: {
     path: path.resolve(__dirname, 'build'),
     filename: 'main.js'
+  },
+  devServer: {    
+    static: path.resolve(__dirname, 'build'), 
+    compress: true, 
+    port: 3000,
+  },
+  devtool: 'source-map',
+  module: {
+    rules: [
+      {
+        test: /\.js$/,
+        loader: "babel-loader",
+        options: {
+          // these are transpilers
+          // preset-env contains everything needed to take code using all 
+          // of the latest features and transpile it to code
+          presets: ['@babel/preset-env', '@babel/preset-react'] 
+        }
+      },
+      {
+        test: /\.css$/,
+        use: ['style-loader', 'css-loader'],
+      }
+    ]
   }
 }
 module.exports = config
