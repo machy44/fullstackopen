@@ -33,7 +33,7 @@ We can inspect the bundled production version of the application locally by exec
 ```npx static-server```
 
 
-## Diff between pollyfill and tranpsiler
+## Diff between pollyfill and tranpsiler  
 
 transpiler transpile new syntax to browser's understandable syntax.
 
