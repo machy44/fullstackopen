@@ -1,19 +1,24 @@
-import React, { useState } from 'react';
+import React from 'react';
 
-const App = () => {
-  const [counter, setCounter] = useState(0);
-  const [values, setValues] = useState([]);
-  const handleClick = () => {
-    setCounter(counter + 1);
-    setValues(values.concat(counter));
-  };
+class App extends React.Component {
+  constructor(props) {
+    super(props);
 
-  return (
-    <div className="container">
-      hello webpack {counter} clicks
-      <button onClick={handleClick}> press</button>
-    </div>
-  );
-};
+    this.state = { anecdotes: [], current: 0 };
+  }
+
+  render() {
+    if (this.state.anecdotes.length === 0) {
+      return <div>no anecdotes...</div>;
+    }
+
+    return (
+      <div className="container">
+        <h1>anecdote of the day</h1>
+        <div>{this.state.anecdotes[this.state.current].content} </div>
+      </div>
+    );
+  }
+}
 
 export default App;
