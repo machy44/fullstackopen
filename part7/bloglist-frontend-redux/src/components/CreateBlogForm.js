@@ -38,17 +38,12 @@ export const CreateBlogForm = ({ handleSubmit }) => {
         </div>
         <div>
           <label htmlFor="author">url: </label>
-          <input
-            data-testid="url"
-            id="url"
-            name="url"
-            value={url}
-            onChange={({ target }) => setUrl(target.value)}
-          />
+          <input data-testid="url" id="url" name="url" value={url} onChange={({ target }) => setUrl(target.value)} />
         </div>
-        <button data-testid="new-blog-form-submit" type="submit">create</button>
+        <button data-testid="new-blog-form-submit" type="submit">
+          create
+        </button>
       </form>
     </>
   );
 };
-

@@ -43,7 +43,9 @@
   "proxy": "http://localhost:3001",
   "devDependencies": {
     "cypress": "^9.2.1",
+    "eslint-config-prettier": "^8.5.0",
     "eslint-plugin-cypress": "^2.12.1",
-    "eslint-plugin-jest": "^25.3.4"
+    "eslint-plugin-jest": "^25.3.4",
+    "eslint-plugin-prettier": "^4.0.0"
   }
 }

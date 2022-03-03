@@ -16,19 +16,15 @@ const getAll = () => {
 const setupConfig = () => {
   const config = {
     headers: {
-      Authorization: token,
-    },
+      Authorization: token
+    }
   };
 
   return config;
 };
 
 const incrementLike = async (blog) => {
-  const response = await axios.put(
-    `${baseUrl}/${blog.id}`,
-    { ...blog, likes: blog.likes + 1 },
-    setupConfig()
-  );
+  const response = await axios.put(`${baseUrl}/${blog.id}`, { ...blog, likes: blog.likes + 1 }, setupConfig());
   return response.data;
 };
 
@@ -41,6 +37,5 @@ const create = async (newBlog) => {
   const response = await axios.post(baseUrl, newBlog, setupConfig());
   return response.data;
 };
-
 
 export default { getAll, create, setToken, incrementLike, removeBlog };

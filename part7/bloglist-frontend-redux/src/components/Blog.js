@@ -1,7 +1,6 @@
 import React, { useState } from 'react';
 import PropTypes from 'prop-types';
 
-
 const BlogMainInfo = ({ blog }) => {
   return (
     <span data-testid="blog-main-info">
@@ -27,7 +26,7 @@ const blogStyle = {
   paddingLeft: 2,
   border: 'solid',
   borderWidth: 1,
-  marginBottom: 5,
+  marginBottom: 5
 };
 
 export const Blog = ({ blog, handleLikeClick, handleDelete, userCreatedBlog }) => {
@@ -37,17 +36,22 @@ export const Blog = ({ blog, handleLikeClick, handleDelete, userCreatedBlog }) =
     setVisible(!visible);
   };
 
-
   return (
     <div style={blogStyle}>
       <BlogMainInfo blog={blog} />
-      {!visible && <button data-testid="toggle-visibility-button" onClick={toggleVisibility}>view</button>}
+      {!visible && (
+        <button data-testid="toggle-visibility-button" onClick={toggleVisibility}>
+          view
+        </button>
+      )}
       {visible && (
         <>
           <button onClick={toggleVisibility}>hide</button>
           <BlogDetails blog={blog} handleLikeClick={handleLikeClick} />
           {userCreatedBlog && (
-            <button data-testid="remove-button" onClick={() => handleDelete(blog)}>remove</button>
+            <button data-testid="remove-button" onClick={() => handleDelete(blog)}>
+              remove
+            </button>
           )}
         </>
       )}
@@ -76,5 +80,3 @@ Blog.propTypes = {
   handleDelete: PropTypes.func.isRequired,
   userCreatedBlog: PropTypes.bool.isRequired
 };
-
-

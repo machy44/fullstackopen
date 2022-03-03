@@ -3,13 +3,10 @@ import '@testing-library/jest-dom/extend-expect';
 import { render, screen, fireEvent } from '@testing-library/react';
 import { CreateBlogForm } from './CreateBlogForm';
 
-
 describe('<CreateBlogForm/>', () => {
   test('call on submit if data is valid', () => {
     const mockSubmit = jest.fn();
-    const { container } = render(
-      <CreateBlogForm handleSubmit={mockSubmit} />
-    );
+    const { container } = render(<CreateBlogForm handleSubmit={mockSubmit} />);
 
     const titleInput = container.querySelector('#title');
     const authorInput = container.querySelector('#author');

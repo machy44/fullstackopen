@@ -1,16 +1,9 @@
-import React, { useState, useEffect, useRef } from 'react';
-import {
-  LoginForm,
-  Blog,
-  CreateBlogForm,
-  ErrorNotification,
-  SuccessNotification,
-  Togglable,
-} from './components';
-import { replaceAt } from './utils';
+import React, { useState, useEffect, useRef } from "react";
+import { LoginForm, Blog, CreateBlogForm, ErrorNotification, SuccessNotification, Togglable } from "./components";
+import { replaceAt } from "./utils";
 
-import blogService from './services/blogs';
-import loginService from './services/login';
+import blogService from "./services/blogs";
+import loginService from "./services/login";
 
 const App = () => {
   const [blogs, setBlogs] = useState([]);
@@ -24,7 +17,7 @@ const App = () => {
   }, []);
 
   useEffect(() => {
-    const loggedUserJSON = window.localStorage.getItem('loggedInBlogListUser');
+    const loggedUserJSON = window.localStorage.getItem("loggedInBlogListUser");
     if (loggedUserJSON) {
       const user = JSON.parse(loggedUserJSON);
       setUser(user);
@@ -50,11 +43,11 @@ const App = () => {
     event.preventDefault();
     try {
       const user = await loginService.login({ username, password });
-      window.localStorage.setItem('loggedInBlogListUser', JSON.stringify(user));
+      window.localStorage.setItem("loggedInBlogListUser", JSON.stringify(user));
       blogService.setToken(user.token);
       setUser(user);
     } catch (error) {
-      setupError('Wrong username or password');
+      setupError("Wrong username or password");
     }
   };
 
@@ -65,17 +58,15 @@ const App = () => {
       const returnedBlog = await blogService.create(blogData);
       const blogsWithUsers = await blogService.getAll();
       setBlogs(blogsWithUsers);
-      setupNotification(
-        `a new blog ${returnedBlog.title} by ${returnedBlog.author}`
-      );
-    } catch(e) {
-      setupError('Creation unsuccessful. Try again!');
+      setupNotification(`a new blog ${returnedBlog.title} by ${returnedBlog.author}`);
+    } catch (e) {
+      setupError("Creation unsuccessful. Try again!");
     }
   };
 
   const handleLogout = () => {
     setUser(null);
-    window.localStorage.removeItem('loggedInBlogListUser');
+    window.localStorage.removeItem("loggedInBlogListUser");
   };
 
   const handleLikeClick = async (blogData) => {
@@ -84,15 +75,13 @@ const App = () => {
       const index = blogs.findIndex((blog) => blog.id === returnedBlog.id);
       const returnedBlogWithUser = { ...returnedBlog, user: blogData.user };
       setBlogs(replaceAt(blogs, index, returnedBlogWithUser));
-    } catch(e) {
-      setupError('Update unsuccessful. Try again!');
+    } catch (e) {
+      setupError("Update unsuccessful. Try again!");
     }
   };
 
   const handleDelete = async (blog) => {
-    const result = window.confirm(
-      `Remove ${blog.title} by ${blog.user.username}`
-    );
+    const result = window.confirm(`Remove ${blog.title} by ${blog.user.username}`);
     if (result === false) return;
     await blogService.removeBlog(blog.id);
     setBlogs(blogs.filter((b) => b.id !== blog.id));
