@@ -9,6 +9,7 @@ export const ErrorNotification = ({ message }) => {
 };
 
 export const SuccessNotification = ({ message }) => {
+  if (!message) return null;
   return (
     <div className="success" data-testid="success">
       {message}

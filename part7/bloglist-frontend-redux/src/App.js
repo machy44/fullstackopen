@@ -104,7 +104,7 @@ const App = () => {
   return (
     <div>
       <h2>blogs</h2>
-      {notificationSuccess && <SuccessNotification message={notificationSuccess} />}
+      <SuccessNotification message={notificationSuccess} />
       {errorMessage && <ErrorNotification message={errorMessage} />}
       <p>{user.name} is logged in</p>
       <button onClick={handleLogout}>logout</button>
