@@ -10,12 +10,13 @@ import { replaceAt } from './utils';
 import blogService from './blog/services/blogs';
 import loginService from './login/services/login';
 import { useDispatch, useSelector } from 'react-redux';
+import { selectSuccessNotification } from './notification/redux/notificationReducer';
 
 const App = () => {
   const dispatch = useDispatch();
   const blogs = useSelector(selectBlogs);
+  const notificationSuccess = useSelector(selectSuccessNotification);
   const [user, setUser] = useState(null);
-  const [notification, setNotification] = useState(null);
   const [errorMessage, setErrorMessage] = useState(null);
   const blogFormRef = useRef();
 
@@ -41,13 +42,6 @@ const App = () => {
     }, 5000);
   };
 
-  const setupNotification = (message) => {
-    setNotification(message);
-    setTimeout(() => {
-      setNotification(null);
-    }, 5000);
-  };
-
   const handleLogin = async (event, username, password) => {
     event.preventDefault();
     try {
@@ -65,7 +59,7 @@ const App = () => {
     try {
       blogFormRef.current.toggleVisibility();
       dispatch(createBlog(blogData));
-      setupNotification(`a new blog ${blogData.title} by ${blogData.author}`);
+      // setupNotification(`a new blog ${blogData.title} by ${blogData.author}`);
     } catch (e) {
       setupError('Creation unsuccessful. Try again!');
     }
@@ -110,7 +104,7 @@ const App = () => {
   return (
     <div>
       <h2>blogs</h2>
-      {notification && <SuccessNotification message={notification} />}
+      {notificationSuccess && <SuccessNotification message={notificationSuccess} />}
       {errorMessage && <ErrorNotification message={errorMessage} />}
       <p>{user.name} is logged in</p>
       <button onClick={handleLogout}>logout</button>

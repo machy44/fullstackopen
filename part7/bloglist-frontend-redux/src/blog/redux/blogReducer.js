@@ -32,7 +32,8 @@ export const createBlog = createAction('blogs/api', function prepare(data) {
       apiRequest: () =>
         blogService.create(data).then(() => {
           return blogService.getAll();
-        })
+        }),
+      notification: 'SUCCESS'
     }
   };
 });
