@@ -1,13 +1,14 @@
 /* eslint-disable no-unused-vars */
 import React, { useState, useEffect, useRef } from 'react';
-import { LoginForm, Togglable } from './components';
+import { Togglable } from './components';
+import { LoginForm } from './login/components';
 import { Blog, CreateBlogForm } from './blog/components';
 import { ErrorNotification, SuccessNotification } from './notification/components';
 import { fetchBlogs, selectBlogs, createBlog } from './blog/redux/blogReducer';
 import { replaceAt } from './utils';
 
 import blogService from './blog/services/blogs';
-import loginService from './services/login';
+import loginService from './login/services/login';
 import { useDispatch, useSelector } from 'react-redux';
 
 const App = () => {
