@@ -2,7 +2,7 @@ const api =
   ({ dispatch }) =>
   (next) =>
   (action) => {
-    if (action.type !== 'api') {
+    if (action.type !== 'blogs/api') {
       return next(action);
     }
 

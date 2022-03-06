@@ -1,10 +1,10 @@
 /* eslint-disable no-unused-vars */
 import React, { useState, useEffect, useRef } from 'react';
 import { LoginForm, Blog, CreateBlogForm, ErrorNotification, SuccessNotification, Togglable } from './components';
-import { fetchBlogs, selectBlogs, createBlog } from './reducers/blogReducer';
+import { fetchBlogs, selectBlogs, createBlog } from './blog/redux/blogReducer';
 import { replaceAt } from './utils';
 
-import blogService from './services/blogs';
+import blogService from './blog/services/blogs';
 import loginService from './services/login';
 import { useDispatch, useSelector } from 'react-redux';
 

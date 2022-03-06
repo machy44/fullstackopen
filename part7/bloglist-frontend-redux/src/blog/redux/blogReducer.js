@@ -8,7 +8,6 @@ const blogSlice = createSlice({
   initialState: blogs,
   reducers: {
     setBlogs(state, action) {
-      console.log('set blogs', action);
       return action.payload;
     }
   }
@@ -17,7 +16,7 @@ const blogSlice = createSlice({
 export const { setBlogs } = blogSlice.actions;
 export default blogSlice.reducer;
 
-export const fetchBlogs = createAction('api', function prepare() {
+export const fetchBlogs = createAction('blogs/api', function prepare() {
   return {
     payload: {
       success: setBlogs,
@@ -26,7 +25,7 @@ export const fetchBlogs = createAction('api', function prepare() {
   };
 });
 
-export const createBlog = createAction('api', function prepare(data) {
+export const createBlog = createAction('blogs/api', function prepare(data) {
   return {
     payload: {
       success: setBlogs,
