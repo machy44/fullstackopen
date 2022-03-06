@@ -1,4 +1,5 @@
 import { createSlice, createAction } from '@reduxjs/toolkit';
+import blogService from '../services/blogs';
 
 const blogs = [];
 
@@ -6,10 +7,6 @@ const blogSlice = createSlice({
   name: 'blogs',
   initialState: blogs,
   reducers: {
-    createBlog(state) {
-      console.log('action');
-      return state;
-    },
     setBlogs(state, action) {
       console.log('set blogs', action);
       return action.payload;
@@ -17,13 +14,26 @@ const blogSlice = createSlice({
   }
 });
 
-export const { createBlog, setBlogs } = blogSlice.actions;
+export const { setBlogs } = blogSlice.actions;
 export default blogSlice.reducer;
 
-export const fetchBlogs = createAction('blogs/fetchBlogs', function prepare() {
+export const fetchBlogs = createAction('api', function prepare() {
   return {
     payload: {
-      success: setBlogs
+      success: setBlogs,
+      apiRequest: blogService.getAll
+    }
+  };
+});
+
+export const createBlog = createAction('api', function prepare(data) {
+  return {
+    payload: {
+      success: setBlogs,
+      apiRequest: () =>
+        blogService.create(data).then(() => {
+          return blogService.getAll();
+        })
     }
   };
 });

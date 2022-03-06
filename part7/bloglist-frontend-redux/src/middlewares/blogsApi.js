@@ -1,14 +1,14 @@
-/* eslint-disable indent */
-import blogService from '../services/blogs';
-
-const fetchBlogs =
+const api =
   ({ dispatch }) =>
   (next) =>
   (action) => {
-    if (action.type !== 'blogs/fetchBlogs') {
+    if (action.type !== 'api') {
       return next(action);
     }
-    blogService.getAll().then((blogs) => dispatch(action.payload.success(blogs)));
+
+    const { apiRequest, success } = action.payload;
+
+    apiRequest().then((data) => dispatch(success(data)));
   };
 
-export const blogsApiMdl = [fetchBlogs];
+export const blogsApiMdl = [api];

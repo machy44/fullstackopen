@@ -1,7 +1,7 @@
 /* eslint-disable no-unused-vars */
 import React, { useState, useEffect, useRef } from 'react';
 import { LoginForm, Blog, CreateBlogForm, ErrorNotification, SuccessNotification, Togglable } from './components';
-import { fetchBlogs, selectBlogs } from './reducers/blogReducer';
+import { fetchBlogs, selectBlogs, createBlog } from './reducers/blogReducer';
 import { replaceAt } from './utils';
 
 import blogService from './services/blogs';
@@ -61,10 +61,8 @@ const App = () => {
     event.preventDefault();
     try {
       blogFormRef.current.toggleVisibility();
-      const returnedBlog = await blogService.create(blogData);
-      const blogsWithUsers = await blogService.getAll();
-      // setBlogs(blogsWithUsers);
-      setupNotification(`a new blog ${returnedBlog.title} by ${returnedBlog.author}`);
+      dispatch(createBlog(blogData));
+      setupNotification(`a new blog ${blogData.title} by ${blogData.author}`);
     } catch (e) {
       setupError('Creation unsuccessful. Try again!');
     }
@@ -77,9 +75,9 @@ const App = () => {
 
   const handleLikeClick = async (blogData) => {
     try {
-      const returnedBlog = await blogService.incrementLike(blogData);
-      const index = blogs.findIndex((blog) => blog.id === returnedBlog.id);
-      const returnedBlogWithUser = { ...returnedBlog, user: blogData.user };
+      // const returnedBlog = await blogService.incrementLike(blogData);
+      // const index = blogs.findIndex((blog) => blog.id === returnedBlog.id);
+      // const returnedBlogWithUser = { ...returnedBlog, user: blogData.user };
       // setBlogs(replaceAt(blogs, index, returnedBlogWithUser));
     } catch (e) {
       setupError('Update unsuccessful. Try again!');
@@ -109,13 +107,13 @@ const App = () => {
   return (
     <div>
       <h2>blogs</h2>
-      {/* {notification && <SuccessNotification message={notification} />}
-      {errorMessage && <ErrorNotification message={errorMessage} />} */}
+      {notification && <SuccessNotification message={notification} />}
+      {errorMessage && <ErrorNotification message={errorMessage} />}
       <p>{user.name} is logged in</p>
       <button onClick={handleLogout}>logout</button>
-      {/* <Togglable buttonLabel="create new blog" ref={blogFormRef}>
+      <Togglable buttonLabel="create new blog" ref={blogFormRef}>
         <CreateBlogForm handleSubmit={handleCreate} />
-      </Togglable> */}
+      </Togglable>
       {!!blogs.length &&
         [...blogs]
           .sort(sortByLikes)
