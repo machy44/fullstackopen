@@ -2,29 +2,27 @@
 import React, { useState, useEffect, useRef } from 'react';
 import { Togglable } from './components';
 import { LoginForm } from './login/components';
+import { useLoginMutation } from './login/services/login';
 import { Blog, CreateBlogForm } from './blog/components';
 import { ErrorNotification, SuccessNotification } from './notification/components';
-import { fetchBlogs, selectBlogs, createBlog } from './blog/redux/blogReducer';
 import { replaceAt } from './utils';
+import { useGetBlogsQuery, useCreateBlogMutation } from './blog/services/blogs';
 
 import blogService from './blog/services/blogs';
-import loginService from './login/services/login';
+import { setCredentials } from './login/redux/loginSlice';
 import { useDispatch, useSelector } from 'react-redux';
 import { selectSuccessNotification } from './notification/redux/notificationReducer';
 
 const App = () => {
   const dispatch = useDispatch();
-  const blogs = useSelector(selectBlogs);
+
   const notificationSuccess = useSelector(selectSuccessNotification);
+  const { data: blogs, error, isLoading: isLoadingBlogs } = useGetBlogsQuery();
+  const [createBlog, result] = useCreateBlogMutation();
+  const [login, { isLoading }] = useLoginMutation();
   const [user, setUser] = useState(null);
   const [errorMessage, setErrorMessage] = useState(null);
   const blogFormRef = useRef();
-
-  console.log(blogs);
-
-  useEffect(() => {
-    dispatch(fetchBlogs());
-  }, []);
 
   useEffect(() => {
     const loggedUserJSON = window.localStorage.getItem('loggedInBlogListUser');
@@ -45,9 +43,11 @@ const App = () => {
   const handleLogin = async (event, username, password) => {
     event.preventDefault();
     try {
-      const user = await loginService.login({ username, password });
-      window.localStorage.setItem('loggedInBlogListUser', JSON.stringify(user));
-      blogService.setToken(user.token);
+      const user = await login({ username, password }).unwrap();
+      dispatch(setCredentials(user));
+      // console.log({ user });
+      // window.localStorage.setItem('loggedInBlogListUser', JSON.stringify(user));
+      // blogService.setToken(user.token);
       setUser(user);
     } catch (error) {
       setupError('Wrong username or password');
@@ -101,6 +101,10 @@ const App = () => {
     return b.likes - a.likes;
   };
 
+  if (isLoadingBlogs) {
+    return <div>loading ...</div>;
+  }
+
   return (
     <div>
       <h2>blogs</h2>
@@ -111,18 +115,15 @@ const App = () => {
       <Togglable buttonLabel="create new blog" ref={blogFormRef}>
         <CreateBlogForm handleSubmit={handleCreate} />
       </Togglable>
-      {!!blogs.length &&
-        [...blogs]
-          .sort(sortByLikes)
-          .map((blog) => (
-            <Blog
-              key={blog.id}
-              blog={blog}
-              handleLikeClick={handleLikeClick}
-              handleDelete={handleDelete}
-              userCreatedBlog={user.username === blog.user.username}
-            />
-          ))}
+      {[...blogs].sort(sortByLikes).map((blog) => (
+        <Blog
+          key={blog.id}
+          blog={blog}
+          handleLikeClick={handleLikeClick}
+          handleDelete={handleDelete}
+          userCreatedBlog={user.username === blog.user.username}
+        />
+      ))}
     </div>
   );
 };

@@ -1,4 +1,39 @@
 import axios from 'axios';
+import { createApi, fetchBaseQuery } from '@reduxjs/toolkit/query/react';
+
+const baseUrlRtk = '/api/blogs';
+
+export const blogsApi = createApi({
+  reducerPath: 'blogs',
+  baseQuery: fetchBaseQuery({
+    baseUrl: baseUrlRtk,
+    prepareHeaders: (headers, { getState }) => {
+      // By default, if we have a token in the store, let's use that for authenticated requests
+      const token = getState().auth.token;
+      if (token) {
+        headers.set('authorization', `Bearer ${token}`);
+      }
+      return headers;
+    }
+  }),
+  endpoints: (builder) => ({
+    getBlogs: builder.query({
+      query: () => '/'
+    }),
+    getBlogById: builder.query({
+      query: (id) => `/${id}`
+    }),
+    createBlog: builder.mutation({
+      query: (newBlog) => ({
+        url: '/',
+        method: 'POST',
+        body: newBlog
+      })
+    })
+  })
+});
+
+export const { useGetBlogsQuery, useGetBlogByIdQuery, useCreateBlogMutation } = blogsApi;
 
 const baseUrl = '/api/blogs';
 
