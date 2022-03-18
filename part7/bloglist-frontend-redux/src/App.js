@@ -107,7 +107,7 @@ const App = () => {
 
   return (
     <div>
-      <h2>blogs</h2>
+      <h2 className="text-3xl font-bold underline">blogs</h2>
       <SuccessNotification message={notificationSuccess} />
       {errorMessage && <ErrorNotification message={errorMessage} />}
       <p>{user.name} is logged in</p>
