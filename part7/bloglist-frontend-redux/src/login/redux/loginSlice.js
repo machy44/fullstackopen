@@ -7,9 +7,11 @@ const slice = createSlice({
   initialState,
   reducers: {
     setCredentials: (state, { payload }) => {
-      state.username = payload.username;
-      state.name = payload.name;
-      state.token = payload.token;
+      return {
+        username: payload.username,
+        name: payload.name,
+        token: payload.token
+      };
     },
     logout: () => {
       return initialState;
