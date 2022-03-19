@@ -5,6 +5,7 @@ const baseUrlRtk = '/api/blogs';
 
 export const blogsApi = createApi({
   reducerPath: 'blogs',
+  tagTypes: ['Blogs'],
   baseQuery: fetchBaseQuery({
     baseUrl: baseUrlRtk,
     prepareHeaders: (headers, { getState }) => {
@@ -18,7 +19,8 @@ export const blogsApi = createApi({
   }),
   endpoints: (builder) => ({
     getBlogs: builder.query({
-      query: () => '/'
+      query: () => '/',
+      providesTags: [{ type: 'Blogs', id: 'LIST' }]
     }),
     getBlogById: builder.query({
       query: (id) => `/${id}`
@@ -28,7 +30,8 @@ export const blogsApi = createApi({
         url: '/',
         method: 'POST',
         body: newBlog
-      })
+      }),
+      invalidatesTags: [{ type: 'Blogs', id: 'LIST' }]
     })
   })
 });

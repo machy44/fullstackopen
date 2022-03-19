@@ -33,7 +33,7 @@ const App = () => {
     event.preventDefault();
     try {
       blogFormRef.current.toggleVisibility();
-      dispatch(createBlog(blogData));
+      createBlog(blogData);
       // setupNotification(`a new blog ${blogData.title} by ${blogData.author}`);
     } catch (e) {
       setupError('Creation unsuccessful. Try again!');
