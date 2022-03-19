@@ -1,15 +1,14 @@
 /* eslint-disable no-unused-vars */
-import React, { useState, useEffect, useRef } from 'react';
+import React, { useState, useRef } from 'react';
 import { Togglable } from './components';
 import { LoginForm } from './login/components';
-import { useLoginMutation } from './login/services/login';
 import { Blog, CreateBlogForm } from './blog/components';
 import { ErrorNotification, SuccessNotification } from './notification/components';
 import { replaceAt } from './utils';
 import { useGetBlogsQuery, useCreateBlogMutation } from './blog/services/blogs';
 
 import blogService from './blog/services/blogs';
-import { setCredentials } from './login/redux/loginSlice';
+import { useLogin } from './login/hooks';
 import { useDispatch, useSelector } from 'react-redux';
 import { selectSuccessNotification } from './notification/redux/notificationReducer';
 
@@ -19,39 +18,15 @@ const App = () => {
   const notificationSuccess = useSelector(selectSuccessNotification);
   const { data: blogs, error, isLoading: isLoadingBlogs } = useGetBlogsQuery();
   const [createBlog, result] = useCreateBlogMutation();
-  const [login, { isLoading }] = useLoginMutation();
-  const [user, setUser] = useState(null);
+  const { handleLogin, isLoading, user, handleLogout } = useLogin();
   const [errorMessage, setErrorMessage] = useState(null);
   const blogFormRef = useRef();
-
-  useEffect(() => {
-    const loggedUserJSON = window.localStorage.getItem('loggedInBlogListUser');
-    if (loggedUserJSON) {
-      const user = JSON.parse(loggedUserJSON);
-      setUser(user);
-      blogService.setToken(user.token);
-    }
-  }, []);
 
   const setupError = (message) => {
     setErrorMessage(message);
     setTimeout(() => {
       setErrorMessage(null);
     }, 5000);
-  };
-
-  const handleLogin = async (event, username, password) => {
-    event.preventDefault();
-    try {
-      const user = await login({ username, password }).unwrap();
-      dispatch(setCredentials(user));
-      // console.log({ user });
-      // window.localStorage.setItem('loggedInBlogListUser', JSON.stringify(user));
-      // blogService.setToken(user.token);
-      setUser(user);
-    } catch (error) {
-      setupError('Wrong username or password');
-    }
   };
 
   const handleCreate = async (event, blogData) => {
@@ -63,11 +38,6 @@ const App = () => {
     } catch (e) {
       setupError('Creation unsuccessful. Try again!');
     }
-  };
-
-  const handleLogout = () => {
-    setUser(null);
-    window.localStorage.removeItem('loggedInBlogListUser');
   };
 
   const handleLikeClick = async (blogData) => {

@@ -1,9 +1,50 @@
-import { useMemo } from 'react';
-import { useSelector } from 'react-redux';
+import { useMemo, useEffect } from 'react';
+import { useSelector, useDispatch } from 'react-redux';
 import { selectCurrentUser } from './redux';
+import { setCredentials, logout } from './redux/loginSlice';
+import { useLoginMutation } from './services/login';
 
 export const useAuth = () => {
   const user = useSelector(selectCurrentUser);
 
   return useMemo(() => ({ user }), [user]);
+};
+
+export const useLogin = () => {
+  const [login, { isLoading }] = useLoginMutation();
+  const dispatch = useDispatch();
+  const { user } = useAuth();
+
+  useEffect(() => {
+    const loggedUserJSON = window.localStorage.getItem('loggedInBlogListUser');
+    if (loggedUserJSON) {
+      const user = JSON.parse(loggedUserJSON);
+      dispatch(setCredentials(user));
+    }
+  }, []);
+
+  const handleLogout = () => {
+    dispatch(logout());
+    window.localStorage.removeItem('loggedInBlogListUser');
+  };
+
+  const handleLogin = async (event, username, password) => {
+    event.preventDefault();
+    try {
+      const user = await login({ username, password }).unwrap();
+      window.localStorage.setItem('loggedInBlogListUser', JSON.stringify(user));
+      dispatch(setCredentials(user));
+    } catch (error) {
+      // TODO
+      // setupError('Wrong username or password');
+      console.log(error);
+    }
+  };
+
+  return {
+    handleLogin,
+    isLoading,
+    user,
+    handleLogout
+  };
 };
