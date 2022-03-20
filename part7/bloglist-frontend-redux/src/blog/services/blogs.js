@@ -20,7 +20,7 @@ export const blogsApi = createApi({
   endpoints: (builder) => ({
     getBlogs: builder.query({
       query: () => '/',
-      providesTags: [{ type: 'Blogs', id: 'LIST' }]
+      providesTags: ['Blogs']
     }),
     getBlogById: builder.query({
       query: (id) => `/${id}`
@@ -31,7 +31,7 @@ export const blogsApi = createApi({
         method: 'POST',
         body: newBlog
       }),
-      invalidatesTags: [{ type: 'Blogs', id: 'LIST' }]
+      invalidatesTags: ['Blogs']
     })
   })
 });

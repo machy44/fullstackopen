@@ -1,12 +1,6 @@
-// import axios from 'axios';
 import { createApi, fetchBaseQuery } from '@reduxjs/toolkit/query/react';
 
 const baseUrl = '/api/login';
-
-// const login = async (credentials) => {
-//   const response = await axios.post(baseUrl, credentials);
-//   return response.data;
-// };
 
 export const api = createApi({
   baseQuery: fetchBaseQuery({
@@ -30,7 +24,5 @@ export const api = createApi({
     })
   })
 });
-
-// export default { login };
 
 export const { useLoginMutation } = api;

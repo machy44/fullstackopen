@@ -35,8 +35,6 @@ export const useLogin = () => {
       window.localStorage.setItem('loggedInBlogListUser', JSON.stringify(user));
       dispatch(setCredentials(user));
     } catch (error) {
-      // TODO
-      // setupError('Wrong username or password');
       console.log(error);
     }
   };

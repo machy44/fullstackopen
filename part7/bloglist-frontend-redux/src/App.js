@@ -10,13 +10,12 @@ import { useGetBlogsQuery, useCreateBlogMutation } from './blog/services/blogs';
 import blogService from './blog/services/blogs';
 import { useLogin } from './login/hooks';
 import { useDispatch, useSelector } from 'react-redux';
-import { selectSuccessNotification } from './notification/redux/notificationReducer';
+import { selectSuccessNotification, selectErrorNotification } from './notification/redux/notificationReducer';
 
 const App = () => {
-  const dispatch = useDispatch();
-
   const notificationSuccess = useSelector(selectSuccessNotification);
-  const { data: blogs, error, isLoading: isLoadingBlogs } = useGetBlogsQuery();
+  const error = useSelector(selectErrorNotification);
+  const { data: blogs, isLoading: isLoadingBlogs } = useGetBlogsQuery();
   const [createBlog, result] = useCreateBlogMutation();
   const { handleLogin, isLoading, user, handleLogout } = useLogin();
   const [errorMessage, setErrorMessage] = useState(null);
@@ -58,10 +57,12 @@ const App = () => {
     // setBlogs(blogs.filter((b) => b.id !== blog.id));
   };
 
+  console.log({ error });
+
   if (user === null) {
     return (
       <>
-        {errorMessage && <ErrorNotification message={errorMessage} />}
+        {error && <ErrorNotification message={error} />}
         <LoginForm handleSubmit={handleLogin} />
       </>
     );

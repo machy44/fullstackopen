@@ -9,23 +9,22 @@ const notificationSlice = createSlice({
   name: 'notifications',
   initialState: notifications,
   reducers: {
-    setSuccessNotification(state, action) {
-      state.success = action.payload;
-    },
-    removeSuccessNotification(state) {
-      state.success = null;
-    },
-    setErrorNotification(state, action) {
-      state.error = action.payload;
-    },
-    removeErrorNotification(state) {
+    removeErrorNotification: (state) => {
       state.error = null;
+    },
+    setErrorNotification: (state, { payload }) => {
+      state.error = payload;
+    },
+    setSuccessNotification: (state, { payload }) => {
+      state.success = payload;
+    },
+    removeSuccessNotification: (state) => {
+      state.success = null;
     }
   }
 });
 
-export const { setSuccessNotification, removeSuccessNotification, setErrorNotification, removeErrorNotification } =
-  notificationSlice.actions;
+export const { removeErrorNotification, setErrorNotification } = notificationSlice.actions;
 
 export default notificationSlice.reducer;
 

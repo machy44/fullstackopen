@@ -1,24 +1,18 @@
-import { setSuccessNotification, removeSuccessNotification } from './notificationReducer';
+import { isRejectedWithValue } from '@reduxjs/toolkit';
+import { setErrorNotification, removeErrorNotification } from './notificationReducer';
 
-const notification =
+export const errorNotification =
   ({ dispatch }) =>
   (next) =>
   (action) => {
-    if (action.payload?.notification) {
-      console.log('notif true');
-      const setupNotification = (message) => {
-        dispatch(setSuccessNotification(message));
-
-        setTimeout(() => {
-          dispatch(removeSuccessNotification(null));
-        }, 5000);
-      };
-
-      setupNotification('bla bla bla');
+    if (isRejectedWithValue(action)) {
+      dispatch(setErrorNotification(action.payload.data.error));
+      setTimeout(() => {
+        dispatch(removeErrorNotification(null));
+      }, 5000);
     }
 
-    console.log('notif false');
-    next(action);
+    return next(action);
   };
 
-export const notificationMdl = [notification];
+export const notificationMdl = [errorNotification];
