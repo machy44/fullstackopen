@@ -4,11 +4,16 @@ import { Togglable } from './components';
 import { LoginForm } from './login/components';
 import { Blog, CreateBlogForm } from './blog/components';
 import { ErrorNotification, SuccessNotification } from './notification/components';
-import { useGetBlogsQuery, useCreateBlogMutation, useIncrementLikeMutation } from './blog/services/blogs';
+import {
+  useGetBlogsQuery,
+  useCreateBlogMutation,
+  useIncrementLikeMutation,
+  useRemoveBlogMutation
+} from './blog/services/blogs';
 
 import blogService from './blog/services/blogs';
 import { useLogin } from './login/hooks';
-import { useDispatch, useSelector } from 'react-redux';
+import { useSelector } from 'react-redux';
 import { selectSuccessNotification, selectErrorNotification } from './notification/redux/notificationSlice';
 
 const App = () => {
@@ -16,6 +21,7 @@ const App = () => {
   const error = useSelector(selectErrorNotification);
   const { data: blogs, isLoading: isLoadingBlogs } = useGetBlogsQuery();
   const [createBlog, result] = useCreateBlogMutation();
+  const [removeBlog] = useRemoveBlogMutation();
   const { handleLogin, isLoading, user, handleLogout } = useLogin();
   const [updateLike] = useIncrementLikeMutation();
   const blogFormRef = useRef();
@@ -33,8 +39,7 @@ const App = () => {
   const handleDelete = async (blog) => {
     const result = window.confirm(`Remove ${blog.title} by ${blog.user.username}`);
     if (result === false) return;
-    await blogService.removeBlog(blog.id);
-    // setBlogs(blogs.filter((b) => b.id !== blog.id));
+    removeBlog(blog.id);
   };
 
   console.log({ error });

@@ -1,4 +1,3 @@
-import axios from 'axios';
 import { createApi, fetchBaseQuery } from '@reduxjs/toolkit/query/react';
 
 const baseUrlRtk = '/api/blogs';
@@ -44,34 +43,22 @@ export const blogsApi = createApi({
         }
       }),
       invalidatesTags: ['Blogs']
+    }),
+    removeBlog: builder.mutation({
+      query: (id) => ({
+        url: `/${id}`,
+        method: 'DELETE'
+      }),
+      invalidatesTags: ['Blogs']
     })
   })
 });
 
-export const { endpoints, useGetBlogsQuery, useGetBlogByIdQuery, useCreateBlogMutation, useIncrementLikeMutation } =
-  blogsApi;
-
-const baseUrl = '/api/blogs';
-
-let token = null;
-
-const setToken = (newToken) => {
-  token = `Bearer ${newToken}`;
-};
-
-const setupConfig = () => {
-  const config = {
-    headers: {
-      Authorization: token
-    }
-  };
-
-  return config;
-};
-
-const removeBlog = async (id) => {
-  const response = await axios.delete(`${baseUrl}/${id}`, setupConfig());
-  return response;
-};
-
-export default { setToken, removeBlog };
+export const {
+  endpoints,
+  useGetBlogsQuery,
+  useGetBlogByIdQuery,
+  useCreateBlogMutation,
+  useIncrementLikeMutation,
+  useRemoveBlogMutation
+} = blogsApi;
