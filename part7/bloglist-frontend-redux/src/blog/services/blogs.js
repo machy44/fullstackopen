@@ -33,11 +33,23 @@ export const blogsApi = createApi({
         body: newBlog
       }),
       invalidatesTags: ['Blogs']
+    }),
+    incrementLike: builder.mutation({
+      query: (blog) => ({
+        url: `/${blog.id}`,
+        method: 'PUT',
+        body: {
+          ...blog,
+          likes: blog.likes + 1
+        }
+      }),
+      invalidatesTags: ['Blogs']
     })
   })
 });
 
-export const { useGetBlogsQuery, useGetBlogByIdQuery, useCreateBlogMutation } = blogsApi;
+export const { endpoints, useGetBlogsQuery, useGetBlogByIdQuery, useCreateBlogMutation, useIncrementLikeMutation } =
+  blogsApi;
 
 const baseUrl = '/api/blogs';
 
@@ -45,11 +57,6 @@ let token = null;
 
 const setToken = (newToken) => {
   token = `Bearer ${newToken}`;
-};
-
-const getAll = () => {
-  const request = axios.get(baseUrl);
-  return request.then((response) => response.data);
 };
 
 const setupConfig = () => {
@@ -62,19 +69,9 @@ const setupConfig = () => {
   return config;
 };
 
-const incrementLike = async (blog) => {
-  const response = await axios.put(`${baseUrl}/${blog.id}`, { ...blog, likes: blog.likes + 1 }, setupConfig());
-  return response.data;
-};
-
 const removeBlog = async (id) => {
   const response = await axios.delete(`${baseUrl}/${id}`, setupConfig());
   return response;
 };
 
-const create = async (newBlog) => {
-  const response = await axios.post(baseUrl, newBlog, setupConfig());
-  return response.data;
-};
-
-export default { getAll, create, setToken, incrementLike, removeBlog };
+export default { setToken, removeBlog };

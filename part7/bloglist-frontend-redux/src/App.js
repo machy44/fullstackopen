@@ -4,8 +4,7 @@ import { Togglable } from './components';
 import { LoginForm } from './login/components';
 import { Blog, CreateBlogForm } from './blog/components';
 import { ErrorNotification, SuccessNotification } from './notification/components';
-import { replaceAt } from './utils';
-import { useGetBlogsQuery, useCreateBlogMutation } from './blog/services/blogs';
+import { useGetBlogsQuery, useCreateBlogMutation, useIncrementLikeMutation } from './blog/services/blogs';
 
 import blogService from './blog/services/blogs';
 import { useLogin } from './login/hooks';
@@ -18,15 +17,8 @@ const App = () => {
   const { data: blogs, isLoading: isLoadingBlogs } = useGetBlogsQuery();
   const [createBlog, result] = useCreateBlogMutation();
   const { handleLogin, isLoading, user, handleLogout } = useLogin();
-  const [errorMessage, setErrorMessage] = useState(null);
+  const [updateLike] = useIncrementLikeMutation();
   const blogFormRef = useRef();
-
-  const setupError = (message) => {
-    setErrorMessage(message);
-    setTimeout(() => {
-      setErrorMessage(null);
-    }, 5000);
-  };
 
   const handleCreate = async (event, blogData) => {
     event.preventDefault();
@@ -35,14 +27,7 @@ const App = () => {
   };
 
   const handleLikeClick = async (blogData) => {
-    try {
-      // const returnedBlog = await blogService.incrementLike(blogData);
-      // const index = blogs.findIndex((blog) => blog.id === returnedBlog.id);
-      // const returnedBlogWithUser = { ...returnedBlog, user: blogData.user };
-      // setBlogs(replaceAt(blogs, index, returnedBlogWithUser));
-    } catch (e) {
-      setupError('Update unsuccessful. Try again!');
-    }
+    updateLike(blogData);
   };
 
   const handleDelete = async (blog) => {

@@ -6,14 +6,18 @@ export const errorNotification =
   ({ dispatch }) =>
   (next) =>
   (action) => {
-    if (isRejectedWithValue(action)) {
-      dispatch(setErrorNotification(action.payload.data.error));
-      setTimeout(() => {
-        dispatch(removeErrorNotification(null));
-      }, 5000);
-    }
+    try {
+      if (isRejectedWithValue(action)) {
+        dispatch(setErrorNotification(action.payload.error));
+        setTimeout(() => {
+          dispatch(removeErrorNotification(null));
+        }, 5000);
+      }
 
-    return next(action);
+      return next(action);
+    } catch (e) {
+      console.log('errorNotification ', e);
+    }
   };
 
 export const notificationMdl = [errorNotification];
