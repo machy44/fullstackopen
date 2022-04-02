@@ -17,6 +17,7 @@ export const blogsApi = createApi({
       return headers;
     }
   }),
+
   endpoints: (builder) => ({
     getBlogs: builder.query({
       query: () => '/',

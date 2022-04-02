@@ -10,7 +10,7 @@ import { useGetBlogsQuery, useCreateBlogMutation } from './blog/services/blogs';
 import blogService from './blog/services/blogs';
 import { useLogin } from './login/hooks';
 import { useDispatch, useSelector } from 'react-redux';
-import { selectSuccessNotification, selectErrorNotification } from './notification/redux/notificationReducer';
+import { selectSuccessNotification, selectErrorNotification } from './notification/redux/notificationSlice';
 
 const App = () => {
   const notificationSuccess = useSelector(selectSuccessNotification);
@@ -30,13 +30,8 @@ const App = () => {
 
   const handleCreate = async (event, blogData) => {
     event.preventDefault();
-    try {
-      blogFormRef.current.toggleVisibility();
-      createBlog(blogData);
-      // setupNotification(`a new blog ${blogData.title} by ${blogData.author}`);
-    } catch (e) {
-      setupError('Creation unsuccessful. Try again!');
-    }
+    blogFormRef.current.toggleVisibility();
+    createBlog(blogData);
   };
 
   const handleLikeClick = async (blogData) => {
@@ -80,7 +75,7 @@ const App = () => {
     <div>
       <h2 className="text-3xl font-bold underline">blogs</h2>
       <SuccessNotification message={notificationSuccess} />
-      {errorMessage && <ErrorNotification message={errorMessage} />}
+      {error && <ErrorNotification message={error} />}
       <p>{user.name} is logged in</p>
       <button onClick={handleLogout}>logout</button>
       <Togglable buttonLabel="create new blog" ref={blogFormRef}>

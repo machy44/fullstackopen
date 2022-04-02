@@ -1,9 +1,10 @@
 import { configureStore } from '@reduxjs/toolkit';
 import { logsMdl } from './middlewares/log';
 import { blogsApi } from './blog/services/blogs';
+import { blogMdl } from './blog/blogMiddleware';
 import { notificationMdl } from './notification/redux/notificationMiddleware';
 import { loginReducer } from './login/redux';
-import notificationReducer from './notification/redux/notificationReducer';
+import notificationReducer from './notification/redux/notificationSlice';
 
 export const store = configureStore({
   reducer: {
@@ -13,6 +14,6 @@ export const store = configureStore({
   },
   middleware: (getDefaultMiddleware) =>
     getDefaultMiddleware()
-      .concat([...logsMdl, ...notificationMdl])
+      .concat([...logsMdl, ...notificationMdl, ...blogMdl])
       .concat(blogsApi.middleware)
 });

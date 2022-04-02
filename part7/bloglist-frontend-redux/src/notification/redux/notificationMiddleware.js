@@ -1,5 +1,6 @@
 import { isRejectedWithValue } from '@reduxjs/toolkit';
-import { setErrorNotification, removeErrorNotification } from './notificationReducer';
+
+import { setErrorNotification, removeErrorNotification } from './notificationSlice';
 
 export const errorNotification =
   ({ dispatch }) =>
