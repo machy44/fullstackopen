@@ -1,5 +1,5 @@
 /* eslint-disable no-unused-vars */
-import React, { useState, useRef } from 'react';
+import React, { useRef } from 'react';
 import { Togglable } from './components';
 import { LoginForm } from './login/components';
 import { Blog, CreateBlogForm } from './blog/components';
@@ -11,7 +11,6 @@ import {
   useRemoveBlogMutation
 } from './blog/services/blogs';
 
-import blogService from './blog/services/blogs';
 import { useLogin } from './login/hooks';
 import { useSelector } from 'react-redux';
 import { selectSuccessNotification, selectErrorNotification } from './notification/redux/notificationSlice';
