@@ -4,6 +4,9 @@ import { Togglable } from './components';
 import { LoginForm } from './login/components';
 import { Blog, CreateBlogForm } from './blog/components';
 import { ErrorNotification, SuccessNotification } from './notification/components';
+import { Navigation } from './Navigation';
+import { Users } from './user/components/Users';
+import { User } from './user/components/User';
 import {
   useGetBlogsQuery,
   useCreateBlogMutation,
@@ -14,6 +17,7 @@ import {
 import { useLogin } from './login/hooks';
 import { useSelector } from 'react-redux';
 import { selectSuccessNotification, selectErrorNotification } from './notification/redux/notificationSlice';
+import { Routes, Route } from 'react-router-dom';
 
 const App = () => {
   const notificationSuccess = useSelector(selectSuccessNotification);
@@ -62,6 +66,7 @@ const App = () => {
 
   return (
     <div>
+      <Navigation />
       <h2 className="text-3xl font-bold underline">blogs</h2>
       <SuccessNotification message={notificationSuccess} />
       {error && <ErrorNotification message={error} />}
@@ -70,15 +75,12 @@ const App = () => {
       <Togglable buttonLabel="create new blog" ref={blogFormRef}>
         <CreateBlogForm handleSubmit={handleCreate} />
       </Togglable>
-      {[...blogs].sort(sortByLikes).map((blog) => (
-        <Blog
-          key={blog.id}
-          blog={blog}
-          handleLikeClick={handleLikeClick}
-          handleDelete={handleDelete}
-          userCreatedBlog={user.username === blog.user.username}
-        />
-      ))}
+      <Routes>
+        <Route path="users" element={<Users />} />
+        <Route path="users/:id" element={<User />} />
+
+        <Route path="blogs" element={<>blogs</>} />
+      </Routes>
     </div>
   );
 };
