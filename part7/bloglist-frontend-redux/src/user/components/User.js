@@ -4,11 +4,12 @@ import { useMatch, Link } from 'react-router-dom';
 
 export const User = () => {
   const { data: users, isLoading: isLoadingUsers } = useGetUsersQuery();
+  const match = useMatch('/users/:id');
+
   if (isLoadingUsers) {
     return <div>Loading users</div>;
   }
 
-  const match = useMatch('/users/:id');
   console.log({ match });
   const user = match ? users.find((user) => String(user.id) === String(match.params.id)) : null;
 
@@ -30,13 +31,3 @@ export const User = () => {
     </div>
   );
 };
-
-// {/* {[...blogs].sort(sortByLikes).map((blog) => (
-//         <Blog
-//           key={blog.id}
-//           blog={blog}
-//           handleLikeClick={handleLikeClick}
-//           handleDelete={handleDelete}
-//           userCreatedBlog={user.username === blog.user.username}
-//         /> */}
-//       {/* ))} */}

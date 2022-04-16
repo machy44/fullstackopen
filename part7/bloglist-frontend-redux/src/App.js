@@ -17,27 +17,19 @@ import {
 import { useLogin } from './login/hooks';
 import { useSelector } from 'react-redux';
 import { selectSuccessNotification, selectErrorNotification } from './notification/redux/notificationSlice';
-import { Routes, Route } from 'react-router-dom';
+import { Routes, Route, useParams, useMatch } from 'react-router-dom';
+import { Blogs } from 'blog/components/Blogs';
 
-const App = () => {
-  const notificationSuccess = useSelector(selectSuccessNotification);
-  const error = useSelector(selectErrorNotification);
-  const { data: blogs, isLoading: isLoadingBlogs } = useGetBlogsQuery();
-  const [createBlog, result] = useCreateBlogMutation();
+const BlogsManager = ({ blogs, user }) => {
   const [removeBlog] = useRemoveBlogMutation();
-  const { handleLogin, isLoading, user, handleLogout } = useLogin();
   const [updateLike] = useIncrementLikeMutation();
-  const blogFormRef = useRef();
-
-  const handleCreate = async (event, blogData) => {
-    event.preventDefault();
-    blogFormRef.current.toggleVisibility();
-    createBlog(blogData);
-  };
+  const match = useMatch('/blogs/:blogId');
 
   const handleLikeClick = async (blogData) => {
     updateLike(blogData);
   };
+
+  const blog = match ? blogs.find((blog) => String(blog.id) === String(match.params.blogId)) : null;
 
   const handleDelete = async (blog) => {
     const result = window.confirm(`Remove ${blog.title} by ${blog.user.username}`);
@@ -45,7 +37,53 @@ const App = () => {
     removeBlog(blog.id);
   };
 
-  console.log({ error });
+  console.log({ blog });
+
+  return (
+    <Routes>
+      <Route
+        index
+        element={
+          <Blogs
+            blogs={blogs}
+            handleLikeClick={handleLikeClick}
+            handleDelete={handleDelete}
+            loggedUserName={user.username}
+          />
+        }
+      />
+      <Route
+        path=":blogId"
+        element={
+          blog && (
+            <Blog
+              blog={blog}
+              handleLikeClick={handleLikeClick}
+              handleDelete={handleDelete}
+              userCreatedBlog={user.username === blog.user.username}
+            />
+          )
+        }
+      />
+    </Routes>
+  );
+};
+
+const App = () => {
+  const notificationSuccess = useSelector(selectSuccessNotification);
+  const error = useSelector(selectErrorNotification);
+  const { data: blogs, isLoading: isLoadingBlogs } = useGetBlogsQuery();
+  const [createBlog, result] = useCreateBlogMutation();
+
+  const { handleLogin, isLoading, user, handleLogout } = useLogin();
+
+  const blogFormRef = useRef();
+
+  const handleCreate = async (event, blogData) => {
+    event.preventDefault();
+    blogFormRef.current.toggleVisibility();
+    createBlog(blogData);
+  };
 
   if (user === null) {
     return (
@@ -56,12 +94,8 @@ const App = () => {
     );
   }
 
-  const sortByLikes = (a, b) => {
-    return b.likes - a.likes;
-  };
-
   if (isLoadingBlogs) {
-    return <div>loading ...</div>;
+    return <div>loading...</div>;
   }
 
   return (
@@ -78,8 +112,7 @@ const App = () => {
       <Routes>
         <Route path="users" element={<Users />} />
         <Route path="users/:id" element={<User />} />
-
-        <Route path="blogs" element={<>blogs</>} />
+        <Route path="blogs/*" element={<BlogsManager blogs={blogs} user={user} />} />
       </Routes>
     </div>
   );

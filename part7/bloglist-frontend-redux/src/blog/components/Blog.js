@@ -1,12 +1,13 @@
 import React, { useState } from 'react';
+import { Link } from 'react-router-dom';
 
 import PropTypes from 'prop-types';
 
 const BlogMainInfo = ({ blog }) => {
   return (
-    <span data-testid="blog-main-info">
+    <Link data-testid="blog-main-info" to={`/blogs/${blog.id}`}>
       {blog.title} {blog.author}
-    </span>
+    </Link>
   );
 };
 const BlogDetails = ({ blog, handleLikeClick }) => {
