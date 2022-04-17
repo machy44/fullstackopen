@@ -26,7 +26,7 @@ export const BlogDetails = ({ blog, handleLikeClick, handleDelete, userCreatedBl
       <h1>
         {blog.title} {blog.author}
       </h1>
-      <div>{blog.url}</div>
+      <a href={blog.url}>{blog.url}</a>
       <div data-testid="blog-likes">
         likes {blog.likes}
         <button onClick={() => handleLikeClick(blog)}>like</button>

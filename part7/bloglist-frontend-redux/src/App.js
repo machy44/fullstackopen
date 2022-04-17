@@ -1,6 +1,6 @@
 /* eslint-disable no-unused-vars */
 import React, { useRef } from 'react';
-import { Togglable, Navigation } from './components';
+import { Togglable, Navigation, NotExists } from './components';
 import { LoginForm } from './login/components';
 import { CreateBlogForm } from './blog/components';
 import { ErrorNotification, SuccessNotification } from './notification/components';
@@ -11,24 +11,38 @@ import { useGetBlogsQuery, useCreateBlogMutation } from './blog/services/blogs';
 import { useLogin } from './login/hooks';
 import { useSelector } from 'react-redux';
 import { selectSuccessNotification, selectErrorNotification } from './notification/redux/notificationSlice';
-import { Routes, Route } from 'react-router-dom';
+import { Routes, Route, Outlet } from 'react-router-dom';
 import { BlogsManager } from 'blog/components';
 
-const App = () => {
+const Layout = ({ error, handleLogout, userName }) => {
   const notificationSuccess = useSelector(selectSuccessNotification);
-  const error = useSelector(selectErrorNotification);
-  const { data: blogs, isLoading: isLoadingBlogs } = useGetBlogsQuery();
   const [createBlog, result] = useCreateBlogMutation();
-
-  const { handleLogin, isLoading, user, handleLogout } = useLogin();
-
   const blogFormRef = useRef();
 
-  const handleCreate = async (event, blogData) => {
+  const handleCreate = async (event, blogData, userName) => {
     event.preventDefault();
     blogFormRef.current.toggleVisibility();
     createBlog(blogData);
   };
+  return (
+    <div>
+      <Navigation userName={userName} handleClick={handleLogout} />
+      <h2 className="text-3xl font-bold underline">blog app</h2>
+      <SuccessNotification message={notificationSuccess} />
+      {error && <ErrorNotification message={error} />}
+      <Togglable buttonLabel="create new blog" ref={blogFormRef}>
+        <CreateBlogForm handleSubmit={handleCreate} />
+      </Togglable>
+      <Outlet />
+    </div>
+  );
+};
+
+const App = () => {
+  const error = useSelector(selectErrorNotification);
+  const { data: blogs, isLoading: isLoadingBlogs } = useGetBlogsQuery();
+
+  const { handleLogin, isLoading, user, handleLogout } = useLogin();
 
   if (user === null) {
     return (
@@ -44,20 +58,15 @@ const App = () => {
   }
 
   return (
-    <div>
-      <Navigation userName={user.name} handleClick={handleLogout} />
-      <h2 className="text-3xl font-bold underline">blogs</h2>
-      <SuccessNotification message={notificationSuccess} />
-      {error && <ErrorNotification message={error} />}
-      <Togglable buttonLabel="create new blog" ref={blogFormRef}>
-        <CreateBlogForm handleSubmit={handleCreate} />
-      </Togglable>
-      <Routes>
+    <Routes>
+      <Route element={<Layout error={error} handleLogout={handleLogout} userName={user.name} />}>
         <Route path="users" element={<Users />} />
         <Route path="users/:id" element={<User />} />
+        <Route index element={<BlogsManager blogs={blogs} user={user} />} />
         <Route path="blogs/*" element={<BlogsManager blogs={blogs} user={user} />} />
-      </Routes>
-    </div>
+        <Route path="*" element={<NotExists />} />
+      </Route>
+    </Routes>
   );
 };
 

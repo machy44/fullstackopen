@@ -1,13 +1,14 @@
 import React from 'react';
 import { BlogDetails } from './Blog';
 import { useIncrementLikeMutation, useRemoveBlogMutation } from '../services/blogs';
-import { Routes, Route, useMatch } from 'react-router-dom';
+import { Routes, Route, useMatch, useNavigate } from 'react-router-dom';
 import { Blogs } from './Blogs';
 
 export const BlogsManager = ({ blogs, user }) => {
   const [removeBlog] = useRemoveBlogMutation();
   const [updateLike] = useIncrementLikeMutation();
   const match = useMatch('/blogs/:blogId');
+  const navigate = useNavigate();
 
   const handleLikeClick = async (blogData) => {
     updateLike(blogData);
@@ -19,6 +20,7 @@ export const BlogsManager = ({ blogs, user }) => {
     const result = window.confirm(`Remove ${blog.title} by ${blog.user.username}`);
     if (result === false) return;
     removeBlog(blog.id);
+    navigate(-1);
   };
 
   return (
