@@ -1,10 +1,9 @@
 /* eslint-disable no-unused-vars */
 import React, { useRef } from 'react';
-import { Togglable } from './components';
+import { Togglable, Navigation } from './components';
 import { LoginForm } from './login/components';
 import { CreateBlogForm } from './blog/components';
 import { ErrorNotification, SuccessNotification } from './notification/components';
-import { Navigation } from './Navigation';
 import { Users } from './user/components/Users';
 import { User } from './user/components/User';
 import { useGetBlogsQuery, useCreateBlogMutation } from './blog/services/blogs';
@@ -46,12 +45,10 @@ const App = () => {
 
   return (
     <div>
-      <Navigation />
+      <Navigation userName={user.name} handleClick={handleLogout} />
       <h2 className="text-3xl font-bold underline">blogs</h2>
       <SuccessNotification message={notificationSuccess} />
       {error && <ErrorNotification message={error} />}
-      <p>{user.name} is logged in</p>
-      <button onClick={handleLogout}>logout</button>
       <Togglable buttonLabel="create new blog" ref={blogFormRef}>
         <CreateBlogForm handleSubmit={handleCreate} />
       </Togglable>
