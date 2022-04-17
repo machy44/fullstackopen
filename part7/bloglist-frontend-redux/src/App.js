@@ -7,6 +7,7 @@ import { ErrorNotification, SuccessNotification } from './notification/component
 import { Users } from './user/components/Users';
 import { User } from './user/components/User';
 import { useGetBlogsQuery, useCreateBlogMutation } from './blog/services/blogs';
+import { Spinner } from '@chakra-ui/react';
 
 import { useLogin } from './login/hooks';
 import { useSelector } from 'react-redux';
@@ -27,7 +28,7 @@ const Layout = ({ error, handleLogout, userName }) => {
   return (
     <div>
       <Navigation userName={userName} handleClick={handleLogout} />
-      <h2 className="text-3xl font-bold">blog app</h2>
+      <h2>blog app</h2>
       <SuccessNotification message={notificationSuccess} />
       {error && <ErrorNotification message={error} />}
       <Togglable buttonLabel="create new blog" ref={blogFormRef}>
@@ -54,7 +55,7 @@ const App = () => {
   }
 
   if (isLoadingBlogs) {
-    return <div>loading...</div>;
+    return <Spinner size="lg" />;
   }
 
   return (
