@@ -2,7 +2,7 @@
 import React, { useRef } from 'react';
 import { Togglable } from './components';
 import { LoginForm } from './login/components';
-import { Blog, CreateBlogForm } from './blog/components';
+import { BlogDetails, CreateBlogForm } from './blog/components';
 import { ErrorNotification, SuccessNotification } from './notification/components';
 import { Navigation } from './Navigation';
 import { Users } from './user/components/Users';
@@ -17,7 +17,7 @@ import {
 import { useLogin } from './login/hooks';
 import { useSelector } from 'react-redux';
 import { selectSuccessNotification, selectErrorNotification } from './notification/redux/notificationSlice';
-import { Routes, Route, useParams, useMatch } from 'react-router-dom';
+import { Routes, Route, useMatch } from 'react-router-dom';
 import { Blogs } from 'blog/components/Blogs';
 
 const BlogsManager = ({ blogs, user }) => {
@@ -41,22 +41,12 @@ const BlogsManager = ({ blogs, user }) => {
 
   return (
     <Routes>
-      <Route
-        index
-        element={
-          <Blogs
-            blogs={blogs}
-            handleLikeClick={handleLikeClick}
-            handleDelete={handleDelete}
-            loggedUserName={user.username}
-          />
-        }
-      />
+      <Route index element={<Blogs blogs={blogs} />} />
       <Route
         path=":blogId"
         element={
           blog && (
-            <Blog
+            <BlogDetails
               blog={blog}
               handleLikeClick={handleLikeClick}
               handleDelete={handleDelete}

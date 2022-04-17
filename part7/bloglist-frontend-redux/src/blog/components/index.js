@@ -1,2 +1,2 @@
-export { Blog } from './Blog';
+export { BlogDetails, BlogMainInfo } from './Blog';
 export { CreateBlogForm } from './CreateBlogForm';

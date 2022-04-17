@@ -1,27 +1,7 @@
-import React, { useState } from 'react';
+import React from 'react';
 import { Link } from 'react-router-dom';
 
 import PropTypes from 'prop-types';
-
-const BlogMainInfo = ({ blog }) => {
-  return (
-    <Link data-testid="blog-main-info" to={`/blogs/${blog.id}`}>
-      {blog.title} {blog.author}
-    </Link>
-  );
-};
-const BlogDetails = ({ blog, handleLikeClick }) => {
-  return (
-    <div data-testid="blog-details">
-      <div>{blog.url}</div>
-      <div data-testid="blog-likes">
-        likes {blog.likes}
-        <button onClick={() => handleLikeClick(blog)}>like</button>
-      </div>
-      <div>{blog.user.username}</div>
-    </div>
-  );
-};
 
 const blogStyle = {
   paddingTop: 10,
@@ -31,31 +11,31 @@ const blogStyle = {
   marginBottom: 5
 };
 
-export const Blog = ({ blog, handleLikeClick, handleDelete, userCreatedBlog }) => {
-  const [visible, setVisible] = useState(false);
-
-  const toggleVisibility = () => {
-    setVisible(!visible);
-  };
-
+export const BlogMainInfo = ({ blog }) => {
   return (
     <div style={blogStyle}>
-      <BlogMainInfo blog={blog} />
-      {!visible && (
-        <button data-testid="toggle-visibility-button" onClick={toggleVisibility}>
-          view
+      <Link data-testid="blog-main-info" to={`/blogs/${blog.id}`}>
+        {blog.title} {blog.author}
+      </Link>
+    </div>
+  );
+};
+export const BlogDetails = ({ blog, handleLikeClick, handleDelete, userCreatedBlog }) => {
+  return (
+    <div data-testid="blog-details">
+      <h1>
+        {blog.title} {blog.author}
+      </h1>
+      <div>{blog.url}</div>
+      <div data-testid="blog-likes">
+        likes {blog.likes}
+        <button onClick={() => handleLikeClick(blog)}>like</button>
+      </div>
+      <div>{blog.user.username}</div>
+      {userCreatedBlog && (
+        <button data-testid="remove-button" onClick={() => handleDelete(blog)}>
+          remove
         </button>
-      )}
-      {visible && (
-        <>
-          <button onClick={toggleVisibility}>hide</button>
-          <BlogDetails blog={blog} handleLikeClick={handleLikeClick} />
-          {userCreatedBlog && (
-            <button data-testid="remove-button" onClick={() => handleDelete(blog)}>
-              remove
-            </button>
-          )}
-        </>
       )}
     </div>
   );
@@ -76,7 +56,7 @@ const BlogType = PropTypes.shape({
   user: UserType
 });
 
-Blog.propTypes = {
+BlogDetails.propTypes = {
   blog: BlogType.isRequired,
   handleLikeClick: PropTypes.func.isRequired,
   handleDelete: PropTypes.func.isRequired,
