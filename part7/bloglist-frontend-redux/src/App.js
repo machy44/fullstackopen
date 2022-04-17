@@ -2,62 +2,18 @@
 import React, { useRef } from 'react';
 import { Togglable } from './components';
 import { LoginForm } from './login/components';
-import { BlogDetails, CreateBlogForm } from './blog/components';
+import { CreateBlogForm } from './blog/components';
 import { ErrorNotification, SuccessNotification } from './notification/components';
 import { Navigation } from './Navigation';
 import { Users } from './user/components/Users';
 import { User } from './user/components/User';
-import {
-  useGetBlogsQuery,
-  useCreateBlogMutation,
-  useIncrementLikeMutation,
-  useRemoveBlogMutation
-} from './blog/services/blogs';
+import { useGetBlogsQuery, useCreateBlogMutation } from './blog/services/blogs';
 
 import { useLogin } from './login/hooks';
 import { useSelector } from 'react-redux';
 import { selectSuccessNotification, selectErrorNotification } from './notification/redux/notificationSlice';
-import { Routes, Route, useMatch } from 'react-router-dom';
-import { Blogs } from 'blog/components/Blogs';
-
-const BlogsManager = ({ blogs, user }) => {
-  const [removeBlog] = useRemoveBlogMutation();
-  const [updateLike] = useIncrementLikeMutation();
-  const match = useMatch('/blogs/:blogId');
-
-  const handleLikeClick = async (blogData) => {
-    updateLike(blogData);
-  };
-
-  const blog = match ? blogs.find((blog) => String(blog.id) === String(match.params.blogId)) : null;
-
-  const handleDelete = async (blog) => {
-    const result = window.confirm(`Remove ${blog.title} by ${blog.user.username}`);
-    if (result === false) return;
-    removeBlog(blog.id);
-  };
-
-  console.log({ blog });
-
-  return (
-    <Routes>
-      <Route index element={<Blogs blogs={blogs} />} />
-      <Route
-        path=":blogId"
-        element={
-          blog && (
-            <BlogDetails
-              blog={blog}
-              handleLikeClick={handleLikeClick}
-              handleDelete={handleDelete}
-              userCreatedBlog={user.username === blog.user.username}
-            />
-          )
-        }
-      />
-    </Routes>
-  );
-};
+import { Routes, Route } from 'react-router-dom';
+import { BlogsManager } from 'blog/components';
 
 const App = () => {
   const notificationSuccess = useSelector(selectSuccessNotification);
