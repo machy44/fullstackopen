@@ -20,6 +20,20 @@ export const BlogMainInfo = ({ blog }) => {
     </div>
   );
 };
+
+const Comments = ({ comments }) => {
+  return (
+    <>
+      <h3>comments</h3>
+      <ul>
+        {comments.map((comment) => {
+          return <li key={comment.id}>{comment.text}</li>;
+        })}
+      </ul>
+    </>
+  );
+};
+
 export const BlogDetails = ({ blog, handleLikeClick, handleDelete, userCreatedBlog }) => {
   return (
     <div data-testid="blog-details">
@@ -37,6 +51,7 @@ export const BlogDetails = ({ blog, handleLikeClick, handleDelete, userCreatedBl
           remove
         </button>
       )}
+      <Comments comments={blog.comments} />
     </div>
   );
 };
