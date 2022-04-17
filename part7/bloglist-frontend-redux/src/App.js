@@ -27,7 +27,7 @@ const Layout = ({ error, handleLogout, userName }) => {
   return (
     <div>
       <Navigation userName={userName} handleClick={handleLogout} />
-      <h2 className="text-3xl font-bold underline">blog app</h2>
+      <h2 className="text-3xl font-bold">blog app</h2>
       <SuccessNotification message={notificationSuccess} />
       {error && <ErrorNotification message={error} />}
       <Togglable buttonLabel="create new blog" ref={blogFormRef}>

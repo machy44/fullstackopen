@@ -10,7 +10,6 @@ export const User = () => {
     return <div>Loading users</div>;
   }
 
-  console.log({ match });
   const user = match ? users.find((user) => String(user.id) === String(match.params.id)) : null;
 
   if (!user) {

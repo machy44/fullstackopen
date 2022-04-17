@@ -8,7 +8,6 @@ export const Users = () => {
     return <div>Loading users</div>;
   }
 
-  console.log({ users });
   return (
     <div>
       <h1>Users</h1>
