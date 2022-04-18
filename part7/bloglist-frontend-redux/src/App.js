@@ -7,14 +7,14 @@ import { ErrorNotification, SuccessNotification } from './notification/component
 import { Users } from './user/components/Users';
 import { User } from './user/components/User';
 import { useGetBlogsQuery, useCreateBlogMutation } from './blog/services/blogs';
-import { Spinner } from '@chakra-ui/react';
+import { Center, Spinner } from '@chakra-ui/react';
 
 import { useLogin } from './login/hooks';
 import { useSelector } from 'react-redux';
 import { selectSuccessNotification, selectErrorNotification } from './notification/redux/notificationSlice';
 import { Routes, Route, Outlet } from 'react-router-dom';
 import { BlogsManager } from 'blog/components';
-import { Container } from 'ui';
+import { Container, Heading } from 'ui';
 
 const Layout = ({ error, handleLogout, userName }) => {
   const notificationSuccess = useSelector(selectSuccessNotification);
@@ -28,8 +28,12 @@ const Layout = ({ error, handleLogout, userName }) => {
   };
   return (
     <Container maxW="container.md">
+      <Center bg="gray.50" h="100px" color="white">
+        <Heading as="i" color="blackAlpha.800">
+          blog app
+        </Heading>
+      </Center>
       <Navigation userName={userName} handleClick={handleLogout} />
-      <h2>blog app</h2>
       <SuccessNotification message={notificationSuccess} />
       {error && <ErrorNotification message={error} />}
       <Togglable buttonLabel="create new blog" ref={blogFormRef}>

@@ -5,7 +5,7 @@ import { Link as CLink, Spacer } from '@chakra-ui/react';
 
 export const Navigation = ({ userName, handleClick }) => {
   return (
-    <Flex p={5}>
+    <Flex p={5} background="blue.100" borderRadius="base">
       <HStack spacing="24px">
         <CLink as={Link} to="/blogs">
           <Text>blogs</Text>
