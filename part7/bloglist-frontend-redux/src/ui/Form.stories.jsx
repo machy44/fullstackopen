@@ -1,6 +1,6 @@
 import React from 'react';
 
-import { FormInput as BFormInput } from '../ui/Form';
+import { FormInput as BFormInput } from './Form';
 
 export default {
   title: 'Form',
