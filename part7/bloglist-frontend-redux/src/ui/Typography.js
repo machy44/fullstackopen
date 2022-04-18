@@ -1,5 +1,5 @@
 import React from 'react';
-import { Heading as CHeading } from '@chakra-ui/react';
+import { Heading as CHeading, Text as CText } from '@chakra-ui/react';
 
 export const Heading = ({ children }) => {
   return (
@@ -8,3 +8,5 @@ export const Heading = ({ children }) => {
     </CHeading>
   );
 };
+
+export const Text = CText;

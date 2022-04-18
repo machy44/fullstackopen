@@ -1,5 +1,11 @@
 import React from 'react';
 
-export const NavItem = () => {
-  return <div>NavItem</div>;
+import { Text, Flex, Link } from '@chakra-ui/react';
+
+export const NavItem = ({ children }) => {
+  return (
+    <Link>
+      <Text>{children}</Text>
+    </Link>
+  );
 };

@@ -27,7 +27,7 @@ const Layout = ({ error, handleLogout, userName }) => {
     createBlog(blogData);
   };
   return (
-    <Container>
+    <Container maxW="container.md">
       <Navigation userName={userName} handleClick={handleLogout} />
       <h2>blog app</h2>
       <SuccessNotification message={notificationSuccess} />

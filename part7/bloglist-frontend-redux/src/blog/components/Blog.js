@@ -2,22 +2,17 @@ import React from 'react';
 import { Link } from 'react-router-dom';
 
 import PropTypes from 'prop-types';
-
-const blogStyle = {
-  paddingTop: 10,
-  paddingLeft: 2,
-  border: 'solid',
-  borderWidth: 1,
-  marginBottom: 5
-};
+import { Card, Text } from 'ui';
 
 export const BlogMainInfo = ({ blog }) => {
   return (
-    <div style={blogStyle}>
+    <Card>
       <Link data-testid="blog-main-info" to={`/blogs/${blog.id}`}>
-        {blog.title} {blog.author}
+        <Text>
+          {blog.title} by {blog.author}
+        </Text>
       </Link>
-    </div>
+    </Card>
   );
 };
 
