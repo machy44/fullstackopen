@@ -1,4 +1,5 @@
 import React, { useState } from 'react';
+import { FormInput, Button, Container, CenteredFlex } from 'ui';
 
 const LoginForm = ({ handleSubmit }) => {
   const [username, setUsername] = useState('');
@@ -9,35 +10,38 @@ const LoginForm = ({ handleSubmit }) => {
     setUsername('');
     setPassword('');
   };
+
   return (
-    <>
-      <h1>login to application</h1>
-      <form onSubmit={onSubmit}>
-        <div>
-          <label htmlFor="name">username: </label>
-          <input
-            data-testid="username"
+    <Container maxW="50%" centerContent>
+      <CenteredFlex>
+        <h1>login to application</h1>
+        <form onSubmit={onSubmit}>
+          <FormInput
+            htmlFor="name"
+            labelText="username"
+            dataTestId="username"
             id="name"
-            name="name"
+            type="name"
             value={username}
             onChange={({ target }) => setUsername(target.value)}
+            isRequired
           />
-        </div>
-        <div>
-          <label htmlFor="password">password: </label>
-          <input
-            data-testid="password"
+          <FormInput
+            htmlFor="password"
+            labelText="password"
             id="password"
-            name="password"
+            type="password"
+            dataTestId="password"
             value={password}
             onChange={({ target }) => setPassword(target.value)}
+            isRequired
           />
-        </div>
-        <button data-testid="submit" type="submit">
-          login
-        </button>
-      </form>
-    </>
+          <Button data-testid="submit" type="submit">
+            login
+          </Button>
+        </form>
+      </CenteredFlex>
+    </Container>
   );
 };
 

@@ -14,6 +14,7 @@ import { useSelector } from 'react-redux';
 import { selectSuccessNotification, selectErrorNotification } from './notification/redux/notificationSlice';
 import { Routes, Route, Outlet } from 'react-router-dom';
 import { BlogsManager } from 'blog/components';
+import { Container } from 'ui';
 
 const Layout = ({ error, handleLogout, userName }) => {
   const notificationSuccess = useSelector(selectSuccessNotification);
@@ -26,7 +27,7 @@ const Layout = ({ error, handleLogout, userName }) => {
     createBlog(blogData);
   };
   return (
-    <div>
+    <Container>
       <Navigation userName={userName} handleClick={handleLogout} />
       <h2>blog app</h2>
       <SuccessNotification message={notificationSuccess} />
@@ -35,7 +36,7 @@ const Layout = ({ error, handleLogout, userName }) => {
         <CreateBlogForm handleSubmit={handleCreate} />
       </Togglable>
       <Outlet />
-    </div>
+    </Container>
   );
 };
 

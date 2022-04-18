@@ -12,7 +12,9 @@ export const Navigation = ({ userName, handleClick }) => {
         <Text>users</Text>
       </Link>
       <p>{userName} is logged in</p>
-      <Button onClick={handleClick}>logout</Button>
+      <Button onClick={handleClick} colorScheme="teal" mr="4">
+        logout
+      </Button>
     </Flex>
   );
 };
