@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import { FormInput, Button, Container, CenteredFlex } from 'ui';
+import { FormInput, Button, Container, CenteredFlex, Heading } from 'ui';
 
 const LoginForm = ({ handleSubmit }) => {
   const [username, setUsername] = useState('');
@@ -14,7 +14,7 @@ const LoginForm = ({ handleSubmit }) => {
   return (
     <Container maxW="50%" centerContent>
       <CenteredFlex>
-        <h1>login to application</h1>
+        <Heading>login to application</Heading>
         <form onSubmit={onSubmit}>
           <FormInput
             htmlFor="name"
