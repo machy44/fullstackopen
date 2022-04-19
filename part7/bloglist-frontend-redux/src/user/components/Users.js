@@ -1,5 +1,7 @@
 import React from 'react';
 import { useGetUsersQuery } from '../userService';
+import { Text, Table } from 'ui';
+import { Link as CLink, Tbody, Td, Th, Thead, Tr } from '@chakra-ui/react';
 import { Link } from 'react-router-dom';
 
 export const Users = () => {
@@ -9,19 +11,29 @@ export const Users = () => {
   }
 
   return (
-    <div>
-      <h1>Users</h1>
-      <span>Blogs created</span>
-      {users.map((user) => {
-        return (
-          <div key={user.id}>
-            <Link to={`/users/${user.id}`} style={{ marginRight: 10 }}>
-              {user.name}
-            </Link>
-            <span>{user.blogs.length}</span>
-          </div>
-        );
-      })}
-    </div>
+    <Table title="Users" variant="striped">
+      <Thead>
+        <Tr>
+          <Th>user</Th>
+          <Th>blogs created</Th>
+        </Tr>
+      </Thead>
+      <Tbody>
+        {users.map((user) => {
+          return (
+            <Tr key={user.id}>
+              <Td>
+                <CLink as={Link} to={`/users/${user.id}`} style={{ marginRight: 10 }}>
+                  {user.name}
+                </CLink>
+              </Td>
+              <Td>
+                <Text>{user.blogs.length}</Text>
+              </Td>
+            </Tr>
+          );
+        })}
+      </Tbody>
+    </Table>
   );
 };

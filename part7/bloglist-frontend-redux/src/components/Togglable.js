@@ -1,4 +1,5 @@
 import React, { useState, useImperativeHandle, forwardRef } from 'react';
+import { Button } from 'ui';
 
 export const Togglable = forwardRef((props, ref) => {
   const [visible, setVisible] = useState(false);
@@ -15,15 +16,19 @@ export const Togglable = forwardRef((props, ref) => {
   });
 
   return (
-    <div>
+    <>
       <div style={hideWhenVisible}>
-        <button onClick={toggleVisibility}>{props.buttonLabel}</button>
+        <Button type="button" onClick={toggleVisibility}>
+          {props.buttonLabel}
+        </Button>
       </div>
       <div style={showWhenVisible}>
         {props.children}
-        <button onClick={toggleVisibility}>cancel</button>
+        <Button type="button" onClick={toggleVisibility}>
+          cancel
+        </Button>
       </div>
-    </div>
+    </>
   );
 });
 
