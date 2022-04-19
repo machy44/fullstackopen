@@ -1,8 +1,8 @@
-import React from 'react';
+import React, { useState } from 'react';
 import { Link } from 'react-router-dom';
 
 import PropTypes from 'prop-types';
-import { Card, Text, UnorderedList, ListItem, Heading, Button } from 'ui';
+import { Card, Text, UnorderedList, ListItem, Heading, Button, Alert } from 'ui';
 import { Flex, Link as Clink } from '@chakra-ui/react';
 import { ExternalLinkIcon } from '@chakra-ui/icons';
 
@@ -32,6 +32,12 @@ const Comments = ({ comments }) => {
 };
 
 export const BlogDetails = ({ blog, handleLikeClick, handleDelete, userCreatedBlog }) => {
+  const [shouldConfirm, setConfirm] = useState(false);
+
+  const confirmDelete = () => {
+    setConfirm(true);
+  };
+
   return (
     <>
       <UnorderedList data-testid="blog-details">
@@ -56,13 +62,19 @@ export const BlogDetails = ({ blog, handleLikeClick, handleDelete, userCreatedBl
         <ListItem>
           {blog.user.username}
           {userCreatedBlog && (
-            <Button type="button" data-testid="remove-button" onClick={() => handleDelete(blog)}>
+            <Button type="button" data-testid="remove-button" onClick={confirmDelete}>
               remove
             </Button>
           )}
         </ListItem>
       </UnorderedList>
       <Comments comments={blog.comments} />
+      <Alert
+        body={`Remove ${blog.title} by ${blog.user.username}`}
+        isOpen={shouldConfirm}
+        onSubmit={() => handleDelete(blog)}
+        onCancel={() => setConfirm(false)}
+      />
     </>
   );
 };

@@ -7,7 +7,7 @@ import { ErrorNotification, SuccessNotification } from './notification/component
 import { Users } from './user/components/Users';
 import { User } from './user/components/User';
 import { useGetBlogsQuery, useCreateBlogMutation } from './blog/services/blogs';
-import { Center, Spinner } from '@chakra-ui/react';
+import { Center, Spinner, VStack } from '@chakra-ui/react';
 
 import { useLogin } from './login/hooks';
 import { useSelector } from 'react-redux';
@@ -36,10 +36,12 @@ const Layout = ({ error, handleLogout, userName }) => {
       <Navigation userName={userName} handleClick={handleLogout} />
       <SuccessNotification message={notificationSuccess} />
       {error && <ErrorNotification message={error} />}
-      <Togglable buttonLabel="create new blog" ref={blogFormRef}>
-        <CreateBlogForm handleSubmit={handleCreate} />
-      </Togglable>
-      <Outlet />
+      <VStack spacing={5} align="stretch">
+        <Togglable buttonLabel="create new blog" ref={blogFormRef}>
+          <CreateBlogForm handleSubmit={handleCreate} />
+        </Togglable>
+        <Outlet />
+      </VStack>
     </Container>
   );
 };

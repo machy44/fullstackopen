@@ -17,8 +17,6 @@ export const BlogsManager = ({ blogs, user }) => {
   const blog = match ? blogs.find((blog) => String(blog.id) === String(match.params.blogId)) : null;
 
   const handleDelete = async (blog) => {
-    const result = window.confirm(`Remove ${blog.title} by ${blog.user.username}`);
-    if (result === false) return;
     removeBlog(blog.id);
     navigate(-1);
   };
