@@ -6,7 +6,7 @@
 - This project uses [redux-toolkit](https://redux-toolkit.js.org/) for state and
   [RTK](https://redux-toolkit.js.org/rtk-query/overview) for fetching and caching data.
 - [react router v6](https://reactrouter.com/docs/en/v6/getting-started/overview) is used for routing.
-- [react hook forms](https://react-hook-form.com/) with yup are used for form validations
+- [react hook forms](https://react-hook-form.com/) with [yup](https://www.npmjs.com/package/yup) are used for form validations
 
 ## development
 
