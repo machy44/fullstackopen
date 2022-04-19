@@ -1,4 +1,5 @@
 import React, { useState } from 'react';
+import { Button, FormInput, Heading } from 'ui';
 
 export const CreateBlogForm = ({ handleSubmit }) => {
   const [title, setTitle] = useState('');
@@ -14,35 +15,41 @@ export const CreateBlogForm = ({ handleSubmit }) => {
 
   return (
     <>
-      <h1>create New</h1>
+      <Heading>create new</Heading>
       <form onSubmit={onSubmit} data-testid="create-blog-form">
-        <div>
-          <label htmlFor="title">title: </label>
-          <input
-            data-testid="title"
-            id="title"
-            name="title"
-            value={title}
-            onChange={({ target }) => setTitle(target.value)}
-          />
-        </div>
-        <div>
-          <label htmlFor="author">author: </label>
-          <input
-            data-testid="author"
-            id="author"
-            name="author"
-            value={author}
-            onChange={({ target }) => setAuthor(target.value)}
-          />
-        </div>
-        <div>
-          <label htmlFor="author">url: </label>
-          <input data-testid="url" id="url" name="url" value={url} onChange={({ target }) => setUrl(target.value)} />
-        </div>
-        <button data-testid="new-blog-form-submit" type="submit">
+        <FormInput
+          htmlFor="title"
+          labelText="title"
+          dataTestId="title"
+          id="title"
+          type="title"
+          value={title}
+          onChange={({ target }) => setTitle(target.value)}
+          isRequired
+        />
+        <FormInput
+          htmlFor="author"
+          labelText="author"
+          dataTestId="author"
+          id="author"
+          type="author"
+          value={author}
+          onChange={({ target }) => setAuthor(target.value)}
+          isRequired
+        />
+        <FormInput
+          htmlFor="url"
+          labelText="url"
+          dataTestId="url"
+          id="url"
+          type="url"
+          value={url}
+          onChange={({ target }) => setUrl(target.value)}
+          isRequired
+        />
+        <Button data-testid="new-blog-form-submit" type="submit">
           create
-        </button>
+        </Button>
       </form>
     </>
   );
