@@ -29,6 +29,7 @@
     "eslint": "eslint .",
     "eslint:fix": "eslint --fix --ext .js,.jsx .",
     "cypress:open": "cypress open",
+    "cypress:run": "cypress run",
     "storybook": "start-storybook -p 6006 -s public",
     "build-storybook": "build-storybook -s public"
   },
