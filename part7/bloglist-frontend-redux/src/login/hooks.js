@@ -28,8 +28,7 @@ export const useLogin = () => {
     window.localStorage.removeItem('loggedInBlogListUser');
   };
 
-  const handleLogin = async (event, username, password) => {
-    event.preventDefault();
+  const handleLogin = async (username, password) => {
     try {
       const user = await login({ username, password }).unwrap();
       window.localStorage.setItem('loggedInBlogListUser', JSON.stringify(user));

@@ -1,30 +1,38 @@
-import React, { useState } from 'react';
+import React from 'react';
+import { useForm } from 'react-hook-form';
+
 import { FormInput, Button, Container, CenteredFlex, Heading } from 'ui';
 
 const LoginForm = ({ handleSubmit }) => {
-  const [username, setUsername] = useState('');
-  const [password, setPassword] = useState('');
+  const {
+    handleSubmit: RHKHandleSubmit,
+    register,
+    formState: { errors, isSubmitting }
+  } = useForm();
 
-  const onSubmit = (e) => {
-    handleSubmit(e, username, password);
-    setUsername('');
-    setPassword('');
+  const onSubmit = ({ username, password }) => {
+    handleSubmit(username, password);
   };
+
+  console.log({ errors });
 
   return (
     <Container maxW="50%" centerContent>
       <CenteredFlex>
         <Heading>login to application</Heading>
-        <form onSubmit={onSubmit}>
+        <form onSubmit={RHKHandleSubmit(onSubmit)}>
           <FormInput
-            htmlFor="name"
+            htmlFor="username"
             labelText="username"
             dataTestId="username"
-            id="name"
-            type="name"
-            value={username}
-            onChange={({ target }) => setUsername(target.value)}
+            id="username"
+            type="username"
+            error={errors.username}
             isRequired
+            {...register('username', {
+              required: 'Name is required',
+              minLength: { value: 3, message: 'Minimum length should be 3' }
+            })}
           />
           <FormInput
             htmlFor="password"
@@ -32,11 +40,14 @@ const LoginForm = ({ handleSubmit }) => {
             id="password"
             type="password"
             dataTestId="password"
-            value={password}
-            onChange={({ target }) => setPassword(target.value)}
             isRequired
+            error={errors.password}
+            {...register('password', {
+              required: 'Password is required',
+              minLength: { value: 3, message: 'Minimum length should be 3' }
+            })}
           />
-          <Button data-testid="submit" type="submit">
+          <Button data-testid="submit" type="submit" isLoading={isSubmitting}>
             login
           </Button>
         </form>
