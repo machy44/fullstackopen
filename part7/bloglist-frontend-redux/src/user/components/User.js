@@ -1,6 +1,8 @@
 import React from 'react';
 import { useGetUsersQuery } from '../userService';
 import { useMatch, Link } from 'react-router-dom';
+import { Heading, OrderedList, ListItem } from 'ui';
+import { Link as CLink } from '@chakra-ui/react';
 
 export const User = () => {
   const { data: users, isLoading: isLoadingUsers } = useGetUsersQuery();
@@ -17,16 +19,21 @@ export const User = () => {
   }
 
   console.log({ users });
+
   return (
-    <div>
-      <h1>{user.name}</h1>
-      {user.blogs.map((blog) => {
-        return (
-          <div key={blog.id}>
-            <Link to={`/blogs/${blog.id}`}>{blog.title}</Link>
-          </div>
-        );
-      })}
-    </div>
+    <>
+      <Heading>{user.name}</Heading>
+      <OrderedList spacing={2}>
+        {user.blogs.map((blog) => {
+          return (
+            <ListItem key={blog.id}>
+              <CLink as={Link} to={`/blogs/${blog.id}`}>
+                {blog.title}
+              </CLink>
+            </ListItem>
+          );
+        })}
+      </OrderedList>
+    </>
   );
 };
