@@ -1,13 +1,18 @@
 # guidelines for using this project
 
-project is created with [CRA](https://create-react-app.dev/). This project uses [redux-toolkit](https://redux-toolkit.js.org/) for state and
-[RTK](https://redux-toolkit.js.org/rtk-query/overview) for fetching and caching data.
+## general info
+
+- project is created with [CRA](https://create-react-app.dev/).
+- This project uses [redux-toolkit](https://redux-toolkit.js.org/) for state and
+  [RTK](https://redux-toolkit.js.org/rtk-query/overview) for fetching and caching data.
+- [react router v6](https://reactrouter.com/docs/en/v6/getting-started/overview) is used for routing.
+- [react hook forms](https://react-hook-form.com/) with yup are used for form validations
 
 ## development
 
-1. install npm and node
-2. npm install
-3. npm start
+1. [install npm and node](https://nodejs.org/en/download/) -> `npm` is included in `node.js` installation
+2. run `npm install`
+3. run `npm start`
 
 ## tests
 
@@ -22,7 +27,3 @@ project is created with [CRA](https://create-react-app.dev/). This project uses 
 
 - [Chakra UI](https://chakra-ui.com/) is used to create and style react components
 - [Storybook](https://storybook.js.org/) is used to implement components in isolation
-
-## Forms
-
-[react hook forms](https://react-hook-form.com/) with yup are used for form validations
