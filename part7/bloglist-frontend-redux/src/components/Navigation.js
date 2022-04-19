@@ -1,7 +1,6 @@
 import React from 'react';
-import { Button, Text, Flex, HStack } from '@chakra-ui/react';
+import { Button, Text, Flex, HStack, Link as CLink, Spacer } from '@chakra-ui/react';
 import { Link } from 'react-router-dom';
-import { Link as CLink, Spacer } from '@chakra-ui/react';
 
 export const Navigation = ({ userName, handleClick }) => {
   return (
