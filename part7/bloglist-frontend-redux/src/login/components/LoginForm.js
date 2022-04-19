@@ -1,14 +1,26 @@
 import React from 'react';
 import { useForm } from 'react-hook-form';
-
+import * as yup from 'yup';
 import { FormInput, Button, Container, CenteredFlex, Heading } from 'ui';
+import { yupResolver } from '@hookform/resolvers/yup';
+
+const schema = yup
+  .object()
+  .shape({
+    username: yup.string().min(3, 'Minimum length should be 3').required('Name is required'),
+    password: yup.string().min(3, 'Minimum length should be 3').required('Password is required')
+  })
+  .required();
 
 const LoginForm = ({ handleSubmit }) => {
   const {
     handleSubmit: RHKHandleSubmit,
     register,
     formState: { errors, isSubmitting }
-  } = useForm();
+  } = useForm({
+    mode: 'all',
+    resolver: yupResolver(schema)
+  });
 
   const onSubmit = ({ username, password }) => {
     handleSubmit(username, password);
@@ -29,10 +41,7 @@ const LoginForm = ({ handleSubmit }) => {
             type="username"
             error={errors.username}
             isRequired
-            {...register('username', {
-              required: 'Name is required',
-              minLength: { value: 3, message: 'Minimum length should be 3' }
-            })}
+            {...register('username')}
           />
           <FormInput
             htmlFor="password"
@@ -42,12 +51,14 @@ const LoginForm = ({ handleSubmit }) => {
             dataTestId="password"
             isRequired
             error={errors.password}
-            {...register('password', {
-              required: 'Password is required',
-              minLength: { value: 3, message: 'Minimum length should be 3' }
-            })}
+            {...register('password')}
           />
-          <Button data-testid="submit" type="submit" isLoading={isSubmitting}>
+          <Button
+            data-testid="submit"
+            type="submit"
+            isLoading={isSubmitting}
+            width="full"
+            disabled={!!errors.username || !!errors.password}>
             login
           </Button>
         </form>

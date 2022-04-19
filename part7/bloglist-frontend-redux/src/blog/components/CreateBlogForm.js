@@ -1,6 +1,6 @@
 import { VStack } from '@chakra-ui/react';
 import React, { useState } from 'react';
-import { Button, FormInput, Heading } from 'ui';
+import { Button, Heading } from 'ui';
 
 export const CreateBlogForm = ({ handleSubmit }) => {
   const [title, setTitle] = useState('');
@@ -19,7 +19,7 @@ export const CreateBlogForm = ({ handleSubmit }) => {
       <Heading>create new</Heading>
       <form onSubmit={onSubmit} data-testid="create-blog-form">
         <VStack spacing={5} align="stretch">
-          <FormInput
+          {/* <FormInput
             htmlFor="title"
             labelText="title"
             dataTestId="title"
@@ -48,7 +48,7 @@ export const CreateBlogForm = ({ handleSubmit }) => {
             value={url}
             onChange={({ target }) => setUrl(target.value)}
             isRequired
-          />
+          /> */}
           <Button data-testid="new-blog-form-submit" type="submit">
             create
           </Button>
