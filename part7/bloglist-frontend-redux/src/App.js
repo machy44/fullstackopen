@@ -15,7 +15,7 @@ import { selectSuccessNotification, selectErrorNotification } from './notificati
 import { Routes, Route, Outlet } from 'react-router-dom';
 import { BlogsManager } from 'blog/components';
 import { Container, Heading } from 'ui';
-import { useDisclosure } from '@chakra-ui/react';
+import { useDisclosure, useColorModeValue } from '@chakra-ui/react';
 import { Modal } from 'ui';
 import { Button } from './ui/Button';
 
@@ -40,11 +40,12 @@ const CreateBlog = () => {
 
 const Layout = ({ error, handleLogout, userName }) => {
   const notificationSuccess = useSelector(selectSuccessNotification);
-
+  const bgColor = useColorModeValue('gray.50', 'whiteAlpha.50');
+  const textColor = useColorModeValue('blackAlpha.800', 'red.50');
   return (
     <Container maxW="container.md">
-      <Center bg="gray.50" h="100px" color="white">
-        <Heading as="i" color="blackAlpha.800">
+      <Center bg={bgColor} h="100px" color="white">
+        <Heading as="i" color={textColor}>
           blog app
         </Heading>
       </Center>
