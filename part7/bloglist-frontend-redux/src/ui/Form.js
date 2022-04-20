@@ -1,17 +1,17 @@
 import React, { forwardRef } from 'react';
-import { FormControl, FormErrorMessage, FormLabel, Input, VStack } from '@chakra-ui/react';
+import { FormControl, FormErrorMessage, FormLabel, Input, VStack, Center } from '@chakra-ui/react';
 import { Heading } from './Typography';
 import { yupResolver } from '@hookform/resolvers/yup';
 import { useForm } from 'react-hook-form';
 import PropTypes from 'prop-types';
 
 export const FormInput = forwardRef(
-  ({ htmlFor, id, type, labelText, dataTestId, error, isRequired = true, ...validationProps }, ref) => {
+  ({ id, type, labelText, dataTestId, error, isRequired = true, ...validationProps }, ref) => {
     console.log({ validationProps });
     return (
       <FormControl isRequired={isRequired} isInvalid={error}>
-        <FormLabel htmlFor={htmlFor}>{labelText}</FormLabel>
-        <Input id={id} type={type} data-testid={dataTestId} {...validationProps} ref={ref} />
+        <FormLabel htmlFor={id}>{labelText || id}</FormLabel>
+        <Input id={id} type={type || id} data-testid={dataTestId || id} {...validationProps} ref={ref} />
         <FormErrorMessage>{error && error.message}</FormErrorMessage>
       </FormControl>
     );
@@ -19,6 +19,16 @@ export const FormInput = forwardRef(
 );
 
 FormInput.displayName = 'FormInput';
+
+FormInput.propTypes = {
+  id: PropTypes.string.isRequired,
+  type: PropTypes.string,
+  labelText: PropTypes.string,
+  dataTestId: PropTypes.string,
+  isRequired: PropTypes.bool,
+  error: PropTypes.object.isRequired,
+  validationProps: PropTypes.object.isRequired
+};
 
 export const Form = ({ handleSubmit, children, schemaValidation, title, dataTestId }) => {
   const {
@@ -32,7 +42,13 @@ export const Form = ({ handleSubmit, children, schemaValidation, title, dataTest
   return (
     <form data-testid={dataTestId} onSubmit={RHKHandleSubmit(handleSubmit)}>
       <VStack spacing={5} align="stretch">
-        {typeof title === 'string' ? <Heading>{title}</Heading> : title}
+        {typeof title === 'string' ? (
+          <Center>
+            <Heading>{title}</Heading>
+          </Center>
+        ) : (
+          title
+        )}
         {children({ register, errors, isSubmitting })}
       </VStack>
     </form>

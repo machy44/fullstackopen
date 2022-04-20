@@ -9,7 +9,6 @@ export const Navigation = ({ userName, handleClick }) => {
         <CLink as={Link} to="/blogs">
           <Text>blogs</Text>
         </CLink>
-
         <CLink as={Link} to="/users">
           <Text>users</Text>
         </CLink>

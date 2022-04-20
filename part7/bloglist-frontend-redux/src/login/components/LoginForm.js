@@ -22,15 +22,7 @@ const LoginForm = ({ handleSubmit }) => {
           {({ register, errors, isSubmitting }) => {
             return (
               <>
-                <FormInput
-                  htmlFor="username"
-                  labelText="username"
-                  dataTestId="username"
-                  id="username"
-                  type="username"
-                  error={errors.username}
-                  {...register('username')}
-                />
+                <FormInput id="username" error={errors.username} {...register('username')} />
                 <FormInput
                   htmlFor="password"
                   labelText="password"

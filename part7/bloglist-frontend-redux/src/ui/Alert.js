@@ -5,10 +5,9 @@ import {
   AlertDialogContent,
   AlertDialogCloseButton,
   AlertDialogBody,
-  AlertDialogFooter,
-  Button
+  AlertDialogFooter
 } from '@chakra-ui/react';
-// import { Button } from 'ui';
+import { Button } from 'ui';
 
 export const Alert = ({ body, isOpen, onSubmit, onCancel }) => {
   const cancelRef = React.useRef();

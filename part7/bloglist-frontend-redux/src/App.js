@@ -1,13 +1,13 @@
 /* eslint-disable no-unused-vars */
 import React, { useRef } from 'react';
-import { Togglable, Navigation, NotExists } from './components';
+import { Navigation, NotExists } from './components';
 import { LoginForm } from './login/components';
 import { CreateBlogForm } from './blog/components';
 import { ErrorNotification, SuccessNotification } from './notification/components';
 import { Users } from './user/components/Users';
 import { User } from './user/components/User';
 import { useGetBlogsQuery, useCreateBlogMutation } from './blog/services/blogs';
-import { Center, Spinner, VStack } from '@chakra-ui/react';
+import { Center, Spinner, VStack, Spacer } from '@chakra-ui/react';
 
 import { useLogin } from './login/hooks';
 import { useSelector } from 'react-redux';
@@ -15,15 +15,18 @@ import { selectSuccessNotification, selectErrorNotification } from './notificati
 import { Routes, Route, Outlet } from 'react-router-dom';
 import { BlogsManager } from 'blog/components';
 import { Container, Heading } from 'ui';
+import { useDisclosure } from '@chakra-ui/react';
+import { Modal } from 'ui';
+import { Button } from './ui/Button';
 
 const Layout = ({ error, handleLogout, userName }) => {
   const notificationSuccess = useSelector(selectSuccessNotification);
+  const { isOpen, onClose, onOpen } = useDisclosure();
   const [createBlog, result] = useCreateBlogMutation();
-  const blogFormRef = useRef();
 
   const handleCreate = async (blogData) => {
-    blogFormRef.current.toggleVisibility();
     createBlog(blogData);
+    onClose();
   };
   return (
     <Container maxW="container.md">
@@ -35,10 +38,13 @@ const Layout = ({ error, handleLogout, userName }) => {
       <Navigation userName={userName} handleClick={handleLogout} />
       <SuccessNotification message={notificationSuccess} />
       {error && <ErrorNotification message={error} />}
+      <Button type="button" onClick={onOpen} mb={4}>
+        create blog
+      </Button>
+      <Modal isOpen={isOpen} title="Create blog" onClose={onClose}>
+        <CreateBlogForm handleSubmit={handleCreate} />
+      </Modal>
       <VStack spacing={5} align="stretch">
-        <Togglable buttonLabel="create new blog" ref={blogFormRef}>
-          <CreateBlogForm handleSubmit={handleCreate} />
-        </Togglable>
         <Outlet />
       </VStack>
     </Container>

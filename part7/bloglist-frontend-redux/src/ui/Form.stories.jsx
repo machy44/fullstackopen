@@ -1,6 +1,9 @@
 import React from 'react';
 
-import { FormInput as BFormInput } from './Form';
+import {
+  FormInput as BFormInput
+  // , Form as BFormInput
+} from './Form';
 
 export default {
   title: 'Form',
@@ -21,3 +24,5 @@ FormInput.args = {
   onChange: () => {},
   isRequired: true
 };
+
+// export const Form =
