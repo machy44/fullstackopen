@@ -19,15 +19,28 @@ import { useDisclosure } from '@chakra-ui/react';
 import { Modal } from 'ui';
 import { Button } from './ui/Button';
 
-const Layout = ({ error, handleLogout, userName }) => {
-  const notificationSuccess = useSelector(selectSuccessNotification);
+const CreateBlog = () => {
   const { isOpen, onClose, onOpen } = useDisclosure();
-  const [createBlog, result] = useCreateBlogMutation();
-
+  const [createBlog] = useCreateBlogMutation();
   const handleCreate = async (blogData) => {
     createBlog(blogData);
     onClose();
   };
+  return (
+    <>
+      <Button type="button" onClick={onOpen} mb={4}>
+        create blog
+      </Button>
+      <Modal isOpen={isOpen} title="Create blog" onClose={onClose}>
+        <CreateBlogForm handleSubmit={handleCreate} />
+      </Modal>
+    </>
+  );
+};
+
+const Layout = ({ error, handleLogout, userName }) => {
+  const notificationSuccess = useSelector(selectSuccessNotification);
+
   return (
     <Container maxW="container.md">
       <Center bg="gray.50" h="100px" color="white">
@@ -38,12 +51,7 @@ const Layout = ({ error, handleLogout, userName }) => {
       <Navigation userName={userName} handleClick={handleLogout} />
       <SuccessNotification message={notificationSuccess} />
       {error && <ErrorNotification message={error} />}
-      <Button type="button" onClick={onOpen} mb={4}>
-        create blog
-      </Button>
-      <Modal isOpen={isOpen} title="Create blog" onClose={onClose}>
-        <CreateBlogForm handleSubmit={handleCreate} />
-      </Modal>
+      <CreateBlog />
       <VStack spacing={5} align="stretch">
         <Outlet />
       </VStack>
