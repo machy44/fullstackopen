@@ -1,6 +1,6 @@
 import React from 'react';
 import * as yup from 'yup';
-import { FormInput, Button, Container, CenteredFlex, Heading, Form } from 'ui';
+import { FormInput, Button, Container, CenteredFlex, Form } from 'ui';
 
 const schema = yup
   .object()
@@ -18,8 +18,7 @@ const LoginForm = ({ handleSubmit }) => {
   return (
     <Container maxW="50%" centerContent>
       <CenteredFlex>
-        <Heading>login to application</Heading>
-        <Form handleSubmit={onSubmit} schemaValidation={schema}>
+        <Form handleSubmit={onSubmit} schemaValidation={schema} title="login to application">
           {({ register, errors, isSubmitting }) => {
             return (
               <>

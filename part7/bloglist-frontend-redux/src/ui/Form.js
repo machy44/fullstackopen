@@ -1,5 +1,6 @@
 import React, { forwardRef } from 'react';
-import { FormControl, FormErrorMessage, FormLabel, Input } from '@chakra-ui/react';
+import { FormControl, FormErrorMessage, FormLabel, Input, VStack } from '@chakra-ui/react';
+import { Heading } from './Typography';
 import { yupResolver } from '@hookform/resolvers/yup';
 import { useForm } from 'react-hook-form';
 import PropTypes from 'prop-types';
@@ -19,7 +20,7 @@ export const FormInput = forwardRef(
 
 FormInput.displayName = 'FormInput';
 
-export const Form = ({ handleSubmit, children, schemaValidation, dataTestId }) => {
+export const Form = ({ handleSubmit, children, schemaValidation, title, dataTestId }) => {
   const {
     handleSubmit: RHKHandleSubmit,
     register,
@@ -29,8 +30,11 @@ export const Form = ({ handleSubmit, children, schemaValidation, dataTestId }) =
     resolver: yupResolver(schemaValidation)
   });
   return (
-    <form dataTestId={dataTestId} onSubmit={RHKHandleSubmit(handleSubmit)}>
-      {children({ register, errors, isSubmitting })}
+    <form data-testid={dataTestId} onSubmit={RHKHandleSubmit(handleSubmit)}>
+      <VStack spacing={5} align="stretch">
+        {typeof title === 'string' ? <Heading>{title}</Heading> : title}
+        {children({ register, errors, isSubmitting })}
+      </VStack>
     </form>
   );
 };
@@ -39,5 +43,6 @@ Form.propTypes = {
   handleSubmit: PropTypes.func.isRequired,
   children: PropTypes.func.isRequired,
   schemaValidation: PropTypes.object.isRequired,
+  title: PropTypes.oneOf([PropTypes.element.isRequired, PropTypes.string.isRequired]),
   dataTestId: PropTypes.string
 };
