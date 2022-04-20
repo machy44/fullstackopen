@@ -1,4 +1,5 @@
 import React from 'react';
+import { Grid, GridItem, Spacer } from '@chakra-ui/react';
 import { UnorderedList, ListItem, Heading, Button, Form, FormInput } from 'ui';
 
 import * as yup from 'yup';
@@ -14,17 +15,22 @@ export const Comments = ({ comments, handleSubmit }) => {
       <Form handleSubmit={handleSubmit} schemaValidation={schema} title={null}>
         {({ register, errors, isSubmitting }) => {
           return (
-            <>
-              <FormInput id="comment" labelText="text" error={errors.username} {...register('comment')} />
-              <Button
-                data-testid="comment-submit"
-                type="submit"
-                isLoading={isSubmitting}
-                width="full"
-                disabled={!!errors.comment}>
-                add comment
-              </Button>
-            </>
+            <Grid templateColumns="2fr 1fr" gap={4}>
+              <GridItem>
+                <FormInput id="comment" labelText="text" error={errors.username} {...register('comment')} />
+              </GridItem>
+              <GridItem>
+                <Spacer />
+                <Button
+                  data-testid="comment-submit"
+                  type="submit"
+                  isLoading={isSubmitting}
+                  width="full"
+                  disabled={!!errors.comment}>
+                  add comment
+                </Button>
+              </GridItem>
+            </Grid>
           );
         }}
       </Form>
