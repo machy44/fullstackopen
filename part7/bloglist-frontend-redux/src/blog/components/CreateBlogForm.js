@@ -16,33 +16,9 @@ export const CreateBlogForm = ({ handleSubmit }) => {
     <Form handleSubmit={handleSubmit} schemaValidation={schema} dataTestId="create-blog-form" title="create new">
       {({ register, errors, isSubmitting }) => (
         <>
-          <FormInput
-            htmlFor="title"
-            labelText="title"
-            dataTestId="title"
-            id="title"
-            type="title"
-            error={errors.title}
-            {...register('title')}
-          />
-          <FormInput
-            htmlFor="author"
-            labelText="author"
-            dataTestId="author"
-            id="author"
-            type="author"
-            error={errors.author}
-            {...register('author')}
-          />
-          <FormInput
-            htmlFor="url"
-            labelText="url"
-            dataTestId="url"
-            id="url"
-            type="url"
-            error={errors.url}
-            {...register('url')}
-          />
+          <FormInput id="title" error={errors.title} {...register('title')} />
+          <FormInput id="author" error={errors.author} {...register('author')} />
+          <FormInput id="url" error={errors.url} {...register('url')} />
           <Button
             isLoading={isSubmitting}
             data-testid="new-blog-form-submit"

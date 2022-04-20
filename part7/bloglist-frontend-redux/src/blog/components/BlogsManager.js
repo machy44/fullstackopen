@@ -1,12 +1,13 @@
 import React from 'react';
 import { BlogDetails } from './Blog';
-import { useIncrementLikeMutation, useRemoveBlogMutation } from '../services/blogs';
+import { useIncrementLikeMutation, useRemoveBlogMutation, useCommentBlogMutation } from '../services/blogs';
 import { Routes, Route, useMatch, useNavigate } from 'react-router-dom';
 import { Blogs } from './Blogs';
 
 export const BlogsManager = ({ blogs, user }) => {
   const [removeBlog] = useRemoveBlogMutation();
   const [updateLike] = useIncrementLikeMutation();
+  const [commentBlog] = useCommentBlogMutation();
   const match = useMatch('/blogs/:blogId');
   const navigate = useNavigate();
 
@@ -21,6 +22,10 @@ export const BlogsManager = ({ blogs, user }) => {
     navigate(-1);
   };
 
+  const handleComment = ({ comment }) => {
+    commentBlog({ id: blog.id, text: comment });
+  };
+
   return (
     <Routes>
       <Route index element={<Blogs blogs={blogs} />} />
@@ -32,6 +37,7 @@ export const BlogsManager = ({ blogs, user }) => {
               blog={blog}
               handleLikeClick={handleLikeClick}
               handleDelete={handleDelete}
+              handleCommentBlog={handleComment}
               userCreatedBlog={user.username === blog.user.username}
             />
           )

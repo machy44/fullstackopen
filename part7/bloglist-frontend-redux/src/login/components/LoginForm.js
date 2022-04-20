@@ -23,15 +23,7 @@ const LoginForm = ({ handleSubmit }) => {
             return (
               <>
                 <FormInput id="username" error={errors.username} {...register('username')} />
-                <FormInput
-                  htmlFor="password"
-                  labelText="password"
-                  id="password"
-                  type="password"
-                  dataTestId="password"
-                  error={errors.password}
-                  {...register('password')}
-                />
+                <FormInput id="password" error={errors.password} {...register('password')} />
                 <Button
                   data-testid="submit"
                   type="submit"

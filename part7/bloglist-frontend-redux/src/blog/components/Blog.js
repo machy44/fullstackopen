@@ -2,9 +2,10 @@ import React, { useState } from 'react';
 import { Link } from 'react-router-dom';
 
 import PropTypes from 'prop-types';
-import { Card, Text, UnorderedList, ListItem, Heading, Button, Alert } from 'ui';
+import { Card, Text, UnorderedList, ListItem, Button, Alert } from 'ui';
 import { Flex, Link as Clink } from '@chakra-ui/react';
 import { ExternalLinkIcon } from '@chakra-ui/icons';
+import { Comments } from '../../comments/Comments';
 
 export const BlogMainInfo = ({ blog }) => {
   return (
@@ -18,20 +19,7 @@ export const BlogMainInfo = ({ blog }) => {
   );
 };
 
-const Comments = ({ comments }) => {
-  return (
-    <>
-      <Heading>comments</Heading>
-      <UnorderedList>
-        {comments.map((comment) => {
-          return <ListItem key={comment.id}>{comment.text}</ListItem>;
-        })}
-      </UnorderedList>
-    </>
-  );
-};
-
-export const BlogDetails = ({ blog, handleLikeClick, handleDelete, userCreatedBlog }) => {
+export const BlogDetails = ({ blog, handleLikeClick, handleDelete, userCreatedBlog, handleCommentBlog }) => {
   const [shouldConfirm, setConfirm] = useState(false);
 
   const confirmDelete = () => {
@@ -42,9 +30,9 @@ export const BlogDetails = ({ blog, handleLikeClick, handleDelete, userCreatedBl
     <>
       <UnorderedList data-testid="blog-details">
         <ListItem>
-          <h1>
+          <Text>
             {blog.title} {blog.author}
-          </h1>
+          </Text>
         </ListItem>
         <ListItem>
           <Clink href={blog.url} isExternal>
@@ -68,7 +56,7 @@ export const BlogDetails = ({ blog, handleLikeClick, handleDelete, userCreatedBl
           )}
         </ListItem>
       </UnorderedList>
-      <Comments comments={blog.comments} />
+      <Comments comments={blog.comments} handleSubmit={handleCommentBlog} />
       <Alert
         body={`Remove ${blog.title} by ${blog.user.username}`}
         isOpen={shouldConfirm}

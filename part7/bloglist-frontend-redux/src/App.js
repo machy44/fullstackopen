@@ -7,7 +7,7 @@ import { ErrorNotification, SuccessNotification } from './notification/component
 import { Users } from './user/components/Users';
 import { User } from './user/components/User';
 import { useGetBlogsQuery, useCreateBlogMutation } from './blog/services/blogs';
-import { Center, Spinner, VStack, Spacer } from '@chakra-ui/react';
+import { Center, Spinner, VStack } from '@chakra-ui/react';
 
 import { useLogin } from './login/hooks';
 import { useSelector } from 'react-redux';

@@ -50,6 +50,16 @@ export const blogsApi = createApi({
         method: 'DELETE'
       }),
       invalidatesTags: ['Blogs']
+    }),
+    commentBlog: builder.mutation({
+      query: ({ id, text }) => ({
+        url: `/${id}/comments`,
+        method: 'POST',
+        body: {
+          text
+        }
+      }),
+      invalidatesTags: ['Blogs']
     })
   })
 });
@@ -60,5 +70,6 @@ export const {
   useGetBlogByIdQuery,
   useCreateBlogMutation,
   useIncrementLikeMutation,
-  useRemoveBlogMutation
+  useRemoveBlogMutation,
+  useCommentBlogMutation
 } = blogsApi;
