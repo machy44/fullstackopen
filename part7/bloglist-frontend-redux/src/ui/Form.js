@@ -34,13 +34,19 @@ export const Form = ({ handleSubmit, children, schemaValidation, title, dataTest
   const {
     handleSubmit: RHKHandleSubmit,
     register,
-    formState: { errors, isSubmitting }
+    formState: { errors, isSubmitting },
+    reset
   } = useForm({
     mode: 'all',
     resolver: yupResolver(schemaValidation)
   });
   return (
-    <form data-testid={dataTestId} onSubmit={RHKHandleSubmit(handleSubmit)}>
+    <form
+      data-testid={dataTestId}
+      onSubmit={RHKHandleSubmit((args) => {
+        reset();
+        handleSubmit(args);
+      })}>
       <VStack spacing={5} align="stretch">
         {typeof title === 'string' ? (
           <Center>
