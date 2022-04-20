@@ -2,7 +2,7 @@ import React, { forwardRef } from 'react';
 import { FormControl, FormErrorMessage, FormLabel, Input } from '@chakra-ui/react';
 
 export const FormInput = forwardRef(
-  ({ htmlFor, id, type, labelText, dataTestId, error, isRequired = false, ...validationProps }, ref) => {
+  ({ htmlFor, id, type, labelText, dataTestId, error, isRequired = true, ...validationProps }, ref) => {
     console.log({ validationProps });
     return (
       <FormControl isRequired={isRequired} isInvalid={error}>

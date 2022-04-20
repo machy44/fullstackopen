@@ -1,33 +1,44 @@
 import { VStack } from '@chakra-ui/react';
-import React, { useState } from 'react';
-import { Button, Heading } from 'ui';
+import React from 'react';
+import { useForm } from 'react-hook-form';
+import * as yup from 'yup';
+import { Button, Heading, FormInput } from 'ui';
+import { yupResolver } from '@hookform/resolvers/yup';
+
+const schema = yup
+  .object()
+  .shape({
+    title: yup.string().min(3).required('title is required'),
+    author: yup.string().min(3).required('author is required'),
+    url: yup.string().min(3).required('urls is required')
+  })
+  .required();
 
 export const CreateBlogForm = ({ handleSubmit }) => {
-  const [title, setTitle] = useState('');
-  const [author, setAuthor] = useState('');
-  const [url, setUrl] = useState('');
+  const {
+    handleSubmit: RHKHandleSubmit,
+    register,
+    formState: { errors, isSubmitting }
+  } = useForm({
+    mode: 'all',
+    resolver: yupResolver(schema)
+  });
 
-  const onSubmit = (e) => {
-    handleSubmit(e, { title, author, url });
-    setTitle('');
-    setAuthor('');
-    setUrl('');
-  };
+  console.log({ errors });
 
   return (
     <>
       <Heading>create new</Heading>
-      <form onSubmit={onSubmit} data-testid="create-blog-form">
+      <form onSubmit={RHKHandleSubmit(handleSubmit)} data-testid="create-blog-form">
         <VStack spacing={5} align="stretch">
-          {/* <FormInput
+          <FormInput
             htmlFor="title"
             labelText="title"
             dataTestId="title"
             id="title"
             type="title"
-            value={title}
-            onChange={({ target }) => setTitle(target.value)}
-            isRequired
+            error={errors.title}
+            {...register('title')}
           />
           <FormInput
             htmlFor="author"
@@ -35,9 +46,8 @@ export const CreateBlogForm = ({ handleSubmit }) => {
             dataTestId="author"
             id="author"
             type="author"
-            value={author}
-            onChange={({ target }) => setAuthor(target.value)}
-            isRequired
+            error={errors.author}
+            {...register('author')}
           />
           <FormInput
             htmlFor="url"
@@ -45,11 +55,14 @@ export const CreateBlogForm = ({ handleSubmit }) => {
             dataTestId="url"
             id="url"
             type="url"
-            value={url}
-            onChange={({ target }) => setUrl(target.value)}
-            isRequired
-          /> */}
-          <Button data-testid="new-blog-form-submit" type="submit">
+            error={errors.url}
+            {...register('url')}
+          />
+          <Button
+            isLoading={isSubmitting}
+            data-testid="new-blog-form-submit"
+            type="submit"
+            disabled={!!errors.title || !!errors.author || !!errors.url}>
             create
           </Button>
         </VStack>

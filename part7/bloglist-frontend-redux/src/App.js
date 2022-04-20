@@ -21,8 +21,7 @@ const Layout = ({ error, handleLogout, userName }) => {
   const [createBlog, result] = useCreateBlogMutation();
   const blogFormRef = useRef();
 
-  const handleCreate = async (event, blogData, userName) => {
-    event.preventDefault();
+  const handleCreate = async (blogData) => {
     blogFormRef.current.toggleVisibility();
     createBlog(blogData);
   };

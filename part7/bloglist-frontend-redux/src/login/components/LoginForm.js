@@ -40,7 +40,6 @@ const LoginForm = ({ handleSubmit }) => {
             id="username"
             type="username"
             error={errors.username}
-            isRequired
             {...register('username')}
           />
           <FormInput
@@ -49,7 +48,6 @@ const LoginForm = ({ handleSubmit }) => {
             id="password"
             type="password"
             dataTestId="password"
-            isRequired
             error={errors.password}
             {...register('password')}
           />
