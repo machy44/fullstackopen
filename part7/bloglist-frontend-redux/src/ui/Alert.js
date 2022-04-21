@@ -12,6 +12,7 @@ import {
 } from '@chakra-ui/react';
 
 import { Button } from 'ui';
+import { PropTypes } from 'prop-types';
 
 export const AlertDialog = ({ body, isOpen, onSubmit, onCancel }) => {
   const cancelRef = React.useRef();
@@ -38,11 +39,17 @@ export const AlertDialog = ({ body, isOpen, onSubmit, onCancel }) => {
   );
 };
 
-export const Alert = ({ status, message }) => {
+export const Alert = ({ status, message, dataTestId }) => {
   return (
-    <CAlert status={status}>
+    <CAlert status={status} data-testid={dataTestId}>
       <AlertIcon />
       <AlertDescription>{message}</AlertDescription>
     </CAlert>
   );
+};
+
+Alert.propTypes = {
+  status: PropTypes.oneOf(['success', 'error']).isRequired,
+  message: PropTypes.string.isRequired,
+  dataTestId: PropTypes.string
 };
