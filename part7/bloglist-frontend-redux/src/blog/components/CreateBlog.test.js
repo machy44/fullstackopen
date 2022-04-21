@@ -1,7 +1,7 @@
 import React from 'react';
 import '@testing-library/jest-dom/extend-expect';
 import { render, screen, fireEvent } from '@testing-library/react';
-import { CreateBlogForm } from './CreateBlogForm';
+import { CreateBlogForm } from './CreateBlog';
 
 describe('<CreateBlogForm/>', () => {
   test('call on submit if data is valid', () => {

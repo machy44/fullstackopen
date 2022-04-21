@@ -1,5 +1,6 @@
-import { BlogMainInfo } from './Blog';
 import React from 'react';
+import { BlogMainInfo } from './Blog';
+import { CreateBlog } from './CreateBlog';
 
 export function Blogs({ blogs }) {
   const sortByLikes = (a, b) => {
@@ -7,6 +8,7 @@ export function Blogs({ blogs }) {
   };
   return (
     <>
+      <CreateBlog />
       {[...blogs].sort(sortByLikes).map((blog) => (
         <BlogMainInfo key={blog.id} blog={blog} />
       ))}

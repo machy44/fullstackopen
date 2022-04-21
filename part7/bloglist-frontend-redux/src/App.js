@@ -1,12 +1,10 @@
-/* eslint-disable no-unused-vars */
-import React, { useRef } from 'react';
+import React from 'react';
 import { Navigation, NotExists } from './components';
 import { LoginForm } from './login/components';
-import { CreateBlogForm } from './blog/components';
 import { ErrorNotification, SuccessNotification } from './notification/components';
 import { Users } from './user/components/Users';
 import { User } from './user/components/User';
-import { useGetBlogsQuery, useCreateBlogMutation } from './blog/services/blogs';
+import { useGetBlogsQuery } from './blog/services/blogs';
 import { Center, Spinner, VStack } from '@chakra-ui/react';
 
 import { useLogin } from './login/hooks';
@@ -15,28 +13,7 @@ import { selectSuccessNotification, selectErrorNotification } from './notificati
 import { Routes, Route, Outlet } from 'react-router-dom';
 import { BlogsManager } from 'blog/components';
 import { Container, Heading } from 'ui';
-import { useDisclosure, useColorModeValue } from '@chakra-ui/react';
-import { Modal } from 'ui';
-import { Button } from './ui/Button';
-
-const CreateBlog = () => {
-  const { isOpen, onClose, onOpen } = useDisclosure();
-  const [createBlog] = useCreateBlogMutation();
-  const handleCreate = async (blogData) => {
-    createBlog(blogData);
-    onClose();
-  };
-  return (
-    <>
-      <Button type="button" onClick={onOpen} mb={4}>
-        create blog
-      </Button>
-      <Modal isOpen={isOpen} title="Create blog" onClose={onClose}>
-        <CreateBlogForm handleSubmit={handleCreate} />
-      </Modal>
-    </>
-  );
-};
+import { useColorModeValue } from '@chakra-ui/react';
 
 const Layout = ({ error, handleLogout, userName }) => {
   const notificationSuccess = useSelector(selectSuccessNotification);
@@ -52,7 +29,6 @@ const Layout = ({ error, handleLogout, userName }) => {
       <Navigation userName={userName} handleClick={handleLogout} />
       <SuccessNotification message={notificationSuccess} />
       {error && <ErrorNotification message={error} />}
-      <CreateBlog />
       <VStack spacing={5} align="stretch">
         <Outlet />
       </VStack>
@@ -64,7 +40,7 @@ const App = () => {
   const error = useSelector(selectErrorNotification);
   const { data: blogs, isLoading: isLoadingBlogs } = useGetBlogsQuery();
 
-  const { handleLogin, isLoading, user, handleLogout } = useLogin();
+  const { handleLogin,  user, handleLogout } = useLogin();
 
   if (user === null) {
     return (

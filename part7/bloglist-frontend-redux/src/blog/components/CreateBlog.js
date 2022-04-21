@@ -1,6 +1,8 @@
 import React from 'react';
 import * as yup from 'yup';
-import { Button, FormInput, Form } from 'ui';
+import { Button, FormInput, Form, Modal } from 'ui';
+import { useCreateBlogMutation } from '../services/blogs';
+import { useDisclosure } from '@chakra-ui/react';
 
 const schema = yup
   .object()
@@ -29,5 +31,24 @@ export const CreateBlogForm = ({ handleSubmit }) => {
         </>
       )}
     </Form>
+  );
+};
+
+export const CreateBlog = () => {
+  const { isOpen, onClose, onOpen } = useDisclosure();
+  const [createBlog] = useCreateBlogMutation();
+  const handleCreate = async (blogData) => {
+    createBlog(blogData);
+    onClose();
+  };
+  return (
+    <>
+      <Button type="button" onClick={onOpen} mb={4}>
+        create blog
+      </Button>
+      <Modal isOpen={isOpen} title="Create blog" onClose={onClose}>
+        <CreateBlogForm handleSubmit={handleCreate} />
+      </Modal>
+    </>
   );
 };
