@@ -2,8 +2,8 @@ import React, { useState } from 'react';
 import { Link } from 'react-router-dom';
 
 import PropTypes from 'prop-types';
-import { Card, Text, UnorderedList, ListItem, Button, AlertDialog } from 'ui';
-import { Flex, Link as Clink } from '@chakra-ui/react';
+import { Card, Text, UnorderedList, ListItem, Button, AlertDialog, Heading } from 'ui';
+import { HStack, Link as Clink, Box } from '@chakra-ui/react';
 import { ExternalLinkIcon } from '@chakra-ui/icons';
 import { Comments } from '../../comments/Comments';
 
@@ -27,43 +27,45 @@ export const BlogDetails = ({ blog, handleLikeClick, handleDelete, userCreatedBl
   };
 
   return (
-    <>
-      <UnorderedList data-testid="blog-details">
-        <ListItem>
-          <Text>
-            {blog.title} {blog.author}
-          </Text>
-        </ListItem>
+    <Box p={3}>
+      <Heading mb={2}>
+        {blog.title} by {blog.author}
+      </Heading>
+      <UnorderedList data-testid="blog-details" spacing={3}>
         <ListItem>
           <Clink href={blog.url} isExternal>
             {blog.url} <ExternalLinkIcon mx="2px" />
           </Clink>
         </ListItem>
         <ListItem data-testid="blog-likes">
-          <Flex alignItems="center">
+          <HStack spacing={6} w="20%" justifyContent="space-between">
             <Text>likes {blog.likes}</Text>
             <Button type="button" onClick={() => handleLikeClick(blog)}>
               like
             </Button>
-          </Flex>
+          </HStack>
         </ListItem>
         <ListItem>
-          {blog.user.username}
-          {userCreatedBlog && (
-            <Button type="button" data-testid="remove-button" onClick={confirmDelete}>
-              remove
-            </Button>
-          )}
+          <HStack spacing={6} w="20%" justifyContent="space-between">
+            <Text>{blog.user.username}</Text>
+            {userCreatedBlog && (
+              <Button type="button" data-testid="remove-button" onClick={confirmDelete}>
+                remove
+              </Button>
+            )}
+          </HStack>
         </ListItem>
       </UnorderedList>
-      <Comments comments={blog.comments} handleSubmit={handleCommentBlog} />
+      <Box mt={6}>
+        <Comments comments={blog.comments} handleSubmit={handleCommentBlog} />
+      </Box>
       <AlertDialog
         body={`Remove ${blog.title} by ${blog.user.username}`}
         isOpen={shouldConfirm}
         onSubmit={() => handleDelete(blog)}
         onCancel={() => setConfirm(false)}
       />
-    </>
+    </Box>
   );
 };
 
