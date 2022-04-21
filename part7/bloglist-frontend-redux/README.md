@@ -21,7 +21,7 @@
 
 - script to run unit tests `npm run test`
 - script to run cypress tests with gui `npm run cypress:open`
-- script to run cypress without gui cypress:run
+- script to run cypress without gui `npm cypress:run`
 
 ## Implement components
 
