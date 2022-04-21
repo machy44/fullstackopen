@@ -2,7 +2,7 @@ import React from 'react';
 import * as yup from 'yup';
 import { Button, FormInput, Form, Modal } from 'ui';
 import { useCreateBlogMutation } from '../services/blogs';
-import { useDisclosure } from '@chakra-ui/react';
+import { useDisclosure, Box } from '@chakra-ui/react';
 
 const schema = yup
   .object()
@@ -42,13 +42,13 @@ export const CreateBlog = () => {
     onClose();
   };
   return (
-    <>
-      <Button type="button" onClick={onOpen} mb={4}>
+    <Box mt={4} mb={4}>
+      <Button type="button" onClick={onOpen}>
         create blog
       </Button>
       <Modal isOpen={isOpen} title="Create blog" onClose={onClose}>
         <CreateBlogForm handleSubmit={handleCreate} />
       </Modal>
-    </>
+    </Box>
   );
 };
