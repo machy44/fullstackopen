@@ -1,6 +1,6 @@
 import React from 'react';
 
-import { Text, Flex, Link } from '@chakra-ui/react';
+import { Text, Link } from '@chakra-ui/react';
 
 export const NavItem = ({ children }) => {
   return (

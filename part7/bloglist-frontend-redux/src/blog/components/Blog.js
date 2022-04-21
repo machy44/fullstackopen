@@ -2,7 +2,7 @@ import React, { useState } from 'react';
 import { Link } from 'react-router-dom';
 
 import PropTypes from 'prop-types';
-import { Card, Text, UnorderedList, ListItem, Button, Alert } from 'ui';
+import { Card, Text, UnorderedList, ListItem, Button, AlertDialog } from 'ui';
 import { Flex, Link as Clink } from '@chakra-ui/react';
 import { ExternalLinkIcon } from '@chakra-ui/icons';
 import { Comments } from '../../comments/Comments';
@@ -57,7 +57,7 @@ export const BlogDetails = ({ blog, handleLikeClick, handleDelete, userCreatedBl
         </ListItem>
       </UnorderedList>
       <Comments comments={blog.comments} handleSubmit={handleCommentBlog} />
-      <Alert
+      <AlertDialog
         body={`Remove ${blog.title} by ${blog.user.username}`}
         isOpen={shouldConfirm}
         onSubmit={() => handleDelete(blog)}

@@ -6,8 +6,6 @@ import { Provider } from 'react-redux';
 import { BrowserRouter } from 'react-router-dom';
 import { ChakraProvider } from '@chakra-ui/react';
 
-import './index.css';
-
 ReactDOM.render(
   <Provider store={store}>
     <ChakraProvider>

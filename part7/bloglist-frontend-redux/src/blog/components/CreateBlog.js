@@ -37,7 +37,7 @@ export const CreateBlogForm = ({ handleSubmit }) => {
 export const CreateBlog = () => {
   const { isOpen, onClose, onOpen } = useDisclosure();
   const [createBlog] = useCreateBlogMutation();
-  const handleCreate = async (blogData) => {
+  const handleCreate = (blogData) => {
     createBlog(blogData);
     onClose();
   };

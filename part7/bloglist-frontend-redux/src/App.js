@@ -28,7 +28,7 @@ const Layout = ({ error, handleLogout, userName }) => {
       </Center>
       <Navigation userName={userName} handleClick={handleLogout} />
       <SuccessNotification message={notificationSuccess} />
-      {error && <ErrorNotification message={error} />}
+      <ErrorNotification message={error} />
       <VStack spacing={5} align="stretch">
         <Outlet />
       </VStack>
@@ -40,12 +40,12 @@ const App = () => {
   const error = useSelector(selectErrorNotification);
   const { data: blogs, isLoading: isLoadingBlogs } = useGetBlogsQuery();
 
-  const { handleLogin,  user, handleLogout } = useLogin();
+  const { handleLogin, user, handleLogout } = useLogin();
 
   if (user === null) {
     return (
       <>
-        {error && <ErrorNotification message={error} />}
+        <ErrorNotification message={error} />
         <LoginForm handleSubmit={handleLogin} />
       </>
     );
