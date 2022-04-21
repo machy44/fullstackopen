@@ -1,7 +1,22 @@
 import React from 'react';
 import { Button, Text, Flex, HStack, Link as CLink, Spacer, useColorMode, useColorModeValue } from '@chakra-ui/react';
+import { useResolvedPath, useMatch } from 'react-router-dom';
 import { Link } from 'react-router-dom';
 import { MoonIcon } from '@chakra-ui/icons';
+
+function CustomLink({ children, to, ...props }) {
+  let resolved = useResolvedPath(to);
+  let match = useMatch({ path: resolved.pathname, end: true });
+
+  console.log({ resolved });
+  console.log({ match });
+
+  return (
+    <CLink as={Link} to={to} {...props} color={match ? 'teal.500' : ''}>
+      {children}
+    </CLink>
+  );
+}
 
 export const Navigation = ({ userName, handleClick }) => {
   const { toggleColorMode } = useColorMode();
@@ -9,12 +24,12 @@ export const Navigation = ({ userName, handleClick }) => {
   return (
     <Flex p={5} background={bgColor} borderRadius="base">
       <HStack spacing="24px">
-        <CLink as={Link} to="/blogs">
+        <CustomLink to="/blogs">
           <Text>blogs</Text>
-        </CLink>
-        <CLink as={Link} to="/users">
+        </CustomLink>
+        <CustomLink to="/users">
           <Text>users</Text>
-        </CLink>
+        </CustomLink>
       </HStack>
       <Spacer />
       <HStack spacing="24px">
