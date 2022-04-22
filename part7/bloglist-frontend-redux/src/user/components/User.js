@@ -18,8 +18,6 @@ export const User = () => {
     return <div>user doesnt exist!</div>;
   }
 
-  console.log({ users });
-
   return (
     <VStack>
       <Heading>{user.name}</Heading>
