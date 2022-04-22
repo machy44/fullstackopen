@@ -23,9 +23,13 @@ export const Users = () => {
           return (
             <Tr key={user.id}>
               <Td>
-                <CLink as={Link} to={`/users/${user.id}`} style={{ marginRight: 10 }}>
-                  {user.name}
-                </CLink>
+                {user.blogs.length ? (
+                  <CLink as={Link} to={`/users/${user.id}`}>
+                    {user.name}
+                  </CLink>
+                ) : (
+                  <Text>{user.name}</Text>
+                )}
               </Td>
               <Td>
                 <Text>{user.blogs.length}</Text>
