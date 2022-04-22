@@ -9,6 +9,8 @@ function NavLink({ text, to, ...props }) {
   let resolved = useResolvedPath(to);
   let match = useMatch({ path: `${resolved.pathname}/*`, end: true });
 
+
+
   return (
     <CLink as={Link} to={to} {...props} color={match ? 'teal.500' : ''}>
       <Text>{text}</Text>

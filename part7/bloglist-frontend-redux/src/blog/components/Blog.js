@@ -38,7 +38,7 @@ export const BlogDetails = ({ blog, handleLikeClick, handleDelete, userCreatedBl
           </Clink>
         </ListItem>
         <ListItem data-testid="blog-likes">
-          <HStack spacing={6} w="20%" justifyContent="space-between">
+          <HStack spacing={6} w={['100%', '20%']} justifyContent="space-between">
             <Text>likes {blog.likes}</Text>
             <Button type="button" onClick={() => handleLikeClick(blog)}>
               like
@@ -46,7 +46,7 @@ export const BlogDetails = ({ blog, handleLikeClick, handleDelete, userCreatedBl
           </HStack>
         </ListItem>
         <ListItem>
-          <HStack spacing={6} w="20%" justifyContent="space-between">
+          <HStack spacing={6} w={['100%', '20%']} justifyContent="space-between">
             <Text>{blog.user.username}</Text>
             {userCreatedBlog && (
               <Button type="button" data-testid="remove-button" onClick={confirmDelete}>

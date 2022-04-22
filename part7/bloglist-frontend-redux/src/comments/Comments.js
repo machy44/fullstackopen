@@ -14,11 +14,17 @@ export const Comments = ({ comments, handleSubmit }) => {
       <Form handleSubmit={handleSubmit} schemaValidation={schema} title={null}>
         {({ register, errors, isSubmitting }) => {
           return (
-            <Flex align="flex-end" justifyContent="space-between">
-              <Box w="75%">
+            <Flex
+              align="flex-end"
+              justifyContent="space-between"
+              direction={{
+                base: 'column',
+                md: 'row'
+              }}>
+              <Box w={['100%', '75%']}>
                 <FormInput id="comment" labelText="text" error={errors.username} {...register('comment')} />
               </Box>
-              <Box w="20%">
+              <Box w={['100%', '20%']} mt={[4, 0]}>
                 <Button
                   data-testid="comment-submit"
                   type="submit"
