@@ -29,7 +29,7 @@ const Layout = ({ error, handleLogout, userName }) => {
       <Navigation userName={userName} handleClick={handleLogout} />
       <SuccessNotification message={notificationSuccess} />
       <ErrorNotification message={error} />
-      <VStack spacing={5} align="stretch">
+      <VStack spacing={5} align="stretch" mb={4}>
         <Outlet />
       </VStack>
     </Container>
