@@ -26,7 +26,7 @@ const Layout = ({ error, handleLogout, userName }) => {
           blog app
         </Heading>
       </Center>
-      <Navigation userName={userName} handleClick={handleLogout} />
+      <Navigation userName={userName} handleLogout={handleLogout} />
       <SuccessNotification message={notificationSuccess} />
       <ErrorNotification message={error} />
       <VStack spacing={5} align="stretch" mb={4}>

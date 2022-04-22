@@ -17,7 +17,7 @@ export const Modal = ({ isOpen, onClose, children, title }) => {
       <ModalContent>
         <ModalHeader>{title}</ModalHeader>
         <ModalCloseButton />
-        <ModalBody>{children}</ModalBody>
+        <ModalBody p={6}>{children}</ModalBody>
       </ModalContent>
     </CModal>
   );

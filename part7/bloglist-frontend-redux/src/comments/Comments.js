@@ -14,13 +14,7 @@ export const Comments = ({ comments, handleSubmit }) => {
       <Form handleSubmit={handleSubmit} schemaValidation={schema} title={null}>
         {({ register, errors, isSubmitting }) => {
           return (
-            <Flex
-              align="flex-end"
-              justifyContent="space-between"
-              direction={{
-                base: 'column',
-                md: 'row'
-              }}>
+            <Flex align="flex-end" justifyContent="space-between" direction={['column', 'row']}>
               <Box w={['100%', '75%']}>
                 <FormInput id="comment" labelText="text" error={errors.username} {...register('comment')} />
               </Box>
