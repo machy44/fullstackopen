@@ -3,6 +3,7 @@ import * as yup from 'yup';
 import { Button, FormInput, Form, Modal } from 'ui';
 import { useCreateBlogMutation } from '../services/blogs';
 import { useDisclosure, Box } from '@chakra-ui/react';
+import { useAnalytics } from '../../firebase/analytics';
 
 const schema = yup
   .object()
@@ -36,9 +37,11 @@ export const CreateBlogForm = ({ handleSubmit }) => {
 
 export const CreateBlog = () => {
   const { isOpen, onClose, onOpen } = useDisclosure();
+  const { blogCreated } = useAnalytics();
   const [createBlog] = useCreateBlogMutation();
   const handleCreate = (blogData) => {
     createBlog(blogData);
+    blogCreated(blogData);
     onClose();
   };
   return (
