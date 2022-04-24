@@ -37,11 +37,11 @@ export const CreateBlogForm = ({ handleSubmit }) => {
 
 export const CreateBlog = () => {
   const { isOpen, onClose, onOpen } = useDisclosure();
-  const { blogCreated } = useAnalytics();
+  const events = useAnalytics();
   const [createBlog] = useCreateBlogMutation();
   const handleCreate = (blogData) => {
     createBlog(blogData);
-    blogCreated(blogData);
+    events?.blogCreated(blogData);
     onClose();
   };
   return (
