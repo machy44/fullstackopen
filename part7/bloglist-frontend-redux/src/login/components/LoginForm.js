@@ -1,6 +1,7 @@
 import React from 'react';
 import * as yup from 'yup';
 import { FormInput, Button, Container, CenteredFlex, Form } from 'ui';
+import { useAnalytics } from '../../firebase/analytics';
 
 const schema = yup
   .object()
@@ -11,8 +12,11 @@ const schema = yup
   .required();
 
 const LoginForm = ({ handleSubmit }) => {
+  const events = useAnalytics();
+
   const onSubmit = ({ username, password }) => {
     handleSubmit(username, password);
+    events?.loginEvent(username);
   };
 
   return (

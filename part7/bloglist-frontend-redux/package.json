@@ -27,7 +27,7 @@
   },
   "scripts": {
     "start": "react-scripts start",
-    "start:analytics": "react-scripts start",
+    "start:analytics": "REACT_APP_ENABLE_ANALYTICS=1 react-scripts start",
     "build": "react-scripts build",
     "test": "react-scripts test",
     "eject": "react-scripts eject",
