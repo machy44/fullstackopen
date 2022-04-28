@@ -8,16 +8,18 @@ export const AnalyticsContext = createContext({});
 export const useAnalytics = () => useContext(AnalyticsContext);
 
 const createEvents = (analytics) => {
-  const loginEvent = (params) => logEvent(analytics, 'login', params);
+  const loginEvent = (params) => logEvent(analytics, 'login', { ...params, debug_mode: true });
   const blogCreated = (params) => logEvent(analytics, 'blog_creation', params);
   const blogCommented = (params) => logEvent(analytics, 'blog_commented', params);
   const apiPerformance = (params) => logEvent(analytics, 'api_performance', params);
+  const themeChanged = (params) => logEvent(analytics, 'changing_theme', params);
 
   return {
     loginEvent,
     blogCreated,
     apiPerformance,
-    blogCommented
+    blogCommented,
+    themeChanged
   };
 };
 
