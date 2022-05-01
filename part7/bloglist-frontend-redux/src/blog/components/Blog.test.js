@@ -1,7 +1,8 @@
 import React from 'react';
 import '@testing-library/jest-dom/extend-expect';
-import { render, screen, fireEvent } from '@testing-library/react';
-import { Blog } from './Blog';
+import { render, screen, waitFor } from '@testing-library/react';
+import userEvent from '@testing-library/user-event';
+import { BlogDetails } from './Blog';
 
 const mockedBlog = {
   title: 'myths-about-useeffect',
@@ -13,31 +14,30 @@ const mockedBlog = {
     name: 'machy',
     id: '61a2636fca1d10a516d3a3e4'
   },
-  id: '61b6575284f254e2cb88a4c6'
+  id: '61b6575284f254e2cb88a4c6',
+  comments: []
 };
 
-describe('<Blog/>', () => {
-  test('render main info', () => {
-    render(<Blog blog={mockedBlog} userCreatedBlog={false} handleLikeClick={jest.fn} handleDelete={jest.fn} />);
-    expect(screen.queryByTestId('blog-main-info')).toBeVisible();
-    expect(screen.queryByTestId('blog-details')).toBeNull();
-  });
-  test('render main info with details', () => {
-    render(<Blog blog={mockedBlog} userCreatedBlog={false} handleLikeClick={jest.fn} handleDelete={jest.fn} />);
-    fireEvent.click(screen.queryByTestId('toggle-visibility-button'));
-    expect(screen.queryByTestId('blog-main-info')).toBeVisible();
-    expect(screen.queryByTestId('blog-details')).toBeVisible();
-  });
-  test('like button is executed', () => {
+describe('<BlogDetails/>', () => {
+  test('like button is executed', async () => {
     const mockHandleClick = jest.fn();
-    render(<Blog blog={mockedBlog} userCreatedBlog={false} handleLikeClick={mockHandleClick} handleDelete={jest.fn} />);
-
-    fireEvent.click(screen.queryByTestId('toggle-visibility-button'));
+    render(
+      <BlogDetails
+        blog={mockedBlog}
+        userCreatedBlog={false}
+        handleLikeClick={mockHandleClick}
+        handleDelete={jest.fn}
+        handleCommentBlog={jest.fn}
+      />
+    );
 
     const likeButton = screen.getByText('like');
-    fireEvent.click(likeButton);
-    fireEvent.click(likeButton);
 
-    expect(mockHandleClick.mock.calls).toHaveLength(2);
+    userEvent.click(likeButton);
+    userEvent.click(likeButton);
+
+    await waitFor(() => {
+      expect(mockHandleClick.mock.calls).toHaveLength(2);
+    });
   });
 });
