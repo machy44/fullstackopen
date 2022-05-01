@@ -1,17 +1,16 @@
 import React from 'react';
 import '@testing-library/jest-dom/extend-expect';
-import { render, screen, fireEvent } from '@testing-library/react';
+import { render, screen, fireEvent, waitFor } from '@testing-library/react';
 import { ChakraProvider } from '@chakra-ui/react';
+import userEvent from '@testing-library/user-event';
 import { CreateBlogForm } from './CreateBlog';
 
 export const ThemeWrapper = ({ children }) => <ChakraProvider>{children}</ChakraProvider>;
 
-describe.only('<CreateBlogForm/>', () => {
+describe('<CreateBlogForm/>', () => {
   test('call on submit if data is valid', async () => {
     const mockSubmit = jest.fn();
     render(<CreateBlogForm handleSubmit={mockSubmit} />);
-
-    screen.debug();
 
     const title = screen.getByTestId('title');
     const author = screen.getByTestId('author');
@@ -33,16 +32,16 @@ describe.only('<CreateBlogForm/>', () => {
 
     expect(screen.queryByTestId('new-blog-form-submit')).toBeTruthy();
 
-    await fireEvent.click(screen.getByTestId('new-blog-form-submit'));
+    userEvent.click(screen.getByText('create'));
 
-    expect(mockSubmit).toHaveBeenCalled();
-
-    // expect(mockSubmit.mock.calls).toHaveLength(1);
-    // expect(mockSubmit.mock.calls[0][1]).toEqual({
-    //   title: 'title',
-    //   author: 'author',
-    //   url: 'http://url.com'
-    // });
+    await waitFor(() => {
+      expect(mockSubmit).toHaveBeenCalledTimes(1);
+      expect(mockSubmit.mock.calls[0][0]).toEqual({
+        title: 'title',
+        author: 'author',
+        url: 'http://url.com'
+      });
+    });
   });
   // test('invalid username', () => {});
   // test('invalid password', () => {});
