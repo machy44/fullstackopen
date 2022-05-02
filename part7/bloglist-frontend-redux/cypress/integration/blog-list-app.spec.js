@@ -89,7 +89,7 @@ describe('blog-list app', function () {
           cy.get('@firstBlogLink').click();
           cy.get('[data-testid=remove-button]').should('not.exist');
         });
-        it.only('blogs should be ordered by number of likes', function () {
+        it('blogs should be ordered by number of likes', function () {
           cy.get('@firstBlogLink').click();
           cy.get('[data-testid=blog-likes]').find('button').as('firstBlogLikeButton');
           cy.get('@firstBlogLikeButton').click();
@@ -109,10 +109,9 @@ describe('blog-list app', function () {
           cy.get('@secondBlogLikeButton').click();
           cy.go('back');
           cy.get('[data-testid=blog-main-info]').then((elements) => {
-            console.log(elements[0]);
-            cy.wrap(elements[0]).children().contains('second');
-            // cy.wrap(elements[1]).contains('first blog');
-            // cy.wrap(elements[2]).contains('third blog');
+            cy.get(elements[0]).contains('first blog');
+            cy.get(elements[1]).contains('second blog');
+            cy.get(elements[2]).contains('third blog');
           });
         });
       });
