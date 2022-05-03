@@ -52,7 +52,11 @@ const App = () => {
   }
 
   if (isLoadingBlogs) {
-    return <Spinner size="lg" />;
+    return (
+      <Center>
+        <Spinner size="lg" />
+      </Center>
+    );
   }
 
   return (
