@@ -1,8 +1,0 @@
-{
-  "compilerOptions": {
-    "module": "es2015",
-    "jsx": "preserve",
-    "baseUrl": "./src"
-  },
-  "exclude": ["node_modules"]
-}
