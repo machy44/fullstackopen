@@ -55,7 +55,6 @@ const Country = ({ country }) => {
   )  
 }
 
-//test test
 
 const App = () => {
   const nameInput = useField('text')
@@ -67,7 +66,6 @@ const App = () => {
     setName(nameInput.value)
   }
 
-  // test
 
   return (
     <div>
