@@ -7,6 +7,4 @@
 [submodule "part4/blog-list"]
 	path = part4/blog-list
 	url = git@github.com:machy44/blog-list.git
-[submodule "part7/bloglist-frontend-redux"]
-	path = part7/bloglist-frontend-redux
-	url = git@github.com:machy44/bloglist-frontend-redux.git
+
