@@ -9,3 +9,10 @@ If the server implemented a REST API, we would probably have to do multiple HTTP
 If this was an often-used functionality, there could be a REST endpoint for it. If there were a lot of these kinds of scenarios however, it would become very laborious to implement REST endpoints for all of them. 
 
 A GraphQL server is well-suited for these kinds of situations. 
+
+Despite its name, GraphQL does not actually have anything to do with databases. It does not care how the data is saved. The data a GraphQL API uses can be saved into a relational database, document database, or to other servers which a GraphQL server can access with for example REST.
+
+
+### resolvers
+
+https://www.graphql-tools.com/docs/resolvers#resolver-function-signature
