@@ -16,3 +16,29 @@ Despite its name, GraphQL does not actually have anything to do with databases. 
 ### resolvers
 
 https://www.graphql-tools.com/docs/resolvers#resolver-function-signature
+
+resolver get four arguments:
+
+`fieldName(obj, args, context, info) { result }` 
+
+- `obj` -> object that contains the result returned from the resolver on the parend field.
+for example:
+
+```graphql
+query {
+  getAuthor(id: 5) {
+    name
+    posts {
+      title
+      author {
+        name # this will be the same as the name above
+      }
+    }
+  }
+}
+```
+- `obj` in `Author.name` and `Author.posts` will be the result from `getAuthor`, likely an Author object from the backend.
+
+- `args` -> arguments passed into the field in the query
+- `context` -> object shared by all resolvers
+- `info` -> (advanced) it contains information about execution state of the query
