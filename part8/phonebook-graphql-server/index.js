@@ -23,12 +23,18 @@ let persons = [
   },
 ]
 
+
+
 const typeDefs = gql`
+  type Address {
+    street: String!
+    city: String! 
+  }
+
   type Person {
     name: String!
     phone: String
-    street: String!
-    city: String! 
+    address: Address!
     id: ID!
   }
 
@@ -46,6 +52,16 @@ const resolvers = {
     // The second parameter, args, contains the parameters of the query
     findPerson: (root, args) =>
       persons.find(p => p.name === args.name)
+  },
+  // The parameter root of the resolver function is the person-object, 
+  // so the street and the city of the address can be taken from its fields. 
+  Person: {
+    address: root => {
+      return {
+        street: root.street,
+        city: root.city
+      }
+    }
   }
 }
 
