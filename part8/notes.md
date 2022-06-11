@@ -21,7 +21,7 @@ resolver get four arguments:
 
 `fieldName(obj, args, context, info) { result }` 
 
-- `obj` -> object that contains the result returned from the resolver on the parend field.
+- `obj` -> object that contains the result returned from the resolver on the parent field.
 for example:
 
 ```graphql
