@@ -27,7 +27,6 @@ let authors = [
 ];
 
 /*
- * English:
  * It might make more sense to associate a book with its author by storing the author's id in the context of the book instead of the author's name
  * However, for simplicity, we will store the author's name in connection with the book
  */
@@ -85,9 +84,36 @@ let books = [
 ];
 
 const typeDefs = gql`
+  enum Genre {
+    classic
+    revolution
+    crime
+    refactoring
+    patterns
+    agile
+    design
+  }
+
+  type Book {
+    title: String!
+    published: Int!
+    author: String!
+    id: ID!
+    genres: [String!]!
+  }
+
+  type Author {
+    name: String!
+    id: ID!
+    born: Int
+    bookCount: Int!
+  }
+
   type Query {
     bookCount: Int!
     authorCount: Int!
+    allBooks: [Book!]!
+    allAuthors: [Author!]!
   }
 `;
 
@@ -95,6 +121,20 @@ const resolvers = {
   Query: {
     bookCount: () => books.length,
     authorCount: () => authors.length,
+    allBooks: () => books,
+    allAuthors: () => {
+      return authors;
+    },
+  },
+  Author: {
+    bookCount: (root) => {
+      return books.reduce((acc, { author }) => {
+        if (author === root.name) {
+          return acc + 1;
+        }
+        return acc;
+      }, 0);
+    },
   },
 };
 
