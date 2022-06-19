@@ -1,4 +1,4 @@
-const path = require('path')
+const path = require('path');
 
 const config = {
   entry: './src/index.js',
@@ -10,12 +10,16 @@ const config = {
     rules: [
       {
         test: /\.js$/,
-        loader: "babel-loader",
+        loader: 'babel-loader',
         options: {
-          presets: ['@babel/preset-react'] 
+          presets: ['@babel/preset-env', '@babel/preset-react']
         }
-      }
-    ],
+      },
+      // css loader loads css files
+      // style loader Inject CSS into the DOM
+      { test: /\.css$/, use: ['style-loader', 'css-loader'] }
+    ]
   },
-}
-module.exports = config
+  devServer: { static: path.resolve(__dirname, 'build'), compress: true, port: 3000 }
+};
+module.exports = config;
