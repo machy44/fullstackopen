@@ -1,14 +1,31 @@
 {
   "compilerOptions": {
-    "esModuleInterop": true,
+    // https://stackoverflow.com/a/56348146/5799742
+    // // Import non-ES modules as default imports.
+    "esModuleInterop": true, // import CommonJS module as ES6 module
+    // https://stackoverflow.com/a/56348146/5799742
     "jsx": "react",
+    // esnext is placeholder for features that are on the standard
+    // tracks but is not in an official ES spec yet
     "module": "esnext",
+    // https://www.typescriptlang.org/docs/handbook/module-resolution.htmllib
+    // // Search under node_modules for non-relative imports
     "moduleResolution": "node",
+    "allowJs": true,
+    // dom is setup because app is run in a browser
     "lib": ["dom", "esnext"],
+    // enable all strict type-checking options
     "strict": true,
-    "sourceMap": true,
-    "target": "esnext"
+    // do not emit compiler output files like js source code, source maps or declarations
+    // have to setup up this to make room for Babel which does compile related things
+    // https://www.typescriptlang.org/tsconfig#noEmit
+    // because of this i dont need target and sourceMap in config
+    // also ts loader not needed in webpack config
+    "noEmit": true,
+    // Disallow features that require cross-file information for emit.
+    "isolatedModules": true
+    // "target": "esnext"
   },
-  "exclude": ["node_modules"],
+  // "exclude": ["node_modules"],
   "include": ["src"]
 }
