@@ -28,6 +28,15 @@ const ALL_PERSONS = gql`
   }
 `;
 
+interface IPersons {
+  persons: Person[] | undefined;
+}
+
+const Persons: React.FC<IPersons> = ({ persons }) => {
+  if (persons === undefined) return null;
+  return <div>{persons.map((p) => p.name).join(', ')}</div>;
+};
+
 const App = () => {
   const { loading, data } = useQuery<PersonData>(ALL_PERSONS);
 
@@ -35,7 +44,7 @@ const App = () => {
     return <div>loading...</div>;
   }
 
-  return <div>{data?.allPersons.map((p) => p.name).join(', ')}</div>;
+  return <Persons persons={data?.allPersons} />;
 };
 
 export default App;
