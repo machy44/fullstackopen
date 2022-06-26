@@ -7,9 +7,9 @@ interface Address {
   city: string;
 }
 
-let persons = Object.assign({}, personsData);
+let persons = [...personsData];
 
-interface PersonMutation extends Omit<IPerson, 'street' | 'city'> {
+interface PersonGraphQlScheme extends Omit<IPerson, 'street' | 'city'> {
   address: Address;
 }
 
@@ -38,7 +38,7 @@ const typeDefs = gql`
 
   type Mutation {
     # Value for the field id is not given as a parameter. Generating an id is better left for the server.
-    addPerson(name: String!, phone: String!, street: String!, city: String): Person
+    addPerson(name: String!, phone: String, street: String!, city: String!): Person
     editNumber(name: String!, phone: String!): Person
   }
 `;
@@ -46,7 +46,7 @@ const typeDefs = gql`
 const resolvers = {
   Query: {
     personCount: () => persons.length,
-    allPersons: (root, args: Pick<IPerson, 'phone'>) => {
+    allPersons: (root: undefined, args: Pick<IPerson, 'phone'>) => {
       if (!args.phone) {
         return persons;
       }
@@ -54,12 +54,14 @@ const resolvers = {
       return persons.filter(byPhone);
     },
     // The second parameter, args, contains the parameters of the query
-    findPerson: (root, args: Pick<IPerson, 'name'>) => persons.find((p) => p.name === args.name),
+    findPerson: (root: undefined, args: Pick<IPerson, 'name'>) => {
+      return persons.find((p) => p.name === args.name);
+    },
   },
   // The parameter root of the resolver function is the person-object,
   // so the street and the city of the address can be taken from its fields.
   Person: {
-    address: (root) => {
+    address: (root: IPerson) => {
       return {
         street: root.street,
         city: root.city,
@@ -67,7 +69,7 @@ const resolvers = {
     },
   },
   Mutation: {
-    addPerson: (root, args: Omit<IPerson, 'id'>) => {
+    addPerson: (root: undefined, args: Omit<IPerson, 'id'>) => {
       if (persons.find((p) => p.name === args.name)) {
         throw new UserInputError('Name must be unique', {
           invalidArgs: args.name,
@@ -77,7 +79,8 @@ const resolvers = {
       persons = persons.concat(person);
       return person;
     },
-    editNumber: (root, args) => {
+    editNumber: (root: undefined, args: Pick<IPerson, 'name' | 'phone'>) => {
+      console.log({ root });
       const person = persons.find((p) => p.name === args.name);
       if (!person) {
         return null;
