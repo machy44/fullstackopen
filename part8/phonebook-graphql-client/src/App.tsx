@@ -1,22 +1,8 @@
-import { gql, useQuery } from '@apollo/client';
 import React from 'react';
+import { gql, useQuery } from '@apollo/client';
 import './index.css';
-
-interface Address {
-  street: string;
-  city: string;
-}
-
-interface Person {
-  id: string;
-  name: string;
-  phone?: string;
-  address: Address;
-}
-
-interface PersonData {
-  allPersons: Person[];
-}
+import { PersonData } from './types';
+import { Persons } from './Persons';
 
 const ALL_PERSONS = gql`
   query {
@@ -27,15 +13,6 @@ const ALL_PERSONS = gql`
     }
   }
 `;
-
-interface IPersons {
-  persons: Person[] | undefined;
-}
-
-const Persons: React.FC<IPersons> = ({ persons }) => {
-  if (persons === undefined) return null;
-  return <div>{persons.map((p) => p.name).join(', ')}</div>;
-};
 
 const App = () => {
   const { loading, data } = useQuery<PersonData>(ALL_PERSONS);
