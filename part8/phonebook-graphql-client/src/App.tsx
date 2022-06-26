@@ -8,9 +8,9 @@ interface Address {
 }
 
 interface Person {
-  id: number;
+  id: string;
   name: string;
-  phone: number;
+  phone?: string;
   address: Address;
 }
 
