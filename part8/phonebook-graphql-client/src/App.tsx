@@ -3,6 +3,7 @@ import { gql, useQuery } from '@apollo/client';
 import './index.css';
 import { PersonData } from './types';
 import { Persons } from './Persons';
+import { PersonForm } from './PersonForm';
 
 const ALL_PERSONS = gql`
   query {
@@ -21,7 +22,12 @@ const App = () => {
     return <div>loading...</div>;
   }
 
-  return <Persons persons={data?.allPersons} />;
+  return (
+    <>
+      <PersonForm />
+      <Persons persons={data?.allPersons} />
+    </>
+  );
 };
 
 export default App;
