@@ -5,6 +5,7 @@ import { PersonData } from './types';
 import { Persons } from './components/Persons';
 import { PersonForm } from './components/PersonForm';
 import { ALL_PERSONS } from './queries';
+import PhoneForm from './components/PhoneForm';
 
 const Notify = ({ errorMessage }: { errorMessage: string | null }) => {
   if (!errorMessage) {
@@ -33,6 +34,7 @@ const App = () => {
       <Notify errorMessage={errorMessage} />
       <Persons persons={data?.allPersons} />
       <PersonForm setError={notify} />
+      <PhoneForm setError={notify} />
     </>
   );
 };

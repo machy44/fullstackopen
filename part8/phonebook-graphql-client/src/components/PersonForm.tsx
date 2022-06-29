@@ -52,7 +52,7 @@ function reducer(state: InititalState, action: ActionWithPayload | ActionWithout
   }
 }
 
-export const PersonForm = ({ setError }) => {
+export const PersonForm: React.FC<{ setError: (arg: string) => void }> = ({ setError }) => {
   const [state, dispatch] = useReducer(reducer, initialState);
 
   const { name, phone, street, city } = state;
