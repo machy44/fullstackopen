@@ -1,7 +1,7 @@
 import React, { useState } from 'react';
 import { useQuery } from '@apollo/client';
-import { IPerson } from './types';
-import { FIND_PERSON } from './queries';
+import { IPerson } from '../types';
+import { FIND_PERSON } from '../queries';
 
 const Person: React.FC<{
   person: IPerson;

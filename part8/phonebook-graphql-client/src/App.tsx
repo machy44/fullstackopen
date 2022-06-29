@@ -2,8 +2,8 @@ import React from 'react';
 import { useQuery } from '@apollo/client';
 import './index.css';
 import { PersonData } from './types';
-import { Persons } from './Persons';
-import { PersonForm } from './PersonForm';
+import { Persons } from './components/Persons';
+import { PersonForm } from './components/PersonForm';
 import { ALL_PERSONS } from './queries';
 
 const App = () => {

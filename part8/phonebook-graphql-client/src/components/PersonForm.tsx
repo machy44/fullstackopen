@@ -1,6 +1,6 @@
 import React, { useReducer, useState } from 'react';
 import { useMutation } from '@apollo/client';
-import { ALL_PERSONS, CREATE_PERSON } from './queries';
+import { ALL_PERSONS, CREATE_PERSON } from '../queries';
 
 type InititalState = {
   name: string;
