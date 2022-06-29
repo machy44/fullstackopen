@@ -52,13 +52,16 @@ function reducer(state: InititalState, action: ActionWithPayload | ActionWithout
   }
 }
 
-export const PersonForm = () => {
+export const PersonForm = ({ setError }) => {
   const [state, dispatch] = useReducer(reducer, initialState);
 
   const { name, phone, street, city } = state;
 
   const [createPerson] = useMutation(CREATE_PERSON, {
     refetchQueries: [{ query: ALL_PERSONS }],
+    onError: (error) => {
+      setError(error.graphQLErrors[0].message);
+    },
   });
 
   const submit = (event: React.FormEvent<HTMLFormElement>) => {
