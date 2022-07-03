@@ -11,3 +11,6 @@
 [submodule "part7/bloglist-frontend-redux"]
 	path = part7/bloglist-frontend-redux
 	url = git@github.com:machy44/bloglist-frontend-redux.git
+[submodule "part8/library-frontend-graphql"]
+	path = part8/library-frontend-graphql
+	url = git@github.com:machy44/library-fontend-graphql.git
