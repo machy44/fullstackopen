@@ -29,4 +29,4 @@ const schema = new Schema<IPerson>({
   },
 });
 
-export const model: Model<IPerson> = mongooseModel('Person', schema);
+export const Person: Model<IPerson> = mongooseModel('Person', schema);
