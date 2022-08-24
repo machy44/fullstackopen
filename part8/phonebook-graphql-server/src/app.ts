@@ -79,7 +79,11 @@ export const resolvers = {
       if (!person) {
         return {};
       }
-      person.phone = args.phone;
+
+      if (args.phone) {
+        person.phone = args.phone;
+      }
+
       return person.save();
     },
   },
