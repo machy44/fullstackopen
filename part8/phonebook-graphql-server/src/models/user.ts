@@ -1,7 +1,7 @@
 import { Schema, model as mongooseModel, Document, Model } from 'mongoose';
 import type { IPerson } from './person';
 
-interface IUser extends Document {
+export interface IUser extends Document {
   username: string;
   friends: IPerson[];
 }
@@ -20,4 +20,6 @@ const schema = new Schema<IUser>({
   ],
 });
 
-module.exports = mongooseModel('User', schema);
+export const User = mongooseModel('User', schema);
+
+// module.exports = mongooseModel('User', schema);

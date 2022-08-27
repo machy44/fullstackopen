@@ -1,7 +1,11 @@
 import { gql, UserInputError } from 'apollo-server';
 import { v1 as uuid } from 'uuid';
+import jwt from 'jsonwebtoken';
 import { personsData, IPerson } from './data';
 import { Person } from './models/person';
+import { User, IUser } from './models/user';
+
+const JWT_SECRET = process.env['SECRET'] ?? '';
 
 interface Address {
   street: string;
@@ -10,9 +14,9 @@ interface Address {
 
 let persons = [...personsData];
 
-interface PersonGraphQlScheme extends Omit<IPerson, 'street' | 'city'> {
-  address: Address;
-}
+// interface PersonGraphQlScheme extends Omit<IPerson, 'street' | 'city'> {
+//   address: Address;
+// }
 
 export const typeDefs = gql`
   type Address {
@@ -26,26 +30,42 @@ export const typeDefs = gql`
     address: Address!
     id: ID!
   }
+  type User {
+    username: String!
+    friends: [Person!]!
+    id: ID!
+  }
+
   enum YesNo {
     YES
     NO
+  }
+
+  type Token {
+    value: String!
   }
 
   type Query {
     personCount: Int!
     allPersons(phone: YesNo): [Person!]!
     findPerson(name: String!): Person
+    me: User
   }
 
   type Mutation {
     # Value for the field id is not given as a parameter. Generating an id is better left for the server.
     addPerson(name: String!, phone: String, street: String!, city: String!): Person
     editNumber(name: String!, phone: String!): Person
+    createUser(username: String!): User
+    login(username: String!, password: String!): Token
   }
 `;
 
 export const resolvers = {
   Query: {
+    me: (root: undefined, args: undefined, context: { currentUser: IUser }) => {
+      return context.currentUser;
+    },
     personCount: async () => Person.collection.countDocuments(),
     allPersons: (root: undefined, args: Pick<IPerson, 'phone'>) => {
       if (!args.phone) {
@@ -101,6 +121,27 @@ export const resolvers = {
         });
       }
       return person;
+    },
+    createUser: async (root: undefined, args: Pick<IUser, 'username'>) => {
+      const user = new User({ username: args.username });
+      return user.save().catch((error) => {
+        throw new UserInputError(error.message, {
+          invalidArgs: args,
+        });
+      });
+    },
+    login: async (root: undefined, args: Pick<IUser, 'username'> & { password: string }) => {
+      const user = await User.findOne({ username: args.username });
+
+      if (!user || args.password !== 'secret') {
+        throw new UserInputError('wrong credentials');
+      }
+      const userForToken = {
+        username: user.username,
+        id: user._id,
+      };
+
+      return { value: jwt.sign(userForToken, JWT_SECRET) };
     },
   },
 };

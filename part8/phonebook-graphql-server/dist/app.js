@@ -8,11 +8,18 @@ var __awaiter = (this && this.__awaiter) || function (thisArg, _arguments, P, ge
         step((generator = generator.apply(thisArg, _arguments || [])).next());
     });
 };
+var __importDefault = (this && this.__importDefault) || function (mod) {
+    return (mod && mod.__esModule) ? mod : { "default": mod };
+};
+var _a;
 Object.defineProperty(exports, "__esModule", { value: true });
 exports.resolvers = exports.typeDefs = void 0;
 const apollo_server_1 = require("apollo-server");
+const jsonwebtoken_1 = __importDefault(require("jsonwebtoken"));
 const data_1 = require("./data");
 const person_1 = require("./models/person");
+const user_1 = require("./models/user");
+const JWT_SECRET = (_a = process.env['SECRET']) !== null && _a !== void 0 ? _a : '';
 let persons = [...data_1.personsData];
 exports.typeDefs = (0, apollo_server_1.gql) `
   type Address {
@@ -30,21 +37,36 @@ exports.typeDefs = (0, apollo_server_1.gql) `
     YES
     NO
   }
+  type User {
+    username: String!
+    friends: [Person!]!
+    id: ID!
+  }
+
+  type Token {
+    value: String!
+  }
 
   type Query {
     personCount: Int!
     allPersons(phone: YesNo): [Person!]!
     findPerson(name: String!): Person
+    me: User
   }
 
   type Mutation {
     # Value for the field id is not given as a parameter. Generating an id is better left for the server.
     addPerson(name: String!, phone: String, street: String!, city: String!): Person
-    editNumber(name: String!, phone: String!): Person
+    editNumber(name: String! phone: String!): Person
+    createUser(username: String!): User
+    login: (username: String! password: String!): Token
   }
 `;
 exports.resolvers = {
     Query: {
+        me: (root, args, context) => {
+            return context.currentUser;
+        },
         personCount: () => __awaiter(void 0, void 0, void 0, function* () { return person_1.Person.collection.countDocuments(); }),
         allPersons: (root, args) => {
             if (!args.phone) {
@@ -94,6 +116,25 @@ exports.resolvers = {
                 });
             }
             return person;
+        }),
+        createUser: (root, args) => __awaiter(void 0, void 0, void 0, function* () {
+            const user = new user_1.User({ username: args.username });
+            return user.save().catch((error) => {
+                throw new apollo_server_1.UserInputError(error.message, {
+                    invalidArgs: args,
+                });
+            });
+        }),
+        login: (root, args) => __awaiter(void 0, void 0, void 0, function* () {
+            const user = yield user_1.User.findOne({ username: args.username });
+            if (!user || args.password !== 'secret') {
+                throw new apollo_server_1.UserInputError('wrong credentials');
+            }
+            const userForToken = {
+                username: user.username,
+                id: user._id,
+            };
+            return { value: jsonwebtoken_1.default.sign(userForToken, JWT_SECRET) };
         }),
     },
 };
