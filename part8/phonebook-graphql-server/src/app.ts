@@ -72,7 +72,15 @@ export const resolvers = {
   Mutation: {
     addPerson: async (root: undefined, args: Omit<IPerson, 'id'>) => {
       const person = new Person({ ...args });
-      return person.save();
+      try {
+        person.save();
+      } catch (error) {
+        // @ts-ignore
+        throw new UserInputError(error.message, {
+          invalidArgs: args,
+        });
+      }
+      return person;
     },
     editNumber: async (root: undefined, args: Pick<IPerson, 'name' | 'phone'>) => {
       const person = await Person.findOne({ name: args.name });
@@ -84,7 +92,15 @@ export const resolvers = {
         person.phone = args.phone;
       }
 
-      return person.save();
+      try {
+        person.save();
+      } catch (error) {
+        // @ts-ignore
+        throw new UserInputError(error.message, {
+          invalidArgs: args,
+        });
+      }
+      return person;
     },
   },
 };
