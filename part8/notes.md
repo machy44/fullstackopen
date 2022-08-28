@@ -195,3 +195,29 @@ response
 ```
 
 https://graphql.org/learn/queries/#variables
+
+## Named queries 
+instead of this
+```
+query {
+  findPerson(name: "Arto Hellas") {
+    phone 
+    city 
+    street
+    id
+  }
+}
+```
+do this
+```
+query findPersonByName($nameToSearch: String!) {
+  findPerson(name: $nameToSearch) {
+    name
+    phone 
+    address {
+      street
+      city
+    }
+  }
+}
+```
