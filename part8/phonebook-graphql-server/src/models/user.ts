@@ -21,5 +21,3 @@ const schema = new Schema<IUser>({
 });
 
 export const User = mongooseModel('User', schema);
-
-// module.exports = mongooseModel('User', schema);
