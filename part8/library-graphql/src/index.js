@@ -1,21 +1,34 @@
 const { ApolloServer, gql } = require('apollo-server');
-let { authors, books } = require('./mocked-data.js');
+const { MONGODB_URI } = require('./utils/config');
+let { authors, books } = require('../mocked-data.js');
 const { v1: uuid } = require('uuid');
+const mongoose = require('mongoose');
+
+console.log('connecting to', MONGODB_URI);
+
+mongoose
+  .connect(MONGODB_URI)
+  .then(() => {
+    console.log('connected to MongoDB');
+  })
+  .catch((error) => {
+    console.log('error connection to MongoDB:', error.message);
+  });
 
 const typeDefs = gql`
-  type Book {
-    title: String!
-    published: Int!
-    author: String!
-    id: ID!
-    genres: [String!]!
-  }
-
   type Author {
     name: String!
     id: ID!
     born: Int
     bookCount: Int!
+  }
+
+  type Book {
+    title: String!
+    published: Int!
+    author: Author!
+    id: ID!
+    genres: [String!]!
   }
 
   type Query {
