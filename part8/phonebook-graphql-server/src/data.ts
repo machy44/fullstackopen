@@ -1,4 +1,4 @@
-export interface IPerson {
+interface IPerson {
   name: string;
   phone?: string;
   street: string;
@@ -6,7 +6,7 @@ export interface IPerson {
   id: string;
 }
 
-export let personsData: IPerson[] = [
+let personsData: IPerson[] = [
   {
     name: 'Arto Hellas',
     phone: '040-123543',

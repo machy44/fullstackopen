@@ -1,8 +1,8 @@
-import { gql, UserInputError } from 'apollo-server';
+import { AuthenticationError, gql, UserInputError } from 'apollo-server';
 import { v1 as uuid } from 'uuid';
 import jwt from 'jsonwebtoken';
-import { personsData, IPerson } from './data';
-import { Person } from './models/person';
+
+import { Person, IPerson } from './models/person';
 import { User, IUser } from './models/user';
 
 const JWT_SECRET = process.env['SECRET'] ?? '';
@@ -11,8 +11,6 @@ interface Address {
   street: string;
   city: string;
 }
-
-let persons = [...personsData];
 
 // interface PersonGraphQlScheme extends Omit<IPerson, 'street' | 'city'> {
 //   address: Address;
@@ -58,12 +56,17 @@ export const typeDefs = gql`
     editNumber(name: String!, phone: String!): Person
     createUser(username: String!): User
     login(username: String!, password: String!): Token
+    addAsFriend(name: String!): User
   }
 `;
 
+type Context = {
+  currentUser: IUser;
+};
+
 export const resolvers = {
   Query: {
-    me: (root: undefined, args: undefined, context: { currentUser: IUser }) => {
+    me: (root: undefined, args: undefined, context: Context) => {
       return context.currentUser;
     },
     personCount: async () => Person.collection.countDocuments(),
@@ -90,10 +93,19 @@ export const resolvers = {
     },
   },
   Mutation: {
-    addPerson: async (root: undefined, args: Omit<IPerson, 'id'>) => {
+    addPerson: async (root: undefined, args: Omit<IPerson, 'id'>, context: Context) => {
       const person = new Person({ ...args });
+
+      const currentUser = context.currentUser;
+
+      if (!currentUser) {
+        throw new AuthenticationError('not authenticated');
+      }
+
       try {
-        person.save();
+        await person.save();
+        currentUser.friends = currentUser.friends.concat(person);
+        await currentUser.save();
       } catch (error) {
         // @ts-ignore
         throw new UserInputError(error.message, {
@@ -142,6 +154,28 @@ export const resolvers = {
       };
 
       return { value: jwt.sign(userForToken, JWT_SECRET) };
+    },
+    addAsFriend: async (root: undefined, args: Pick<IPerson, 'name'>, { currentUser }: Context) => {
+      if (!currentUser) {
+        throw new AuthenticationError('not authenticated');
+      }
+
+      const person = await Person.findOne({ name: args.name });
+
+      if (person === null) {
+        throw new UserInputError('Resource doesnt exist');
+      }
+
+      const nonFriendAlready = (person: IPerson) =>
+        !currentUser.friends.map((f) => f._id.toString()).includes(person._id.toString());
+
+      if (nonFriendAlready(person)) {
+        currentUser.friends = currentUser.friends.concat(person);
+      }
+
+      await currentUser.save();
+
+      return currentUser;
     },
   },
 };
