@@ -35,8 +35,7 @@ const typeDefs = gql`
   type Query {
     bookCount: Int!
     authorCount: Int!
-    # allBooks(author: String, genre: String): [Book!]!
-    allBooks: [Book!]!
+    allBooks(author: String, genre: String): [Book!]!
     allAuthors: [Author!]!
   }
 
@@ -56,8 +55,10 @@ const resolvers = {
   Query: {
     bookCount: () => Book.collection.countDocuments(),
     authorCount: () => Author.collection.countDocuments(),
-    allBooks: async () => {
-      return await Book.find().populate('author');
+    allBooks: async (root, args) => {
+      if (!args.author && !args.genre) {
+        return await Book.find().populate('author');
+      }
     },
     //   allBooks: (root, args) => {
     //     if (!args.author && !args.genre) return books;
@@ -78,6 +79,7 @@ const resolvers = {
   },
   Author: {
     bookCount: async (root, _, context) => {
+      console.log('book count');
       const books = await Book.find({});
       const count = books.reduce((acc, { author }) => {
         if (author.toString() === root._id.toString()) {
@@ -101,7 +103,9 @@ const resolvers = {
       const book = new Book({ ...args, author: author._id });
       await book.save();
 
-      return book;
+      console.log({ book });
+
+      return await book.populate('author');
     },
 
     addAuthor: async (root, args) => {
