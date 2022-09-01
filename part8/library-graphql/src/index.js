@@ -4,6 +4,7 @@ const Book = require('./models/book');
 const Author = require('./models/author');
 const { v1: uuid } = require('uuid');
 const mongoose = require('mongoose');
+const author = require('./models/author');
 
 console.log('connecting to', MONGODB_URI);
 
@@ -58,6 +59,13 @@ const resolvers = {
     allBooks: async (root, args) => {
       if (!args.author && !args.genre) {
         return await Book.find().populate('author');
+      }
+      if (args.author) {
+        const author = await Author.findOne({ name: args.author });
+        const books = await Book.find({
+          author: { $in: [author._id] },
+        }).populate('author');
+        return books;
       }
     },
     //   allBooks: (root, args) => {
