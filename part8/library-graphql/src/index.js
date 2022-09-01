@@ -60,27 +60,21 @@ const resolvers = {
       if (!args.author && !args.genre) {
         return await Book.find().populate('author');
       }
+
+      let condition = {};
+
       if (args.author) {
         const author = await Author.findOne({ name: args.author });
-        const books = await Book.find({
-          author: { $in: [author._id] },
-        }).populate('author');
-        return books;
+        condition.author = { $in: [author._id] };
       }
+
+      if (args.genre) {
+        condition.genres = { $in: [args.genre] };
+      }
+
+      return await Book.find(condition).populate('author');
     },
-    //   allBooks: (root, args) => {
-    //     if (!args.author && !args.genre) return books;
-    //     let filteredBooks = books;
-    //     if (args.author) {
-    //       const byAuthor = (book) => book.author === args.author;
-    //       filteredBooks = books.filter(byAuthor);
-    //     }
-    //     if (args.genre) {
-    //       const byGenre = (book) => book.genres.includes(args.genre);
-    //       filteredBooks = filteredBooks.filter(byGenre);
-    //     }
-    //     return filteredBooks;
-    //   },
+
     allAuthors: async () => {
       return await Author.find({});
     },
