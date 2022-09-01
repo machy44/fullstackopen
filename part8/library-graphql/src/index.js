@@ -48,8 +48,7 @@ const typeDefs = gql`
       published: Int!
       genres: [String!]!
     ): Book
-
-    # editAuthor(name: String!, setBornTo: Int!): Author
+    editAuthor(name: String!, setBornTo: Int!): Author
   }
 `;
 
@@ -94,14 +93,10 @@ const resolvers = {
     addBook: async (root, args) => {
       let author = await Author.findOne({ name: args.author });
 
-      console.log({ author });
-
       if (author === null) {
         author = new Author({ name: args.author });
         await author.save();
       }
-
-      console.log({ author });
 
       const book = new Book({ ...args, author: author._id });
       await book.save();
@@ -120,21 +115,21 @@ const resolvers = {
       return author;
     },
 
-    //   editAuthor: (root, args) => {
-    //     const author = authors.find((author) => {
-    //       return author.name === args.name;
-    //     });
+    editAuthor: async (root, args) => {
+      const author = await Author.findOne({
+        name: args.name,
+      });
 
-    //     if (author === undefined) {
-    //       return null;
-    //     }
+      if (author === null) {
+        throw new UserInputError('author doesnt exist');
+      }
 
-    //     const updatedAuthor = { ...author, born: args.setBornTo };
-    //     authors = authors.map((author) =>
-    //       author.name === args.name ? updatedAuthor : author
-    //     );
-    //     return updatedAuthor;
-    //   },
+      if (args.setBornTo) {
+        author.update({ born: args.setBornTo });
+      }
+
+      return author;
+    },
   },
 };
 
