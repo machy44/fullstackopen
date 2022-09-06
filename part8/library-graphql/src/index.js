@@ -5,6 +5,7 @@ const {
   AuthenticationError,
 } = require('apollo-server');
 const { MONGODB_URI } = require('./utils/config');
+const bcrypt = require('bcrypt');
 const jwt = require('jsonwebtoken');
 const Book = require('./models/book');
 const Author = require('./models/author');
@@ -27,6 +28,7 @@ mongoose
 const typeDefs = gql`
   type User {
     username: String!
+    password: String!
     favoriteGenre: String!
     id: ID!
   }
@@ -67,7 +69,11 @@ const typeDefs = gql`
       genres: [String!]!
     ): Book
     editAuthor(name: String!, setBornTo: Int!): Author
-    createUser(username: String!, favoriteGenre: String!): User
+    createUser(
+      username: String!
+      favoriteGenre: String!
+      password: String!
+    ): User
     login(username: String!, password: String!): Token
   }
 `;
@@ -123,9 +129,18 @@ const resolvers = {
 
   Mutation: {
     createUser: async (root, args) => {
+      // Our current code does not contain any error handling
+      // or input validation for verifying that the username and password are in the desired format.
+      const saltRounds = 10;
+      const password = await bcrypt.hash(args.password, saltRounds);
+      const existingUser = await User.findOne({ username: args.username });
+      if (existingUser) {
+        throw new UserInputError('username must be unique');
+      }
       const user = new User({
         username: args.username,
         favoriteGenre: args.favoriteGenre,
+        password,
       });
       return user.save().catch((error) => {
         throw new UserInputError(error.message, {
@@ -136,7 +151,11 @@ const resolvers = {
     login: async (root, args) => {
       const user = await User.findOne({ username: args.username });
 
-      if (!user || args.password !== 'secret') {
+      if (!user) {
+        throw new UserInputError('wrong credentials');
+      }
+      const checkPassword = await bcrypt.compare(args.password, user.password);
+      if (!checkPassword) {
         throw new UserInputError('wrong credentials');
       }
       const userForToken = {
@@ -220,6 +239,7 @@ const server = new ApolloServer({
   context: async ({ req }) => {
     const auth = req ? req.headers.authorization : null;
     if (auth && auth.toLowerCase().startsWith('bearer ')) {
+      console.log({ auth });
       const decodedToken = jwt.verify(auth.substring(7), JWT_SECRET);
       const currentUser = await User.findById(decodedToken.id);
       return { currentUser };
