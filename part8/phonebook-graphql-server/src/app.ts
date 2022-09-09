@@ -107,13 +107,13 @@ export const resolvers = {
         await person.save();
         currentUser.friends = currentUser.friends.concat(person);
         await currentUser.save();
+        return person;
       } catch (error) {
         // @ts-ignore
         throw new UserInputError(error.message, {
           invalidArgs: args,
         });
       }
-      return person;
     },
     editNumber: async (root: undefined, args: Pick<IPerson, 'name' | 'phone'>) => {
       const person = await Person.findOne({ name: args.name });
@@ -126,7 +126,7 @@ export const resolvers = {
       }
 
       try {
-        person.save();
+        await person.save();
       } catch (error) {
         // @ts-ignore
         throw new UserInputError(error.message, {
