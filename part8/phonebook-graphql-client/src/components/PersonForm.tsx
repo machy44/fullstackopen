@@ -67,7 +67,7 @@ export const PersonForm: React.FC<{ setError: (arg: string) => void }> = ({ setE
   const submit = (event: React.FormEvent<HTMLFormElement>) => {
     event.preventDefault();
 
-    createPerson({ variables: { name, phone, street, city } });
+    createPerson({ variables: { name, phone: phone || undefined, street, city } });
     dispatch({ type: ACTION_TYPES.reset });
   };
 

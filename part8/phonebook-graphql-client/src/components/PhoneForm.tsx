@@ -7,7 +7,17 @@ const PhoneForm: React.FC<{ setError: (arg: string) => void }> = ({ setError }) 
   const [name, setName] = useState('');
   const [phone, setPhone] = useState('');
 
-  const [changeNumber, result] = useMutation(EDIT_NUMBER);
+  // Surprisingly, when a person's number is changed,
+  // the new number automatically appears on the list of
+  // persons rendered by the Persons component.
+  // This happens because each person has an identifying field of type ID,
+  // so the person's details saved to the cache update automatically when
+  // they are changed with the mutation.
+  const [changeNumber, result] = useMutation(EDIT_NUMBER, {
+    onError: (error) => {
+      setError(error.graphQLErrors[0].message);
+    },
+  });
   const submit = (event: React.FormEvent<HTMLFormElement>) => {
     event.preventDefault();
 
