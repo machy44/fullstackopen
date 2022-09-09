@@ -79,7 +79,8 @@ export const resolvers = {
     },
     // The second parameter, args, contains the parameters of the query
     findPerson: async (root: undefined, args: Pick<IPerson, 'name'>) => {
-      await Person.findOne({ name: args.name });
+      const person = await Person.findOne({ name: args.name });
+      return person;
     },
   },
   // The parameter root of the resolver function is the person-object,
