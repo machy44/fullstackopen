@@ -70,16 +70,16 @@ export const resolvers = {
       return context.currentUser;
     },
     personCount: async () => Person.collection.countDocuments(),
-    allPersons: (root: undefined, args: Pick<IPerson, 'phone'>) => {
+    allPersons: async (root: undefined, args: Pick<IPerson, 'phone'>) => {
       if (!args.phone) {
-        return Person.find({});
+        return await Person.find({});
       }
 
-      return Person.find({ phone: { $exists: args.phone === 'YES' } });
+      return await Person.find({ phone: { $exists: args.phone === 'YES' } });
     },
     // The second parameter, args, contains the parameters of the query
-    findPerson: (root: undefined, args: Pick<IPerson, 'name'>) => {
-      Person.findOne({ name: args.name });
+    findPerson: async (root: undefined, args: Pick<IPerson, 'name'>) => {
+      await Person.findOne({ name: args.name });
     },
   },
   // The parameter root of the resolver function is the person-object,
