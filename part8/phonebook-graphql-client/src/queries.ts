@@ -29,7 +29,7 @@ export const FIND_PERSON = gql`
 `;
 
 export const ALL_PERSONS = gql`
-  query {
+  query allPersons {
     allPersons {
       name
       phone
