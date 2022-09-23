@@ -225,7 +225,7 @@ const resolvers = {
       }
 
       if (args.setBornTo) {
-        author.updateOne({ born: args.setBornTo });
+        await author.updateOne({ born: args.setBornTo });
       }
 
       return author;
