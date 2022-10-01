@@ -52,6 +52,13 @@ let books = [
     genres: ['refactoring'],
   },
   {
+    title: 'Crime and punishment',
+    published: 1866,
+    author: 'Fyodor Dostoevsky',
+    id: 'afa5de03-344d-11e9-a414-719c6709cf3e',
+    genres: ['classic', 'crime'],
+  },
+  {
     title: 'Refactoring to patterns',
     published: 2008,
     author: 'Joshua Kerievsky',
@@ -65,13 +72,7 @@ let books = [
     id: 'afa5de02-344d-11e9-a414-719c6709cf3e',
     genres: ['refactoring', 'design'],
   },
-  {
-    title: 'Crime and punishment',
-    published: 1866,
-    author: 'Fyodor Dostoevsky',
-    id: 'afa5de03-344d-11e9-a414-719c6709cf3e',
-    genres: ['classic', 'crime'],
-  },
+
   {
     title: 'The Demon ',
     published: 1872,

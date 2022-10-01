@@ -163,7 +163,9 @@ const resolvers = {
         id: user._id,
       };
 
-      return { value: jwt.sign(userForToken, JWT_SECRET) };
+      return {
+        value: jwt.sign(userForToken, JWT_SECRET, { expiresIn: 60 * 60 }),
+      };
     },
 
     addBook: async (root, args, { currentUser }) => {
