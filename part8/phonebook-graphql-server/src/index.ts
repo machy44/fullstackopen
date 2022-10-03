@@ -2,9 +2,11 @@ import mongoose from 'mongoose';
 import { ApolloServer } from 'apollo-server';
 import { MONGODB_URI } from './utils/config';
 import { info, error as errorLogger } from './utils/logger';
-import { typeDefs, resolvers } from './app';
+
 import jwt, { JwtPayload as BaseJwtPayload } from 'jsonwebtoken';
 import { User } from './models/user';
+import { typeDefs } from './graphql/schema';
+import { resolvers } from './graphql/resolvers';
 
 const JWT_SECRET = process.env['SECRET'] ?? '';
 
