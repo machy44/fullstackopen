@@ -1,13 +1,20 @@
 import React, { useState } from 'react';
-import { useApolloClient, useQuery, useSubscription } from '@apollo/client';
+import {
+  ApolloCache,
+  DocumentNode,
+  useApolloClient,
+  useQuery,
+  useSubscription,
+} from '@apollo/client';
 import './index.css';
-import { PersonData } from './types';
+import { IPerson, PersonData } from './types';
 import { Persons } from './components/Persons';
 import { PersonForm } from './components/PersonForm';
 import { ALL_PERSONS, PersonAddedSubscription, PERSON_ADDED } from './graphqlActions';
 import PhoneForm from './components/PhoneForm';
 import LoginForm from './components/LoginForm';
 import { Notify } from './components/Notifiy';
+import { updateCache } from './utils';
 
 const App = () => {
   const { loading, data } = useQuery<PersonData>(ALL_PERSONS);
@@ -18,10 +25,8 @@ const App = () => {
 
       if (addedPerson) {
         notify(`${addedPerson.name} added`);
+        updateCache(client.cache, { query: ALL_PERSONS }, addedPerson);
       }
-      client.cache.updateQuery({ query: ALL_PERSONS }, ({ allPersons }) => {
-        return { allPersons: allPersons.concat(addedPerson) };
-      });
     },
   });
   const [errorMessage, setErrorMessage] = useState<string | null>(null);

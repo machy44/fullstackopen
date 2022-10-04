@@ -1,6 +1,7 @@
 import React, { useReducer, useState } from 'react';
 import { useMutation, ApolloCache } from '@apollo/client';
 import { ALL_PERSONS, CREATE_PERSON } from '../graphqlActions';
+import { updateCache } from '../utils';
 
 type InititalState = {
   name: string;
@@ -59,11 +60,7 @@ export const PersonForm: React.FC<{ setError: (arg: string) => void }> = ({ setE
 
   const [createPerson] = useMutation(CREATE_PERSON, {
     update: (cache, response) => {
-      cache.updateQuery({ query: ALL_PERSONS }, ({ allPersons }) => {
-        return {
-          allPersons: allPersons.concat(response.data.addPerson),
-        };
-      });
+      updateCache(cache, { query: ALL_PERSONS }, response.data.addPerson);
     },
     onError: (error) => {
       setError(error.graphQLErrors[0].message);
