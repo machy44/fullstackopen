@@ -1,6 +1,6 @@
 import React, { useState, useEffect, FormEvent, FC } from 'react';
 import { useMutation } from '@apollo/client';
-import { LOGIN } from '../queries';
+import { LOGIN } from '../graphqlActions';
 import { localStorageTokenName } from '../constants';
 
 const LoginForm: FC<{

@@ -1,10 +1,10 @@
 import React, { useState } from 'react';
-import { useApolloClient, useQuery } from '@apollo/client';
+import { useApolloClient, useQuery, useSubscription } from '@apollo/client';
 import './index.css';
 import { PersonData } from './types';
 import { Persons } from './components/Persons';
 import { PersonForm } from './components/PersonForm';
-import { ALL_PERSONS } from './queries';
+import { ALL_PERSONS, PERSON_ADDED } from './graphqlActions';
 import PhoneForm from './components/PhoneForm';
 import LoginForm from './components/LoginForm';
 
@@ -18,6 +18,11 @@ const Notify = ({ errorMessage }: { errorMessage: string | null }) => {
 const App = () => {
   const { loading, data } = useQuery<PersonData>(ALL_PERSONS);
   const [token, setToken] = useState(null);
+  useSubscription(PERSON_ADDED, {
+    onSubscriptionData: ({ subscriptionData }) => {
+      console.log(subscriptionData);
+    },
+  });
   const [errorMessage, setErrorMessage] = useState<string | null>(null);
   const client = useApolloClient();
 
