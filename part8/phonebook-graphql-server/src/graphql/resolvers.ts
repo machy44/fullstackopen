@@ -4,6 +4,9 @@ import jwt from 'jsonwebtoken';
 
 import { Person, IPerson } from '../models/person';
 import { User, IUser } from '../models/user';
+import { PubSub } from 'graphql-subscriptions';
+
+const pubsub = new PubSub();
 
 type Context = {
   currentUser: IUser;
@@ -54,6 +57,7 @@ export const resolvers = {
         await person.save();
         currentUser.friends = currentUser.friends.concat(person);
         await currentUser.save();
+        pubsub.publish('PERSON_ADDED', { personAdded: person });
         return person;
       } catch (error) {
         // @ts-ignore
@@ -124,6 +128,11 @@ export const resolvers = {
       await currentUser.save();
 
       return currentUser;
+    },
+  },
+  Subscription: {
+    personAdded: {
+      subscribe: () => pubsub.asyncIterator('PERSON_ADDED'),
     },
   },
 };

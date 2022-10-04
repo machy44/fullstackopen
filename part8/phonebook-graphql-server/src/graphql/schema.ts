@@ -1,4 +1,4 @@
-const { gql } = require('apollo-server');
+import { gql } from 'apollo-server';
 
 export const typeDefs = gql`
   type Address {
@@ -41,5 +41,8 @@ export const typeDefs = gql`
     createUser(username: String!): User
     login(username: String!, password: String!): Token
     addAsFriend(name: String!): User
+  }
+  type Subscription {
+    personAdded: Person!
   }
 `;
