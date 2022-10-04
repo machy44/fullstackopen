@@ -4,23 +4,24 @@ import './index.css';
 import { PersonData } from './types';
 import { Persons } from './components/Persons';
 import { PersonForm } from './components/PersonForm';
-import { ALL_PERSONS, PERSON_ADDED } from './graphqlActions';
+import { ALL_PERSONS, PersonAddedSubscription, PERSON_ADDED } from './graphqlActions';
 import PhoneForm from './components/PhoneForm';
 import LoginForm from './components/LoginForm';
-
-const Notify = ({ errorMessage }: { errorMessage: string | null }) => {
-  if (!errorMessage) {
-    return null;
-  }
-  return <div style={{ color: 'red' }}> {errorMessage} </div>;
-};
+import { Notify } from './components/Notifiy';
 
 const App = () => {
   const { loading, data } = useQuery<PersonData>(ALL_PERSONS);
   const [token, setToken] = useState(null);
-  useSubscription(PERSON_ADDED, {
-    onSubscriptionData: ({ subscriptionData }) => {
-      console.log(subscriptionData);
+  useSubscription<PersonAddedSubscription>(PERSON_ADDED, {
+    onSubscriptionData: ({ client, subscriptionData }) => {
+      const addedPerson = subscriptionData.data?.personAdded;
+
+      if (addedPerson) {
+        notify(`${addedPerson.name} added`);
+      }
+      client.cache.updateQuery({ query: ALL_PERSONS }, ({ allPersons }) => {
+        return { allPersons: allPersons.concat(addedPerson) };
+      });
     },
   });
   const [errorMessage, setErrorMessage] = useState<string | null>(null);

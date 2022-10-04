@@ -1,4 +1,5 @@
 import { gql } from '@apollo/client';
+import { IPerson } from './types';
 
 // fragments
 const PERSON_DETAILS = gql`
@@ -15,12 +16,12 @@ const PERSON_DETAILS = gql`
 
 // queries
 export const FIND_PERSON = gql`
+  ${PERSON_DETAILS}
   query findPersonByName($nameToSearch: String!) {
     findPerson(name: $nameToSearch) {
-      ...PERSON_DETAILS
+      ...PersonDetails
     }
   }
-  ${PERSON_DETAILS}
 `;
 
 export const ALL_PERSONS = gql`
@@ -35,12 +36,12 @@ export const ALL_PERSONS = gql`
 
 // mutations
 export const CREATE_PERSON = gql`
+  ${PERSON_DETAILS}
   mutation createPerson($name: String!, $street: String!, $city: String!, $phone: String) {
     addPerson(name: $name, street: $street, city: $city, phone: $phone) {
-      ...PERSON_DETAILS
+      ...PersonDetails
     }
   }
-  ${PERSON_DETAILS}
 `;
 
 export const EDIT_NUMBER = gql`
@@ -65,12 +66,16 @@ export const LOGIN = gql`
   }
 `;
 
+export type PersonAddedSubscription = {
+  personAdded: IPerson;
+};
+
 // subscriptions
 export const PERSON_ADDED = gql`
+  ${PERSON_DETAILS}
   subscription {
     personAdded {
       ...PersonDetails
     }
   }
-  ${PERSON_DETAILS}
 `;

@@ -58,7 +58,6 @@ export const PersonForm: React.FC<{ setError: (arg: string) => void }> = ({ setE
   const { name, phone, street, city } = state;
 
   const [createPerson] = useMutation(CREATE_PERSON, {
-    // refetchQueries: [{ query: ALL_PERSONS }],
     update: (cache, response) => {
       cache.updateQuery({ query: ALL_PERSONS }, ({ allPersons }) => {
         return {
