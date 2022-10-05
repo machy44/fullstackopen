@@ -1,10 +1,12 @@
 import { Schema, model as mongooseModel, Document, Model } from 'mongoose';
+import { IUser } from './user';
 
 export interface IPerson extends Document {
   name: string;
   phone: string;
   street: string;
   city: string;
+  friendOf: IUser[];
 }
 
 const schema = new Schema<IPerson>({
@@ -27,6 +29,12 @@ const schema = new Schema<IPerson>({
     required: true,
     minlength: 3,
   },
+  friendOf: [
+    {
+      type: Schema.Types.ObjectId,
+      ref: 'User',
+    },
+  ],
 });
 
 export const Person: Model<IPerson> = mongooseModel('Person', schema);

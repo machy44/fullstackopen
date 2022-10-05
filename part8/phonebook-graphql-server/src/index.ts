@@ -31,6 +31,8 @@ mongoose
     errorLogger('error connecting to MongoDB:', error.message);
   });
 
+// mongoose.set('debug', true);
+
 // this is how you start with Apollo server
 // const server = new ApolloServer({
 //   typeDefs, // graphql scheme

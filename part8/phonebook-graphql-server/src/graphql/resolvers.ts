@@ -21,11 +21,12 @@ export const resolvers = {
     },
     personCount: async () => Person.collection.countDocuments(),
     allPersons: async (root: undefined, args: Pick<IPerson, 'phone'>) => {
+      console.log('Person.find');
       if (!args.phone) {
-        return await Person.find({});
+        return await Person.find({}).populate('friendOf');
       }
 
-      return await Person.find({ phone: { $exists: args.phone === 'YES' } });
+      return await Person.find({ phone: { $exists: args.phone === 'YES' } }).populate('friendOf');
     },
     // The second parameter, args, contains the parameters of the query
     findPerson: async (root: undefined, args: Pick<IPerson, 'name'>) => {
@@ -33,9 +34,12 @@ export const resolvers = {
       return person;
     },
   },
+
   // The parameter root of the resolver function is the person-object,
   // so the street and the city of the address can be taken from its fields.
+
   Person: {
+    // this is called field resolver
     address: (root: IPerson) => {
       return {
         street: root.street,
@@ -54,6 +58,7 @@ export const resolvers = {
       }
 
       try {
+        person.friendOf = currentUser._id;
         await person.save();
         currentUser.friends = currentUser.friends.concat(person);
         await currentUser.save();
