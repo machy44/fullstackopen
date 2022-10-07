@@ -5,7 +5,14 @@ const Book = require('./models/book');
 const Author = require('./models/author');
 const User = require('./models/user');
 
-export const resolvers = {
+const { PubSub } = require('graphql-subscriptions');
+const pubsub = new PubSub();
+
+const BOOK_ADDED = 'BOOK_ADDED';
+
+const JWT_SECRET = process.env['SECRET'];
+
+const resolvers = {
   Query: {
     bookCount: () => Book.collection.countDocuments(),
     authorCount: () => Author.collection.countDocuments(),
@@ -16,7 +23,6 @@ export const resolvers = {
         }
 
         let condition = {};
-
         if (args.author) {
           const author = await Author.findOne({ name: args.author });
           condition.author = author._id;
@@ -108,10 +114,16 @@ export const resolvers = {
           await author.save();
         }
 
+        console.log({ author });
+
         const book = new Book({ ...args, author: author._id });
         await book.save();
 
-        return await book.populate('author');
+        const populatedBook = await book.populate('author');
+
+        pubsub.publish(BOOK_ADDED, { bookAdded: populatedBook });
+
+        return await populatedBook;
       } catch (error) {
         throw new UserInputError(error.message, {
           invalidArgs: args,
@@ -160,4 +172,11 @@ export const resolvers = {
       return author;
     },
   },
+  Subscription: {
+    bookAdded: {
+      subscribe: () => pubsub.asyncIterator(BOOK_ADDED),
+    },
+  },
 };
+
+module.exports = resolvers;
