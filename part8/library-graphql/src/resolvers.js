@@ -123,7 +123,7 @@ const resolvers = {
 
         pubsub.publish(BOOK_ADDED, { bookAdded: populatedBook });
 
-        return await populatedBook;
+        return populatedBook;
       } catch (error) {
         throw new UserInputError(error.message, {
           invalidArgs: args,
