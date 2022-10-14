@@ -41,26 +41,39 @@ const resolvers = {
     },
 
     allAuthors: async () => {
-      return await Author.find({});
+      const authors = await Author.find({});
+      console.log({ authors });
+      return authors;
     },
     me: (root, args, context) => {
       return context.currentUser;
     },
   },
-  Author: {
-    bookCount: async (root, _, context) => {
-      const books = await Book.find({});
-      const count = books.reduce((acc, { author }) => {
-        if (author.toString() === root._id.toString()) {
-          return acc + 1;
-        }
-        return acc;
-      }, 0);
-      return count;
-    },
-  },
+
+  // Author: {
+  //   bookCount: async (root, args, context) => {
+  //     console.log({ root });
+  //     console.log({ args });
+  //     console.log({ context });
+  //   },
+  // },
 
   Mutation: {
+    resetDatabase: async (root, args, { currentUser }) => {
+      try {
+        if (!currentUser) {
+          throw new AuthenticationError('not authenticated');
+        }
+        await Book.deleteMany({});
+        await Author.deleteMany({});
+        return true;
+      } catch (error) {
+        throw new UserInputError(error.message, {
+          invalidArgs: args,
+        });
+      }
+    },
+
     createUser: async (root, args) => {
       // Our current code does not contain any error handling
       // or input validation for verifying that the username and password are in the desired format.
@@ -118,6 +131,8 @@ const resolvers = {
 
         const book = new Book({ ...args, author: author._id });
         await book.save();
+        author.books = author.books.concat(book);
+        await author.save();
 
         const populatedBook = await book.populate('author');
 
