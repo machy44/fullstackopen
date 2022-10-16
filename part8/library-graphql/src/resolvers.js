@@ -32,6 +32,7 @@ const resolvers = {
           condition.genres = args.genre;
         }
 
+        console.log('all books');
         return await Book.find(condition).populate('author');
       } catch (error) {
         throw new UserInputError(error.message, {
@@ -50,13 +51,14 @@ const resolvers = {
     },
   },
 
-  // Author: {
-  //   bookCount: async (root, args, context) => {
-  //     console.log({ root });
-  //     console.log({ args });
-  //     console.log({ context });
-  //   },
-  // },
+  Author: {
+    bookCount: async (root, args, context) => {
+      console.log({ root });
+      console.log({ args });
+      console.log({ context });
+      return root.books.length;
+    },
+  },
 
   Mutation: {
     resetDatabase: async (root, args, { currentUser }) => {
@@ -95,6 +97,7 @@ const resolvers = {
       });
     },
     login: async (root, args) => {
+      console.log(this);
       const user = await User.findOne({ username: args.username });
 
       if (!user) {
@@ -132,6 +135,7 @@ const resolvers = {
         const book = new Book({ ...args, author: author._id });
         await book.save();
         author.books = author.books.concat(book);
+        console.log({ book });
         await author.save();
 
         const populatedBook = await book.populate('author');
