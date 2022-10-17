@@ -32,7 +32,6 @@ const resolvers = {
           condition.genres = args.genre;
         }
 
-        console.log('all books');
         return await Book.find(condition).populate('author');
       } catch (error) {
         throw new UserInputError(error.message, {
@@ -43,7 +42,6 @@ const resolvers = {
 
     allAuthors: async () => {
       const authors = await Author.find({});
-      console.log({ authors });
       return authors;
     },
     me: (root, args, context) => {
@@ -53,9 +51,7 @@ const resolvers = {
 
   Author: {
     bookCount: async (root, args, context) => {
-      console.log({ root });
-      console.log({ args });
-      console.log({ context });
+      // use books field on author model to avoid n+1 problem
       return root.books.length;
     },
   },
@@ -129,8 +125,6 @@ const resolvers = {
           author = new Author({ name: args.author });
           await author.save();
         }
-
-        console.log({ author });
 
         const book = new Book({ ...args, author: author._id });
         await book.save();
