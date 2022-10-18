@@ -30,7 +30,7 @@ export const resolvers = {
     },
     // The second parameter, args, contains the parameters of the query
     findPerson: async (root: undefined, args: Pick<IPerson, 'name'>) => {
-      const person = await Person.findOne({ name: args.name });
+      const person = await Person.findOne({ name: args.name }).populate('friendOf');
       return person;
     },
   },
