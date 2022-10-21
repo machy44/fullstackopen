@@ -64,11 +64,12 @@ export const resolvers = {
         await currentUser.save();
         pubsub.publish('PERSON_ADDED', { personAdded: person });
         return person;
-      } catch (error) {
-        // @ts-ignore
-        throw new UserInputError(error.message, {
-          invalidArgs: args,
-        });
+      } catch (error: unknown) {
+        if (error instanceof Error) {
+          throw new UserInputError(error.message, {
+            invalidArgs: args,
+          });
+        }
       }
     },
     editNumber: async (root: undefined, args: Pick<IPerson, 'name' | 'phone'>) => {
@@ -83,11 +84,12 @@ export const resolvers = {
 
       try {
         await person.save();
-      } catch (error) {
-        // @ts-ignore
-        throw new UserInputError(error.message, {
-          invalidArgs: args,
-        });
+      } catch (error: unknown) {
+        if (error instanceof Error) {
+          throw new UserInputError(error.message, {
+            invalidArgs: args,
+          });
+        }
       }
       return person;
     },
