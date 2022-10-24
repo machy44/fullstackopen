@@ -16,6 +16,9 @@ const typeDefs = gql`
     name: String!
     id: ID!
     born: Int
+    # you dont give chance for deep nest queries because
+    # you dont return the whole author back in response.
+    # if you return Book here it would be the same problem as it exists in phonebook
     bookCount: Int!
   }
 
