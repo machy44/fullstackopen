@@ -6,11 +6,19 @@ export const typeDefs = gql`
     city: String!
   }
 
+  # type FriendOf {
+  #   username: String!
+  # }
+
+  # circular relationship between Person and User is the reason why deep nesting exists
+  # link: https://www.apollographql.com/blog/graphql/security/securing-your-graphql-api-from-malicious-queries/
+
   type Person {
     name: String!
     phone: String
     address: Address!
     friendOf: [User!]!
+    # friendOf: FriendOf!
     id: ID!
   }
   type User {

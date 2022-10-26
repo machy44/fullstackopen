@@ -36,6 +36,25 @@ const seed = async () => {
     );
 
     await user.save();
+
+    const user2 = await new User({ username: 'pero' }).save();
+
+    await Promise.all(
+      [...Array(6)].map(async (x) => {
+        const person = new Person({
+          name: faker.name.fullName(),
+          phone: faker.phone.number(),
+          street: faker.address.streetName(),
+          city: faker.address.cityName(),
+          friendOf: user2._id,
+        });
+        await person.save();
+        user2.friends = user2.friends.concat(person);
+      }),
+    );
+
+    await user2.save();
+
     mongoose.disconnect();
   } catch (e: unknown) {
     if (e instanceof Error) {

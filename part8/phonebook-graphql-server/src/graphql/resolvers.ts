@@ -23,7 +23,16 @@ export const resolvers = {
     allPersons: async (root: undefined, args: Pick<IPerson, 'phone'>) => {
       console.log('Person.find');
       if (!args.phone) {
-        return await Person.find({}).populate('friendOf');
+        // const persons = await Person.find({}).populate({
+        //   path: 'friendOf',
+        //   populate: {
+        //     path: 'friends',
+        //   },
+        // });
+
+        const persons = await Person.find({}).populate('friendOf');
+
+        return persons;
       }
 
       return await Person.find({ phone: { $exists: args.phone === 'YES' } }).populate('friendOf');
@@ -47,6 +56,12 @@ export const resolvers = {
       };
     },
   },
+  // FriendOf: {
+  //   username: (root: IUser[]) => {
+  //     console.log({ root });
+  //     return String(root.map((user) => user.username));
+  //   },
+  // },
   Mutation: {
     addPerson: async (root: undefined, args: Omit<IPerson, 'id'>, context: Context) => {
       const person = new Person({ ...args });
