@@ -28,8 +28,9 @@ mongoose
 
 // mongoose.set('debug', true);
 
+const app = express();
+
 const start = async () => {
-  const app = express();
   const httpServer = http.createServer(app);
 
   const schema = makeExecutableSchema({ typeDefs, resolvers });
@@ -75,3 +76,5 @@ const start = async () => {
 };
 
 start();
+
+module.exports = app;
