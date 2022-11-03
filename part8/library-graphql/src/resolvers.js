@@ -1,4 +1,4 @@
-const { UserInputError, AuthenticationError } = require('apollo-server');
+const { UserInputError } = require('apollo-server');
 const combineResolvers = require('graphql-resolvers').combineResolvers;
 const bcrypt = require('bcrypt');
 const jwt = require('jsonwebtoken');
@@ -7,7 +7,7 @@ const Author = require('./models/author');
 const User = require('./models/user');
 
 const { PubSub } = require('graphql-subscriptions');
-const isAuthenticated = require('./utils/resolver-middleware');
+const isAuthenticated = require('./utils/middlewares');
 const pubsub = new PubSub();
 
 const BOOK_ADDED = 'BOOK_ADDED';
