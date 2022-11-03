@@ -53,7 +53,7 @@ const resolvers = {
   },
 
   Author: {
-    bookCount: async (root, args, context) => {
+    bookCount: async (root) => {
       // use books field on author model to avoid n+1 problem
       return root.books.length;
     },

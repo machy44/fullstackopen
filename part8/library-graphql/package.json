@@ -7,7 +7,8 @@
     "start": "node ./src/index.js",
     "dev": "nodemon ./src/index.js",
     "test": "NODE_ENV=test jest --verbose --runInBand --forceExit",
-    "seed": "NODE_ENV=test node src/utils/seed.js"
+    "seed": "NODE_ENV=test node src/utils/seed.js",
+    "lint": "eslint ."
   },
   "keywords": [],
   "author": "",
@@ -29,6 +30,7 @@
   },
   "devDependencies": {
     "@faker-js/faker": "^7.6.0",
+    "eslint": "^8.26.0",
     "jest": "^29.2.2",
     "nodemon": "^2.0.16",
     "supertest": "^6.3.1"
