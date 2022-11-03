@@ -25,7 +25,7 @@ const seed = async () => {
     await Book.deleteMany({});
 
     await Promise.all(
-      [...Array(1)].map(async () => {
+      [...Array(2)].map(async () => {
         const author = await new Author({
           name: faker.name.fullName(),
           born: faker.date.past(),

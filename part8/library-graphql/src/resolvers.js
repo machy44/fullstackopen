@@ -16,6 +16,9 @@ const resolvers = {
   Query: {
     bookCount: () => Book.collection.countDocuments(),
     authorCount: () => Author.collection.countDocuments(),
+
+    // mongoose models should be send through the context to resolver
+    // to mock things more easily -> you will get some kind of dependency injection
     allBooks: async (root, args) => {
       try {
         if (!args.author && !args.genre) {
