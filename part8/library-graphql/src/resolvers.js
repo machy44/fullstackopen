@@ -1,4 +1,5 @@
 const { UserInputError, AuthenticationError } = require('apollo-server');
+const combineResolvers = require('graphql-resolvers').combineResolvers;
 const bcrypt = require('bcrypt');
 const jwt = require('jsonwebtoken');
 const Book = require('./models/book');
@@ -6,6 +7,7 @@ const Author = require('./models/author');
 const User = require('./models/user');
 
 const { PubSub } = require('graphql-subscriptions');
+const isAuthenticated = require('./utils/resolver-middleware');
 const pubsub = new PubSub();
 
 const BOOK_ADDED = 'BOOK_ADDED';
@@ -60,11 +62,8 @@ const resolvers = {
   },
 
   Mutation: {
-    resetDatabase: async (root, args, { currentUser }) => {
+    resetDatabase: combineResolvers(isAuthenticated, async (root, args) => {
       try {
-        if (!currentUser) {
-          throw new AuthenticationError('not authenticated');
-        }
         await Book.deleteMany({});
         await Author.deleteMany({});
         return true;
@@ -73,7 +72,7 @@ const resolvers = {
           invalidArgs: args,
         });
       }
-    },
+    }),
 
     createUser: async (root, args) => {
       // Our current code does not contain any error handling
@@ -116,12 +115,8 @@ const resolvers = {
       };
     },
 
-    addBook: async (root, args, { currentUser }) => {
+    addBook: combineResolvers(isAuthenticated, async (root, args) => {
       try {
-        if (!currentUser) {
-          throw new AuthenticationError('not authenticated');
-        }
-
         let author = await Author.findOne({ name: args.author });
 
         if (author === null) {
@@ -145,14 +140,10 @@ const resolvers = {
           invalidArgs: args,
         });
       }
-    },
+    }),
 
-    addAuthor: async (root, args, { currentUser }) => {
+    addAuthor: combineResolvers(isAuthenticated, async (root, args) => {
       try {
-        if (!currentUser) {
-          throw new AuthenticationError('not authenticated');
-        }
-
         let author = await Author.findOne({ name: args.name });
         if (author) {
           throw new UserInputError('author already exists');
@@ -166,13 +157,9 @@ const resolvers = {
           invalidArgs: args,
         });
       }
-    },
+    }),
 
-    editAuthor: async (root, args, { currentUser }) => {
-      if (!currentUser) {
-        throw new AuthenticationError('not authenticated');
-      }
-
+    editAuthor: combineResolvers(isAuthenticated, async (root, args) => {
       const author = await Author.findOne({
         name: args.name,
       });
@@ -186,7 +173,7 @@ const resolvers = {
       }
 
       return author;
-    },
+    }),
   },
   Subscription: {
     bookAdded: {
