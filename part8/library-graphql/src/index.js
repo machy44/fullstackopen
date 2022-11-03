@@ -1,11 +1,12 @@
 const { MONGODB_URI } = require('./utils/config');
 const jwt = require('jsonwebtoken');
 const User = require('./models/user');
+const app = require('./app');
 const mongoose = require('mongoose');
 const { ApolloServer } = require('apollo-server-express');
 const { ApolloServerPluginDrainHttpServer } = require('apollo-server-core');
 const { makeExecutableSchema } = require('@graphql-tools/schema');
-const express = require('express');
+
 const http = require('http');
 const { WebSocketServer } = require('ws');
 const { useServer } = require('graphql-ws/lib/use/ws');
@@ -27,8 +28,6 @@ mongoose
   });
 
 // mongoose.set('debug', true);
-
-const app = express();
 
 const start = async () => {
   const httpServer = http.createServer(app);
