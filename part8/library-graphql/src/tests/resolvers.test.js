@@ -41,55 +41,65 @@ describe('e2e tests resolvers', () => {
       console.log(`Server is now running on http://localhost:${4000}`)
     );
   });
-
-  test('execute countBooks', async () => {
-    const bookCount = await graphQLRequest(queries.bookCountQuery);
-    console.log({ bookCount });
-    expect(bookCount.body.data.bookCount).toBe(2);
-  });
-  test('execute countAuthors', async () => {
-    const authorCount = await graphQLRequest(queries.authorCountQuery);
-    expect(authorCount.body.data.authorCount).toBe(2);
-  });
-
-  describe('allAuthors resolver', () => {
-    test('execute allAuthors and check bookCount', async () => {
-      const authors = await graphQLRequest(queries.allAuthorsQuery);
-      expect(authors.body.data.allAuthors.length).toBe(5);
-      expect(authors.body.data.allAuthors[0].bookCount).toBe(2);
+  describe('query resolvers', () => {
+    test('execute countBooks', async () => {
+      const bookCount = await graphQLRequest(queries.bookCountQuery);
+      console.log({ bookCount });
+      expect(bookCount.body.data.bookCount).toBe(7);
     });
-    test('execute allAuthors and check born field', async () => {
-      const authors = await graphQLRequest(queries.allAuthorsQuery);
-      expect(authors.body.data.allAuthors[0].born).toBe(1952);
-      expect(authors.body.data.allAuthors[3].born).toBeFalsy();
-    });
-  });
-  describe('allBook resolver', () => {
-    test('execute allBooks without param', async () => {
-      const books = await graphQLRequest(queries.allBooksQuery);
-      expect(books.body.data.allBooks.length).toBe(7);
-    });
-    test('Author field resolver should return bookCount ', async () => {
-      const books = await graphQLRequest(queries.allBooksQuery);
-      expect(books.body.data.allBooks[0].author.bookCount).toBeTruthy();
-      expect(books.body.data.allBooks[0].author.bookCount).toBe(2);
-    });
-    test('execute allBooks with author arg', async () => {
-      const queryDostoevsky = queries.booksQueryByAuthor('Fyodor Dostoevsky');
-      const books = await graphQLRequest(queryDostoevsky);
-      expect(books.body.data.allBooks.length).toBe(2);
-      expect(books.body.data.allBooks[0].author.name).toBe('Fyodor Dostoevsky');
-      expect(books.body.data.allBooks[0].author.bookCount).toBe(2);
+    test('execute countAuthors', async () => {
+      const authorCount = await graphQLRequest(queries.authorCountQuery);
+      expect(authorCount.body.data.authorCount).toBe(5);
     });
 
-    //   test('execute allBooks with author param', async () => {});
-    //   test('execute allBooks with author and genre param', async () => {});
+    describe('allAuthors resolver', () => {
+      test('execute allAuthors and check bookCount', async () => {
+        const authors = await graphQLRequest(queries.allAuthorsQuery);
+        expect(authors.body.data.allAuthors.length).toBe(5);
+        expect(authors.body.data.allAuthors[0].bookCount).toBe(2);
+      });
+      test('execute allAuthors and check born field', async () => {
+        const authors = await graphQLRequest(queries.allAuthorsQuery);
+        console.log(authors.body.data.allAuthors[0]);
+        expect(authors.body.data.allAuthors[0].born).toBe(1952);
+        expect(authors.body.data.allAuthors[3].born).toBeFalsy();
+      });
+    });
+    describe('allBook resolver', () => {
+      test('execute allBooks without param', async () => {
+        const books = await graphQLRequest(queries.allBooksQuery);
+        expect(books.body.data.allBooks.length).toBe(7);
+      });
+      test('Author field resolver should return bookCount ', async () => {
+        const books = await graphQLRequest(queries.allBooksQuery);
+        expect(books.body.data.allBooks[0].author.bookCount).toBeTruthy();
+        expect(books.body.data.allBooks[0].author.bookCount).toBe(2);
+      });
+      test('execute allBooks with author arg', async () => {
+        const queryDostoevsky = queries.booksQueryByAuthor('Fyodor Dostoevsky');
+        const books = await graphQLRequest(queryDostoevsky);
+        expect(books.body.data.allBooks.length).toBe(2);
+        expect(books.body.data.allBooks[0].author.name).toBe(
+          'Fyodor Dostoevsky'
+        );
+        expect(books.body.data.allBooks[0].author.bookCount).toBe(2);
+      });
+      test('execute allBooks with author and genre args', async () => {
+        const queryDostoevskyGenre = queries.booksQueryByAuthorGenre(
+          'Fyodor Dostoevsky',
+          'crime'
+        );
+        const books = await graphQLRequest(queryDostoevskyGenre);
+        expect(books.body.data.allBooks.length).toBe(1);
+        expect(books.body.data.allBooks[0].author.name).toBe(
+          'Fyodor Dostoevsky'
+        );
+        expect(books.body.data.allBooks[0].author.bookCount).toBe(2);
+      });
+      describe('me resolver', () => {});
+    });
   });
-  // test('execute allBooks', async () => {
-  //   const authorCount = await graphQLRequest(authorCountQuery);
-  //   expect(authorCount.body.data.authorCount).toBe(1);
-  // });
-
+  describe('mutation resolvers', () => {});
   afterAll(() => {
     mongoose.connection.close();
   });

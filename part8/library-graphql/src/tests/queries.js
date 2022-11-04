@@ -36,11 +36,22 @@ const booksQueryByAuthor = (autor) => `query {
 const allAuthorsQuery = `
 query {
   allAuthors {
+    born
     name
     bookCount
   }
 }
 `;
+
+const booksQueryByAuthorGenre = (author, genre) => `query {
+  allBooks(author: "${author}", genre: "${genre}") {
+    title
+    author {
+      name
+      bookCount
+    }
+  }
+}`;
 
 module.exports = {
   bookCountQuery,
@@ -48,4 +59,5 @@ module.exports = {
   authorCountQuery,
   booksQueryByAuthor,
   allAuthorsQuery,
+  booksQueryByAuthorGenre,
 };
