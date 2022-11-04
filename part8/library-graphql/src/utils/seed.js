@@ -1,14 +1,74 @@
 const Author = require('../models/author');
 const Book = require('../models/book');
 // const User = require('../models/user');
-const faker = require('@faker-js/faker').faker;
 const mongoose = require('mongoose');
 const MONGODB_URI = require('../utils/config').MONGODB_URI;
 const info = require('../utils/logger').info;
 const errorLogger = require('../utils/logger').error;
 
-// console.log({ Author });
-// console.log({ Book });
+let data = [
+  {
+    title: 'Clean Code',
+    published: 2008,
+    genres: ['refactoring'],
+    author: {
+      name: 'Robert Martin',
+      born: 1952,
+    },
+  },
+  {
+    title: 'Agile software development',
+    published: 2002,
+    genres: ['agile', 'patterns', 'design'],
+    author: {
+      name: 'Robert Martin',
+      born: 1952,
+    },
+  },
+  {
+    title: 'Refactoring, edition 2',
+    published: 2018,
+    genres: ['refactoring'],
+    author: {
+      name: 'Martin Fowler',
+      born: 1963,
+    },
+  },
+  {
+    title: 'Crime and punishment',
+    published: 1866,
+    genres: ['classic', 'crime'],
+    author: {
+      name: 'Fyodor Dostoevsky',
+      born: 1821,
+    },
+  },
+  {
+    title: 'Refactoring to patterns',
+    published: 2008,
+    genres: ['refactoring', 'patterns'],
+    author: {
+      name: 'Joshua Kerievsky',
+    },
+  },
+  {
+    title: 'Practical Object-Oriented Design, An Agile Primer Using Ruby',
+    published: 2012,
+    genres: ['refactoring', 'design'],
+    author: {
+      name: 'Sandi Metz',
+    },
+  },
+  {
+    title: 'The Demon ',
+    published: 1872,
+    genres: ['classic', 'revolution'],
+    author: {
+      name: 'Fyodor Dostoevsky',
+      born: 1821,
+    },
+  },
+];
 
 const seed = async () => {
   try {
@@ -24,24 +84,29 @@ const seed = async () => {
     await Author.deleteMany({});
     await Book.deleteMany({});
 
-    await Promise.all(
-      [...Array(2)].map(async () => {
-        const author = await new Author({
-          name: faker.name.fullName(),
-          born: faker.date.past(),
+    // use reduce to sequentally add authors/books to DB
+    // https://advancedweb.hu/how-to-use-async-functions-with-array-map-in-javascript/
+    await data.reduce(async (memo, bookAuthor) => {
+      await memo;
+      let author = await Author.findOne({ name: bookAuthor.author.name });
+      if (author === null) {
+        author = await new Author({
+          name: bookAuthor.author.name,
+          born: bookAuthor.author.born,
         }).save();
+      }
 
-        const book = await new Book({
-          title: faker.name.jobTitle(),
-          published: faker.date.past(),
-          genres: faker.random.word(),
-          author: author._id,
-        }).save();
+      const book = await new Book({
+        title: bookAuthor.title,
+        published: bookAuthor.published,
+        genres: bookAuthor.genres,
+        author: author._id,
+      }).save();
 
-        author.books.push(book._id);
-        await author.save();
-      })
-    );
+      author.books.push(book._id);
+
+      await author.save();
+    }, []);
 
     mongoose.disconnect();
   } catch (e) {
@@ -54,3 +119,5 @@ const seed = async () => {
 };
 
 seed();
+
+module.exports = seed;
