@@ -52,7 +52,18 @@ describe('e2e tests resolvers', () => {
     expect(authorCount.body.data.authorCount).toBe(2);
   });
 
-  test('allAuthors resolver', () => {});
+  describe('allAuthors resolver', () => {
+    test('execute allAuthors and check bookCount', async () => {
+      const authors = await graphQLRequest(queries.allAuthorsQuery);
+      expect(authors.body.data.allAuthors.length).toBe(5);
+      expect(authors.body.data.allAuthors[0].bookCount).toBe(2);
+    });
+    test('execute allAuthors and check born field', async () => {
+      const authors = await graphQLRequest(queries.allAuthorsQuery);
+      expect(authors.body.data.allAuthors[0].born).toBe(1952);
+      expect(authors.body.data.allAuthors[3].born).toBeFalsy();
+    });
+  });
   describe('allBook resolver', () => {
     test('execute allBooks without param', async () => {
       const books = await graphQLRequest(queries.allBooksQuery);
@@ -75,10 +86,6 @@ describe('e2e tests resolvers', () => {
     //   test('execute allBooks with author and genre param', async () => {});
   });
   // test('execute allBooks', async () => {
-  //   const authorCount = await graphQLRequest(authorCountQuery);
-  //   expect(authorCount.body.data.authorCount).toBe(1);
-  // });
-  // test('execute allAuthors and check bookCount', async () => {
   //   const authorCount = await graphQLRequest(authorCountQuery);
   //   expect(authorCount.body.data.authorCount).toBe(1);
   // });
