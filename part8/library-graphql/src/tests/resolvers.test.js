@@ -44,7 +44,6 @@ describe('e2e tests resolvers', () => {
   describe('query resolvers', () => {
     test('execute countBooks', async () => {
       const bookCount = await graphQLRequest(queries.bookCountQuery);
-      console.log({ bookCount });
       expect(bookCount.body.data.bookCount).toBe(7);
     });
     test('execute countAuthors', async () => {
@@ -99,7 +98,12 @@ describe('e2e tests resolvers', () => {
       describe('me resolver', () => {});
     });
   });
-  describe('mutation resolvers', () => {});
+  describe('mutation resolvers', () => {
+    test('execute addBook and author already exists', async () => {});
+    test('execute addBook and author doesnt exist', async () => {});
+    test('execute addAuthor', async () => {});
+    test('execute editAuthor', async () => {});
+  });
   afterAll(() => {
     mongoose.connection.close();
   });

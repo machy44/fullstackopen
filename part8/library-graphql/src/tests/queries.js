@@ -53,6 +53,32 @@ const booksQueryByAuthorGenre = (author, genre) => `query {
   }
 }`;
 
+const addBookAuthorExists = `
+mutation {
+  addBook(
+    title: "NoSQL Distilled",
+    author: "Martin Fowler",
+    published: 2012,
+    genres: ["database", "nosql"]
+  ) {
+    title,
+    author
+  }
+}
+`;
+
+const addBookAuthorDoesntExist = `mutation {
+  addBook(
+    title: "Pimeyden tango",
+    author: "Reijo Mäki",
+    published: 1997,
+    genres: ["crime"]
+  ) {
+    title,
+    author
+  }
+}`;
+
 module.exports = {
   bookCountQuery,
   allBooksQuery,
@@ -60,4 +86,6 @@ module.exports = {
   booksQueryByAuthor,
   allAuthorsQuery,
   booksQueryByAuthorGenre,
+  addBookAuthorExists,
+  addBookAuthorDoesntExist,
 };
