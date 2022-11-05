@@ -62,7 +62,11 @@ mutation {
     genres: ["database", "nosql"]
   ) {
     title,
-    author
+    author {
+      name
+      bookCount
+      born
+    }
   }
 }
 `;
@@ -75,7 +79,11 @@ const addBookAuthorDoesntExist = `mutation {
     genres: ["crime"]
   ) {
     title,
-    author
+    author {
+      name
+      bookCount
+      born
+    }
   }
 }`;
 

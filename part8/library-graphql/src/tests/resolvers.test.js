@@ -13,7 +13,9 @@ const http = require('http');
 const schema = makeExecutableSchema({ typeDefs, resolvers });
 const server = new ApolloServer({
   schema,
-  context: {},
+  context: () => {
+    return { currentUser: 'test' };
+  },
 });
 
 const createTestEnv = () => {
@@ -68,6 +70,7 @@ describe('e2e tests resolvers', () => {
       test('execute allBooks without param', async () => {
         const books = await graphQLRequest(queries.allBooksQuery);
         expect(books.body.data.allBooks.length).toBe(7);
+        expect(books.body.data.allBooks[0].genres).toBeInstanceOf(Array);
       });
       test('Author field resolver should return bookCount ', async () => {
         const books = await graphQLRequest(queries.allBooksQuery);
@@ -99,8 +102,20 @@ describe('e2e tests resolvers', () => {
     });
   });
   describe('mutation resolvers', () => {
-    test('execute addBook and author already exists', async () => {});
-    test('execute addBook and author doesnt exist', async () => {});
+    test('execute addBook and author already exists', async () => {
+      const book = await graphQLRequest(queries.addBookAuthorExists);
+      expect(book.body.data.addBook.title).toBe('NoSQL Distilled');
+      expect(book.body.data.addBook.author.name).toBe('Martin Fowler');
+      expect(book.body.data.addBook.author.born).toBe(1963);
+      expect(book.body.data.addBook.author.bookCount).toBe(2);
+    });
+    test('execute addBook and author doesnt exist', async () => {
+      const book = await graphQLRequest(queries.addBookAuthorDoesntExist);
+      expect(book.body.data.addBook.title).toBe('Pimeyden tango');
+      expect(book.body.data.addBook.author.name).toBe('Reijo Mäki');
+      expect(book.body.data.addBook.author.born).toBe(null);
+      expect(book.body.data.addBook.author.bookCount).toBe(1);
+    });
     test('execute addAuthor', async () => {});
     test('execute editAuthor', async () => {});
   });
