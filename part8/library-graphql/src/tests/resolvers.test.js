@@ -83,7 +83,7 @@ describe('e2e tests resolvers', () => {
         expect(books.body.data.allBooks.length).toBe(7);
         expect(books.body.data.allBooks[0].genres).toBeInstanceOf(Array);
       });
-      test('Author field resolver should return bookCount ', async () => {
+      test('author field resolver should return bookCount ', async () => {
         const books = await graphQLRequest(queries.allBooksQuery);
         expect(books.body.data.allBooks[0].author.bookCount).toBeTruthy();
         expect(books.body.data.allBooks[0].author.bookCount).toBe(2);
@@ -102,29 +102,33 @@ describe('e2e tests resolvers', () => {
           'Fyodor Dostoevsky',
           'crime'
         );
-        const books = await graphQLRequest(queryDostoevskyGenre);
-        expect(books.body.data.allBooks.length).toBe(1);
-        expect(books.body.data.allBooks[0].author.name).toBe(
+        const dostoevskyBooks = await graphQLRequest(queryDostoevskyGenre);
+        expect(dostoevskyBooks.body.data.allBooks.length).toBe(1);
+        expect(dostoevskyBooks.body.data.allBooks[0].author.name).toBe(
           'Fyodor Dostoevsky'
         );
-        expect(books.body.data.allBooks[0].author.bookCount).toBe(2);
+        expect(dostoevskyBooks.body.data.allBooks[0].author.bookCount).toBe(2);
       });
     });
   });
   describe('mutation resolvers', () => {
     test('execute addBook and author already exists', async () => {
-      const book = await graphQLRequest(queries.addBookAuthorExists);
-      expect(book.body.data.addBook.title).toBe('NoSQL Distilled');
-      expect(book.body.data.addBook.author.name).toBe('Martin Fowler');
-      expect(book.body.data.addBook.author.born).toBe(1963);
-      expect(book.body.data.addBook.author.bookCount).toBe(2);
+      const fowlersBook = await graphQLRequest(queries.addBookAuthorExists);
+      expect(fowlersBook.body.data.addBook.title).toBe('NoSQL Distilled');
+      expect(fowlersBook.body.data.addBook.author.name).toBe('Martin Fowler');
+      expect(fowlersBook.body.data.addBook.author.born).toBe(1963);
+      expect(fowlersBook.body.data.addBook.author.bookCount).toBe(2);
+      const books = await graphQLRequest(queries.allBooksQuery);
+      expect(books.body.data.allBooks.length).toBe(8);
     });
     test('execute addBook and author doesnt exist', async () => {
-      const book = await graphQLRequest(queries.addBookAuthorDoesntExist);
-      expect(book.body.data.addBook.title).toBe('Pimeyden tango');
-      expect(book.body.data.addBook.author.name).toBe('Reijo Mäki');
-      expect(book.body.data.addBook.author.born).toBe(null);
-      expect(book.body.data.addBook.author.bookCount).toBe(1);
+      const ReijoBook = await graphQLRequest(queries.addBookAuthorDoesntExist);
+      expect(ReijoBook.body.data.addBook.title).toBe('Pimeyden tango');
+      expect(ReijoBook.body.data.addBook.author.name).toBe('Reijo Mäki');
+      expect(ReijoBook.body.data.addBook.author.born).toBe(null);
+      expect(ReijoBook.body.data.addBook.author.bookCount).toBe(1);
+      const books = await graphQLRequest(queries.allBooksQuery);
+      expect(books.body.data.allBooks.length).toBe(8);
     });
     test('execute addAuthor', async () => {});
     test('execute editAuthor', async () => {});
