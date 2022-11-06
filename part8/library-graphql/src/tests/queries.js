@@ -86,6 +86,12 @@ const addBookAuthorDoesntExist = `mutation {
     }
   }
 }`;
+const meQuery = `query {
+  me {
+    username
+    favoriteGenre
+  }
+}`;
 
 module.exports = {
   bookCountQuery,
@@ -96,4 +102,5 @@ module.exports = {
   booksQueryByAuthorGenre,
   addBookAuthorExists,
   addBookAuthorDoesntExist,
+  meQuery,
 };

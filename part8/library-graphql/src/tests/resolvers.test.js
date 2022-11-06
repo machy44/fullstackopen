@@ -14,7 +14,12 @@ const schema = makeExecutableSchema({ typeDefs, resolvers });
 const server = new ApolloServer({
   schema,
   context: () => {
-    return { currentUser: 'test' };
+    return {
+      currentUser: {
+        username: 'test',
+        favoriteGenre: 'punk',
+      },
+    };
   },
 });
 
@@ -51,6 +56,12 @@ describe('e2e tests resolvers', () => {
     test('execute countAuthors', async () => {
       const authorCount = await graphQLRequest(queries.authorCountQuery);
       expect(authorCount.body.data.authorCount).toBe(5);
+    });
+
+    test('me resolver', async () => {
+      const user = await graphQLRequest(queries.meQuery);
+      expect(user.body.data.me.username).toBe('test');
+      expect(user.body.data.me.favoriteGenre).toBe('punk');
     });
 
     describe('allAuthors resolver', () => {
@@ -98,7 +109,6 @@ describe('e2e tests resolvers', () => {
         );
         expect(books.body.data.allBooks[0].author.bookCount).toBe(2);
       });
-      describe('me resolver', () => {});
     });
   });
   describe('mutation resolvers', () => {
