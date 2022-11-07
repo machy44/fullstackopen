@@ -170,6 +170,7 @@ const resolvers = {
 
       if (args.setBornTo) {
         await author.updateOne({ born: args.setBornTo });
+        author.born = args.setBornTo;
       }
 
       return author;

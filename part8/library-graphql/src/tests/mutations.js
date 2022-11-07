@@ -50,9 +50,18 @@ mutation {
   }
 }`;
 
+const editAuthor = (name, setBornTo) => `mutation {
+  editAuthor(name: "${name}", setBornTo: ${setBornTo}) {
+    name
+    born
+    bookCount
+  }
+}`;
+
 module.exports = {
   addBookAuthorExists,
   addBookAuthorDoesntExist,
   addAuthorWithoutBorn,
   addAuthorWithBorn,
+  editAuthor,
 };
