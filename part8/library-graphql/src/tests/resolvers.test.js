@@ -165,7 +165,6 @@ describe('e2e tests resolvers', () => {
       const author = await graphQLRequest(
         mutations.editAuthor('Sandi Metz', 1964)
       );
-      console.log(author.body.data.editAuthor);
       expect(author.body.data.editAuthor.name).toBe('Sandi Metz');
       expect(author.body.data.editAuthor.born).toBe(1964);
       expect(author.body.data.editAuthor.bookCount).toBe(1);
@@ -174,8 +173,7 @@ describe('e2e tests resolvers', () => {
       const author = await graphQLRequest(
         mutations.editAuthor('not exist', 1964)
       );
-      expect(author.body.errors[0].message).toBe('author doesnt exist');
-      expect(author.body.errors).toBeTruthy();
+      expect(author.body.data.editAuthor).toBe(null);
     });
   });
   afterAll(() => {

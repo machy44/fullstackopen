@@ -165,7 +165,7 @@ const resolvers = {
       });
 
       if (author === null) {
-        throw new UserInputError('author doesnt exist');
+        return null;
       }
 
       if (args.setBornTo) {
