@@ -1,6 +1,7 @@
 const graphQLRequest = require('./utils');
 const app = require('../app');
 const queries = require('./queries');
+const mutations = require('./mutations');
 const mongoose = require('mongoose');
 const { MONGODB_URI } = require('../utils/config');
 const { makeExecutableSchema } = require('@graphql-tools/schema');
@@ -113,7 +114,7 @@ describe('e2e tests resolvers', () => {
   });
   describe('mutation resolvers', () => {
     test('execute addBook and author already exists', async () => {
-      const fowlersBook = await graphQLRequest(queries.addBookAuthorExists);
+      const fowlersBook = await graphQLRequest(mutations.addBookAuthorExists);
       expect(fowlersBook.body.data.addBook.title).toBe('NoSQL Distilled');
       expect(fowlersBook.body.data.addBook.author.name).toBe('Martin Fowler');
       expect(fowlersBook.body.data.addBook.author.born).toBe(1963);
@@ -122,7 +123,9 @@ describe('e2e tests resolvers', () => {
       expect(books.body.data.allBooks.length).toBe(8);
     });
     test('execute addBook and author doesnt exist', async () => {
-      const ReijoBook = await graphQLRequest(queries.addBookAuthorDoesntExist);
+      const ReijoBook = await graphQLRequest(
+        mutations.addBookAuthorDoesntExist
+      );
       expect(ReijoBook.body.data.addBook.title).toBe('Pimeyden tango');
       expect(ReijoBook.body.data.addBook.author.name).toBe('Reijo Mäki');
       expect(ReijoBook.body.data.addBook.author.born).toBe(null);
@@ -130,8 +133,36 @@ describe('e2e tests resolvers', () => {
       const books = await graphQLRequest(queries.allBooksQuery);
       expect(books.body.data.allBooks.length).toBe(8);
     });
-    test('execute addAuthor', async () => {});
+    test('execute addAuthor author doesnt exist', async () => {
+      const author = await graphQLRequest(
+        mutations.addAuthorWithoutBorn('name surname')
+      );
+      expect(author.body.data.addAuthor.name).toBe('name surname');
+      expect(author.body.data.addAuthor.born).toBe(null);
+      expect(author.body.data.addAuthor.bookCount).toBe(0);
+      // const authors = await graphQLRequest(queries.allAuthorsQuery);
+      // expect(authors.body.data.allAuthors.length).toBe(6);
+    });
+    test('execute addAuthor without born field', async () => {
+      const author = await graphQLRequest(
+        mutations.addAuthorWithBorn('name surname 2', 1965)
+      );
+      expect(author.body.data.addAuthor.name).toBe('name surname 2');
+      expect(author.body.data.addAuthor.born).toBe(1965);
+      expect(author.body.data.addAuthor.bookCount).toBe(0);
+      // const authors = await graphQLRequest(queries.allAuthorsQuery);
+      // expect(authors.body.data.allAuthors.length).toBe(7);
+    });
+    test('execute addAuthor author already exists', async () => {
+      const author = await graphQLRequest(
+        mutations.addAuthorWithBorn('Martin Fowler', 1963)
+      );
+      console.log(author.body.errors);
+      expect(author.body.errors[0].message).toBe('author already exists');
+      expect(author.body.errors).toBeTruthy();
+    });
     test('execute editAuthor', async () => {});
+    test('execute editAuthor but author doesnt exist', async () => {});
   });
   afterAll(() => {
     mongoose.connection.close();
