@@ -7,8 +7,10 @@
     "start": "node ./src/index.js",
     "dev": "nodemon ./src/index.js",
     "test": "NODE_ENV=test jest --verbose --runInBand --forceExit",
-    "seed": "NODE_ENV=test node src/utils/seed.js",
-    "lint": "eslint ."
+    "seed:test": "NODE_ENV=test node src/utils/seed.js",
+    "seed:dev": "node src/utils/seed.js",
+    "lint": "eslint .",
+    "e2e:test": "NODE_ENV=test  node ./src/index.js"
   },
   "keywords": [],
   "author": "",
