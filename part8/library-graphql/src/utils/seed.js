@@ -87,6 +87,8 @@ const seed = async () => {
     // use reduce to sequentally add authors/books to DB
     // https://advancedweb.hu/how-to-use-async-functions-with-array-map-in-javascript/
     await data.reduce(async (memo, bookAuthor) => {
+      // I dont like this. I believe you should you bluebird
+      // for this cases in the future projects
       await memo;
       let author = await Author.findOne({ name: bookAuthor.author.name });
       if (author === null) {
