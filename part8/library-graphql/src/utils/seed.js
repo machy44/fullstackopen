@@ -1,8 +1,9 @@
 const Author = require('../models/author');
 const Book = require('../models/book');
-// const User = require('../models/user');
+const User = require('../models/user');
 const mongoose = require('mongoose');
 const MONGODB_URI = require('../utils/config').MONGODB_URI;
+const bcrypt = require('bcrypt');
 const info = require('../utils/logger').info;
 const errorLogger = require('../utils/logger').error;
 
@@ -83,6 +84,16 @@ const seed = async () => {
 
     await Author.deleteMany({});
     await Book.deleteMany({});
+    await User.deleteMany({});
+
+    const saltRounds = 10;
+    const password = await bcrypt.hash('test', saltRounds);
+
+    await new User({
+      username: 'test',
+      password,
+      favoriteGenre: 'refactoring',
+    }).save();
 
     // use reduce to sequentally add authors/books to DB
     // https://advancedweb.hu/how-to-use-async-functions-with-array-map-in-javascript/
