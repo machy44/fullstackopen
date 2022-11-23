@@ -40,6 +40,7 @@ const typeDefs = gql`
 
   type Mutation {
     resetDatabase: Boolean!
+    seedTestDatabase: Boolean!
     addAuthor(name: String, born: Int): Author
     addBook(
       title: String!

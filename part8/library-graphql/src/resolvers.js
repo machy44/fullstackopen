@@ -1,3 +1,4 @@
+require('dotenv/config');
 const { UserInputError } = require('apollo-server');
 const combineResolvers = require('graphql-resolvers').combineResolvers;
 const bcrypt = require('bcrypt');
@@ -5,6 +6,7 @@ const jwt = require('jsonwebtoken');
 const Book = require('./models/book');
 const Author = require('./models/author');
 const User = require('./models/user');
+const seed = require('./utils/seed');
 
 const { PubSub } = require('graphql-subscriptions');
 const isAuthenticated = require('./utils/middlewares');
@@ -66,6 +68,17 @@ const resolvers = {
       try {
         await Book.deleteMany({});
         await Author.deleteMany({});
+        return true;
+      } catch (error) {
+        throw new UserInputError(error.message, {
+          invalidArgs: args,
+        });
+      }
+    }),
+    seedTestDatabase: combineResolvers(isAuthenticated, async (root, args) => {
+      if (!process.env.NODE_ENV === 'test') return;
+      try {
+        seed();
         return true;
       } catch (error) {
         throw new UserInputError(error.message, {
