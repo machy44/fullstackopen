@@ -6,7 +6,7 @@ const jwt = require('jsonwebtoken');
 const Book = require('./models/book');
 const Author = require('./models/author');
 const User = require('./models/user');
-const seed = require('./utils/seed');
+const seed = require('./utils/seed').seed;
 
 const { PubSub } = require('graphql-subscriptions');
 const isAuthenticated = require('./utils/middlewares');
