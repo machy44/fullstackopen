@@ -23,7 +23,7 @@ backend-link https://infinite-forest-20975.herokuapp.com
 
 - technologies: apollo-client, apollo-server, react, cypress, jest, react-testing-library, supertest
 
--[certificate](https://studies.cs.helsinki.fi/stats/api/certificate/fs-graphql/en/b2f3d0be0d8ee17ddd70941ad10d2fa3)
+- [certificate](https://studies.cs.helsinki.fi/stats/api/certificate/fs-graphql/en/b2f3d0be0d8ee17ddd70941ad10d2fa3)
 
 ## part 11 - CI/CD
 
