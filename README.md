@@ -27,4 +27,4 @@ backend-link https://infinite-forest-20975.herokuapp.com
 
 ## part 11 - CI/CD
 
-- still doing
+- still working on https://fullstackopen.com/en/part11
