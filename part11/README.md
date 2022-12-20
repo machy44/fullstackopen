@@ -69,3 +69,21 @@ jobs
 - **environment**, or set up the authentication to your cloud provider.
 - **runners** - runner is a server that runs you sr workflows. GitHub provides Ubuntu Linux, Microsoft Windows, and macOS runners to run your workflows
 
+The hierarchy of a workflow:
+```
+Workflow
+  Job
+    Step
+    Step
+  Job
+    Step
+```
+
+Each workflow must specify at least one Job, which contains a set of Steps to perform individual tasks. The jobs will be run in parallel and the steps in each job will be executed sequentially.
+
+For GitHub to recognize your workflows, they must be specified in .github/workflowsfolder in your repository. Each Workflow is its own separate file which needs to be configured using the YAMLdata-serialization language.
+
+A basic workflow contains three elements in a YAML document. These three elements are:
+- name: Yep, you guessed it, the name of the workflow
+- (on) triggers: The events that trigger the workflow to be executed
+- jobs: The separate jobs that the workflow will execute (a basic workflow might contain only one job).
