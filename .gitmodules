@@ -14,3 +14,6 @@
 [submodule "part8/library-frontend-graphql"]
 	path = part8/library-frontend-graphql
 	url = git@github.com:machy44/library-fontend-graphql.git
+[submodule "part11/full-stack-open-pokedex"]
+	path = part11/full-stack-open-pokedex
+	url = git@github.com:machy44/full-stack-open-pokedex.git
