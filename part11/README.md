@@ -61,3 +61,11 @@ Cloud-based options are also usually billed by build time which is something to 
 small and medium projects - cloud service should be enough(they are limited with resources)
 big projects - for most cases self-hosted setups are way to go
 
+## Github actions components
+- **workflows** -  Workflows are defined by a YAML file checked in to your repository and will run when triggered by an event in your repository, or they can be triggered manually, or at a defined schedule
+- **events** - a specific activity in repository that triggers a workflow run.(for example PR creation, opened issue, pushing commit to a repo)
+jobs
+- **actions** - an action is custom app. An action can pull your git repository from GitHub, set up the correct toolchain for your build
+- **environment**, or set up the authentication to your cloud provider.
+- **runners** - runner is a server that runs you sr workflows. GitHub provides Ubuntu Linux, Microsoft Windows, and macOS runners to run your workflows
+
